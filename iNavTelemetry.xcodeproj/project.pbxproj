@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -14,6 +14,8 @@
 		6DFDD0E1247FFFB6009F382A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6DFDD0E0247FFFB6009F382A /* Assets.xcassets */; };
 		6DFDD0E4247FFFB6009F382A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6DFDD0E2247FFFB6009F382A /* LaunchScreen.storyboard */; };
 		6DFDD0EC24800003009F382A /* LocationPointAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DFDD0EB24800003009F382A /* LocationPointAnnotation.swift */; };
+		6DFDD0EF2480066F009F382A /* MBProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = 6DFDD0EE2480066F009F382A /* MBProgressHUD */; };
+		6DFDD0F22480067D009F382A /* Toast in Frameworks */ = {isa = PBXBuildFile; productRef = 6DFDD0F12480067D009F382A /* Toast */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -33,6 +35,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6DFDD0F22480067D009F382A /* Toast in Frameworks */,
+				6DFDD0EF2480066F009F382A /* MBProgressHUD in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -86,6 +90,10 @@
 			dependencies = (
 			);
 			name = iNavTelemetry;
+			packageProductDependencies = (
+				6DFDD0EE2480066F009F382A /* MBProgressHUD */,
+				6DFDD0F12480067D009F382A /* Toast */,
+			);
 			productName = iNavTelemetry;
 			productReference = 6DFDD0D4247FFFB5009F382A /* iNavTelemetry.app */;
 			productType = "com.apple.product-type.application";
@@ -114,6 +122,10 @@
 				Base,
 			);
 			mainGroup = 6DFDD0CB247FFFB5009F382A;
+			packageReferences = (
+				6DFDD0ED2480066F009F382A /* XCRemoteSwiftPackageReference "MBProgressHUD" */,
+				6DFDD0F02480067D009F382A /* XCRemoteSwiftPackageReference "Toast-Swift" */,
+			);
 			productRefGroup = 6DFDD0D5247FFFB5009F382A /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -342,6 +354,38 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		6DFDD0ED2480066F009F382A /* XCRemoteSwiftPackageReference "MBProgressHUD" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/jdg/MBProgressHUD.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.2.0;
+			};
+		};
+		6DFDD0F02480067D009F382A /* XCRemoteSwiftPackageReference "Toast-Swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/scalessec/Toast-Swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		6DFDD0EE2480066F009F382A /* MBProgressHUD */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6DFDD0ED2480066F009F382A /* XCRemoteSwiftPackageReference "MBProgressHUD" */;
+			productName = MBProgressHUD;
+		};
+		6DFDD0F12480067D009F382A /* Toast */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6DFDD0F02480067D009F382A /* XCRemoteSwiftPackageReference "Toast-Swift" */;
+			productName = Toast;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 6DFDD0CC247FFFB5009F382A /* Project object */;
 }

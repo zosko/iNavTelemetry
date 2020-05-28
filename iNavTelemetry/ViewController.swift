@@ -8,6 +8,9 @@
 
 import UIKit
 import MapKit
+import CoreBluetooth
+import MBProgressHUD
+import Toast
 
 struct TrackerStruct {
     var lat = 0.0
@@ -19,7 +22,7 @@ struct TrackerStruct {
     var voltage = 0.0
     var rssi = 0
     var current = 0
-    var heading = 0.0
+    var heading = 0
     var flight_mode = 0
     var fuel = 0
     var roll = 0
@@ -30,7 +33,7 @@ struct TrackerStruct {
     }
 }
 
-class ViewController: UIViewController,MKMapViewDelegate {
+class ViewController: UIViewController,MKMapViewDelegate,CBCentralManagerDelegate,CBPeripheralDelegate {
 
     // MARK: IBOutlets
     @IBOutlet var mapPlane : MKMapView!
@@ -52,10 +55,31 @@ class ViewController: UIViewController,MKMapViewDelegate {
     
     //MARK: - Variables
     var packetTelemetry = TrackerStruct()
+    var locationManager:CLLocationManager?
+    var centralManager: CBCentralManager!
+    var connectedPeripheral: CBPeripheral!
+    var peripherals : [CBPeripheral] = []
+    var rcv_buffer : [UInt8] = [UInt8](repeating: 0, count: 200)
+    var buffer_index : Int = 0
+    var found_header : Bool = false
+    var rcv_length : UInt8 = 0
     
     //MARK: - IBActions
     @IBAction func onBtnConnect(_ sender: Any) {
-        
+        if connectedPeripheral != nil {
+            centralManager.cancelPeripheralConnection(connectedPeripheral)
+            connectedPeripheral = nil;
+            peripherals.removeAll()
+        }
+        else{
+            peripherals.removeAll()
+            centralManager.scanForPeripherals(withServices: [CBUUID(string: "FFE0")], options: nil)
+            MBProgressHUD.showAdded(to: self.view, animated: true)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                MBProgressHUD.hide(for: self.view, animated: true)
+                self.stopSearchReader()
+            }
+        }
     }
     @IBAction func onBtnSetHomePosition(_ sender: Any){
         let locationGS = CLLocation(latitude: packetTelemetry.lat, longitude: packetTelemetry.lng)
@@ -72,14 +96,9 @@ class ViewController: UIViewController,MKMapViewDelegate {
     //MARK: - Telemetry Functions
     func process_incoming_bytes(incomingData: Data){
         let bytes: [UInt8] = incomingData.map{ $0 }
-        var rcv_buffer : [UInt8] = [UInt8](repeating: 0, count: 200)
         let START_FLAG : UInt8 = 0xFE
         let END_FLAG : UInt8 = 0x7F
-        var buffer_index : Int = 0
-        var found_header : Bool = false
-        var rcv_length : UInt8 = 0
         var packetReceived = false
-        
         var checksum : UInt8 = 0
         
         for i in 0 ..< bytes.count {
@@ -169,7 +188,7 @@ class ViewController: UIViewController,MKMapViewDelegate {
         packetTelemetry.current = Int(payload[ind])
         ind += 1
 
-        packetTelemetry.heading = buffer_get_float16(buffer: payload, scale:1e0, index:ind)
+        packetTelemetry.heading = Int(buffer_get_int16(buffer: payload, index:ind))
         ind += 2
         
         packetTelemetry.flight_mode = Int(payload[ind])
@@ -224,15 +243,15 @@ class ViewController: UIViewController,MKMapViewDelegate {
         lblFuel.text = "Fuel\n \(packetTelemetry.fuel) %"
         
         refreshLocation(latitude: packetTelemetry.lat, longitude: packetTelemetry.lng)
-        refreshCompass(degree: CGFloat(-packetTelemetry.heading))
-        refreshHorizon(pitch: CGFloat(packetTelemetry.pitch), roll: CGFloat(-packetTelemetry.roll))
+        refreshCompass(degree: packetTelemetry.heading)
+        refreshHorizon(pitch: packetTelemetry.pitch, roll: packetTelemetry.roll)
     }
     
-    func refreshCompass(degree: CGFloat){
-        imgCompass.transform = CGAffineTransform(rotationAngle: degree)
+    func refreshCompass(degree: Int){
+        imgCompass.transform = CGAffineTransform(rotationAngle: CGFloat(Double.pi * Double(degree) / 180.0))
     }
-    func refreshHorizon(pitch: CGFloat, roll: CGFloat){
-        imgHorizont.transform = CGAffineTransform(rotationAngle: roll)
+    func refreshHorizon(pitch: Int, roll: Int){
+        imgHorizont.transform = CGAffineTransform(rotationAngle: CGFloat(Double.pi * Double(roll) / 180.0))
     }
     func refreshLocation(latitude: Double, longitude: Double){
         mapPlane.removeAnnotations(mapPlane.annotations)
@@ -243,6 +262,104 @@ class ViewController: UIViewController,MKMapViewDelegate {
         annotation.title = "Plane"
         annotation.imageName = "plane"
         mapPlane.addAnnotation(annotation)
+    }
+    func stopSearchReader(){
+        centralManager.stopScan()
+        
+        let alert = UIAlertController.init(title: "Search device", message: "Choose Tracker device", preferredStyle: .actionSheet)
+        
+        for periperal in peripherals{
+            let action = UIAlertAction.init(title: periperal.name ?? "no_name", style: .default) { (action) in
+                self.centralManager.connect(periperal, options: nil)
+            }
+            alert.addAction(action)
+        }
+        let actionCancel = UIAlertAction.init(title: "Cancel", style: .destructive) { (action) in
+        }
+        alert.addAction(actionCancel)
+        
+        if let presenter = alert.popoverPresentationController {
+            presenter.sourceView = btnConnect;
+            presenter.sourceRect = btnConnect.bounds;
+        }
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    //MARK: CentralManagerDelegates
+    func centralManagerDidUpdateState(_ central: CBCentralManager) {
+        var message = "Bluetooth"
+        switch (central.state) {
+        case .unknown: message = "Bluetooth Unknown."; break
+        case .resetting: message = "The update is being started. Please wait until Bluetooth is ready."; break
+        case .unsupported: message = "This device does not support Bluetooth low energy."; break
+        case .unauthorized: message = "This app is not authorized to use Bluetooth low energy."; break
+        case .poweredOff: message = "You must turn on Bluetooth in Settings in order to use the reader."; break
+        default: break;
+        }
+        print("Bluetooth: " + message);
+    }
+    func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String : Any], rssi RSSI: NSNumber) {
+        if !peripherals.contains(peripheral){
+            peripherals.append(peripheral)
+        }
+    }
+    func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
+        connectedPeripheral = peripheral
+        connectedPeripheral.delegate = self
+        connectedPeripheral.discoverServices([CBUUID (string: "FFE0")])
+    }
+    func centralManager(_ central: CBCentralManager, didFailToConnect peripheral: CBPeripheral, error: Error?) {
+        if error != nil {
+            print("FailToConnect" + error!.localizedDescription)
+        }
+        self.view.makeToast("Connected")
+    }
+    func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Error?) {
+        if error != nil {
+            print("FailToDisconnect" + error!.localizedDescription)
+            
+            centralManager.cancelPeripheralConnection(connectedPeripheral)
+            connectedPeripheral = nil;
+            peripherals.removeAll()
+            return
+        }
+        self.view.makeToast("Disconnected")
+    }
+    
+    //MARK: PeripheralDelegates
+    func peripheral(_ peripheral: CBPeripheral, didWriteValueFor characteristic: CBCharacteristic, error: Error?) {
+        if error != nil {
+            print("Error receiving didWriteValueFor \(characteristic) : " + error!.localizedDescription)
+            return
+        }
+    }
+    func peripheralIsReady(toSendWriteWithoutResponse peripheral: CBPeripheral) {
+        
+    }
+    func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
+        if error != nil {
+            print("Error receiving notification for characteristic \(characteristic) : " + error!.localizedDescription)
+            return
+        }
+        process_incoming_bytes(incomingData: characteristic.value!)
+    }
+    func peripheral(_ peripheral: CBPeripheral, didDiscoverServices error: Error?) {
+        for service in peripheral.services!{
+            peripheral.discoverCharacteristics([CBUUID (string: "FFE1")], for: service)
+        }
+    }
+    func peripheral(_ peripheral: CBPeripheral, didUpdateNotificationStateFor characteristic: CBCharacteristic, error: Error?) {
+        if error != nil {
+            print("Error receiving didUpdateNotificationStateFor \(characteristic) : " + error!.localizedDescription)
+            return
+        }
+    }
+    func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?) {
+        for characteristic in service.characteristics! {
+            if characteristic.uuid == CBUUID(string: "FFE1"){
+                peripheral.setNotifyValue(true, for: characteristic)
+            }
+        }
     }
     
     // MARK: - MAPViewDelegate
@@ -278,6 +395,8 @@ class ViewController: UIViewController,MKMapViewDelegate {
     // MARK: - UIViewDelegates
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        centralManager = CBCentralManager.init(delegate: self, queue: nil)
         
         let urlTeplate = "http://tile.openstreetmap.org/{z}/{x}/{y}.png"
         let overlay = MKTileOverlay(urlTemplate: urlTeplate)
