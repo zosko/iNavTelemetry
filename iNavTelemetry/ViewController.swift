@@ -51,7 +51,8 @@ class ViewController: UIViewController,MKMapViewDelegate,CBCentralManagerDelegat
     @IBOutlet var lblSignalStrength: UILabel!
     @IBOutlet var lblFuel: UILabel!
     @IBOutlet var imgCompass: UIImageView!
-    @IBOutlet var imgHorizont: UIImageView!
+    @IBOutlet var imgHorizontPlane: UIImageView!
+    @IBOutlet var imgHorizontLine: UIImageView!
     
     //MARK: - Variables
     var packetTelemetry = TrackerStruct()
@@ -244,14 +245,15 @@ class ViewController: UIViewController,MKMapViewDelegate,CBCentralManagerDelegat
         
         refreshLocation(latitude: packetTelemetry.lat, longitude: packetTelemetry.lng)
         refreshCompass(degree: packetTelemetry.heading)
-        refreshHorizon(pitch: packetTelemetry.pitch, roll: packetTelemetry.roll)
+        refreshHorizon(pitch: -packetTelemetry.pitch, roll: packetTelemetry.roll)
     }
     
     func refreshCompass(degree: Int){
         imgCompass.transform = CGAffineTransform(rotationAngle: CGFloat(Double.pi * Double(degree) / 180.0))
     }
     func refreshHorizon(pitch: Int, roll: Int){
-        imgHorizont.transform = CGAffineTransform(rotationAngle: CGFloat(Double.pi * Double(roll) / 180.0))
+        imgHorizontPlane.transform = CGAffineTransform(rotationAngle: CGFloat(Double.pi * Double(roll) / 180.0))
+        imgHorizontLine.frame.origin.y = CGFloat(pitch)
     }
     func refreshLocation(latitude: Double, longitude: Double){
         mapPlane.removeAnnotations(mapPlane.annotations)

@@ -143,6 +143,10 @@
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="horizon" translatesAutoresizingMaskIntoConstraints="NO" id="78v-cu-B3g">
                                         <rect key="frame" x="0.0" y="0.0" width="200" height="200"/>
                                     </imageView>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="horizon_line" translatesAutoresizingMaskIntoConstraints="NO" id="6cb-Xv-Wc6">
+                                        <rect key="frame" x="0.0" y="0.0" width="200" height="200"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    </imageView>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="horizon_plane" translatesAutoresizingMaskIntoConstraints="NO" id="S2L-5T-NV5">
                                         <rect key="frame" x="0.0" y="0.0" width="200" height="200"/>
                                     </imageView>
@@ -285,7 +289,8 @@
                     <connections>
                         <outlet property="btnConnect" destination="Gcd-B3-8py" id="Xur-Sx-xyx"/>
                         <outlet property="imgCompass" destination="thc-Y1-NOk" id="hl4-Bl-xjQ"/>
-                        <outlet property="imgHorizont" destination="S2L-5T-NV5" id="ea9-2j-WDW"/>
+                        <outlet property="imgHorizontLine" destination="6cb-Xv-Wc6" id="Ul0-GZ-g2i"/>
+                        <outlet property="imgHorizontPlane" destination="S2L-5T-NV5" id="Mvw-3N-9Bd"/>
                         <outlet property="lblAltitude" destination="92G-06-Btk" id="2Hh-mg-CAw"/>
                         <outlet property="lblArmed" destination="pmP-dK-GRa" id="ead-Gm-6Wo"/>
                         <outlet property="lblCurrent" destination="uFq-yg-t5U" id="E6v-EG-wR5"/>
@@ -310,6 +315,7 @@
         <image name="compass" width="420" height="420"/>
         <image name="compass_plane" width="420" height="420"/>
         <image name="horizon" width="420" height="420"/>
+        <image name="horizon_line" width="420" height="420"/>
         <image name="horizon_plane" width="420" height="420"/>
     </resources>
 </document>
