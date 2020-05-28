@@ -126,17 +126,6 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qAK-mh-PyC">
-                                <rect key="frame" x="313" y="703" width="152" height="56"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" systemColor="systemYellowColor" red="1" green="0.80000000000000004" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <state key="normal" title="Set home position">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                </state>
-                                <connections>
-                                    <action selector="onBtnSetHomePosition:" destination="BYZ-38-t0r" eventType="touchUpInside" id="ec6-yJ-UYg"/>
-                                </connections>
-                            </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vig-Md-PfB">
                                 <rect key="frame" x="824" y="568" width="200" height="200"/>
                                 <subviews>
@@ -241,15 +230,32 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gcd-B3-8py">
-                                <rect key="frame" x="473" y="703" width="123" height="56"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" systemColor="systemYellowColor" red="1" green="0.80000000000000004" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <state key="normal" title="connect">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gcd-B3-8py">
+                                <rect key="frame" x="522" y="668" width="100" height="100"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="100" id="Beq-Kj-p5d"/>
+                                    <constraint firstAttribute="height" constant="100" id="uS0-jj-06e"/>
+                                </constraints>
+                                <state key="normal" image="power_off">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
                                 <connections>
                                     <action selector="onBtnConnect:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Dbw-c7-Ia5"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qAK-mh-PyC">
+                                <rect key="frame" x="522" y="567" width="100" height="100"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="100" id="Kpy-i8-Blr"/>
+                                    <constraint firstAttribute="height" constant="100" id="ZCq-rb-NmW"/>
+                                </constraints>
+                                <state key="normal" title="Set home position" image="home_pos">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <connections>
+                                    <action selector="onBtnSetHomePosition:" destination="BYZ-38-t0r" eventType="touchUpInside" id="ec6-yJ-UYg"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -260,10 +266,13 @@
                             <constraint firstItem="g9K-8d-NlM" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="6sl-TD-l9u"/>
                             <constraint firstItem="a34-Se-597" firstAttribute="top" secondItem="g9K-8d-NlM" secondAttribute="bottom" constant="1" id="8NI-Zj-GSL"/>
                             <constraint firstItem="pmP-dK-GRa" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="AYB-1x-VHt"/>
+                            <constraint firstItem="Gcd-B3-8py" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="Acv-dZ-qhc"/>
                             <constraint firstItem="RWD-8h-6wN" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="B04-1M-nu4"/>
                             <constraint firstItem="npN-YZ-ILV" firstAttribute="top" secondItem="RWD-8h-6wN" secondAttribute="bottom" constant="1" id="CYe-Jr-Qav"/>
                             <constraint firstItem="g9K-8d-NlM" firstAttribute="top" secondItem="pmP-dK-GRa" secondAttribute="bottom" constant="1" id="FeP-cW-Iaf"/>
+                            <constraint firstItem="aFt-PY-13g" firstAttribute="leading" secondItem="Gcd-B3-8py" secondAttribute="trailing" constant="1" id="HMo-f9-H5d"/>
                             <constraint firstItem="92G-06-Btk" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="Hkw-qE-Bcp"/>
+                            <constraint firstItem="aFt-PY-13g" firstAttribute="leading" secondItem="qAK-mh-PyC" secondAttribute="trailing" constant="1" id="IIt-gL-Zti"/>
                             <constraint firstItem="vig-Md-PfB" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="QeU-sx-xWX"/>
                             <constraint firstItem="mj9-Zj-6fe" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="R0n-pc-Ah8"/>
                             <constraint firstItem="aFt-PY-13g" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="YEh-fy-Lbf"/>
@@ -281,6 +290,7 @@
                             <constraint firstItem="pmP-dK-GRa" firstAttribute="leading" secondItem="Crr-Iu-bUj" secondAttribute="trailing" constant="1" id="ntI-Qr-pFh"/>
                             <constraint firstItem="a34-Se-597" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="oIk-ai-xzg"/>
                             <constraint firstItem="uFq-yg-t5U" firstAttribute="top" secondItem="1PJ-iE-sEQ" secondAttribute="bottom" constant="1" id="oq1-Vu-5yp"/>
+                            <constraint firstItem="Gcd-B3-8py" firstAttribute="top" secondItem="qAK-mh-PyC" secondAttribute="bottom" constant="1" id="qsC-Ll-yyy"/>
                             <constraint firstItem="vig-Md-PfB" firstAttribute="leading" secondItem="aFt-PY-13g" secondAttribute="trailing" constant="1" id="tzo-Ft-vqR"/>
                             <constraint firstItem="92G-06-Btk" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="wBX-ji-ONU"/>
                         </constraints>
@@ -314,8 +324,10 @@
     <resources>
         <image name="compass" width="420" height="420"/>
         <image name="compass_plane" width="420" height="420"/>
+        <image name="home_pos" width="504" height="501"/>
         <image name="horizon" width="420" height="420"/>
         <image name="horizon_line" width="420" height="420"/>
         <image name="horizon_plane" width="420" height="420"/>
+        <image name="power_off" width="230" height="230"/>
     </resources>
 </document>

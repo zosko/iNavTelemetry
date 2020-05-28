@@ -55,6 +55,7 @@ class ViewController: UIViewController,MKMapViewDelegate,CBCentralManagerDelegat
     @IBOutlet var imgHorizontLine: UIImageView!
     
     //MARK: - Variables
+    var planeAnnotation : LocationPointAnnotation!
     var packetTelemetry = TrackerStruct()
     var locationManager:CLLocationManager?
     var centralManager: CBCentralManager!
@@ -83,7 +84,7 @@ class ViewController: UIViewController,MKMapViewDelegate,CBCentralManagerDelegat
         }
     }
     @IBAction func onBtnSetHomePosition(_ sender: Any){
-        let locationGS = CLLocation(latitude: packetTelemetry.lat, longitude: packetTelemetry.lng)
+        let locationGS = CLLocation(latitude: packetTelemetry.lat+0.001, longitude: packetTelemetry.lng+0.001)
         let region = MKCoordinateRegion(center: locationGS.coordinate, latitudinalMeters: 1000, longitudinalMeters: 1000)
         mapPlane.setRegion(region, animated: true)
         
@@ -256,14 +257,16 @@ class ViewController: UIViewController,MKMapViewDelegate,CBCentralManagerDelegat
         imgHorizontLine.frame.origin.y = CGFloat(pitch)
     }
     func refreshLocation(latitude: Double, longitude: Double){
-        mapPlane.removeAnnotations(mapPlane.annotations)
+        if((planeAnnotation) != nil){
+            mapPlane.removeAnnotation(planeAnnotation)
+        }
         
         let location = CLLocation(latitude: latitude, longitude: longitude)
-        let annotation = LocationPointAnnotation()
-        annotation.coordinate = location.coordinate
-        annotation.title = "Plane"
-        annotation.imageName = "plane"
-        mapPlane.addAnnotation(annotation)
+        planeAnnotation = LocationPointAnnotation()
+        planeAnnotation.coordinate = location.coordinate
+        planeAnnotation.title = "Plane"
+        planeAnnotation.imageName = "plane"
+        mapPlane.addAnnotation(planeAnnotation)
     }
     func stopSearchReader(){
         centralManager.stopScan()
@@ -309,12 +312,14 @@ class ViewController: UIViewController,MKMapViewDelegate,CBCentralManagerDelegat
         connectedPeripheral = peripheral
         connectedPeripheral.delegate = self
         connectedPeripheral.discoverServices([CBUUID (string: "FFE0")])
+        self.view.makeToast("Connected to tracker")
+        btnConnect.setImage(UIImage(named: "power_on"), for: .normal)
     }
     func centralManager(_ central: CBCentralManager, didFailToConnect peripheral: CBPeripheral, error: Error?) {
         if error != nil {
             print("FailToConnect" + error!.localizedDescription)
         }
-        self.view.makeToast("Connected")
+        self.view.makeToast("Fail to connect to tracker")
     }
     func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Error?) {
         if error != nil {
@@ -325,7 +330,8 @@ class ViewController: UIViewController,MKMapViewDelegate,CBCentralManagerDelegat
             peripherals.removeAll()
             return
         }
-        self.view.makeToast("Disconnected")
+        self.view.makeToast("Disconnected from tracker")
+        btnConnect.setImage(UIImage(named: "power_off"), for: .normal)
     }
     
     //MARK: PeripheralDelegates
