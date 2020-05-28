@@ -13,6 +13,7 @@
 		6DFDD0DF247FFFB5009F382A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6DFDD0DD247FFFB5009F382A /* Main.storyboard */; };
 		6DFDD0E1247FFFB6009F382A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6DFDD0E0247FFFB6009F382A /* Assets.xcassets */; };
 		6DFDD0E4247FFFB6009F382A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6DFDD0E2247FFFB6009F382A /* LaunchScreen.storyboard */; };
+		6DFDD0EC24800003009F382A /* LocationPointAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DFDD0EB24800003009F382A /* LocationPointAnnotation.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		6DFDD0E0247FFFB6009F382A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		6DFDD0E3247FFFB6009F382A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		6DFDD0E5247FFFB6009F382A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		6DFDD0EB24800003009F382A /* LocationPointAnnotation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationPointAnnotation.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,9 +58,10 @@
 		6DFDD0D6247FFFB5009F382A /* iNavTelemetry */ = {
 			isa = PBXGroup;
 			children = (
+				6DFDD0EB24800003009F382A /* LocationPointAnnotation.swift */,
+				6DFDD0DB247FFFB5009F382A /* ViewController.swift */,
 				6DFDD0D7247FFFB5009F382A /* AppDelegate.swift */,
 				6DFDD0D9247FFFB5009F382A /* SceneDelegate.swift */,
-				6DFDD0DB247FFFB5009F382A /* ViewController.swift */,
 				6DFDD0DD247FFFB5009F382A /* Main.storyboard */,
 				6DFDD0E0247FFFB6009F382A /* Assets.xcassets */,
 				6DFDD0E2247FFFB6009F382A /* LaunchScreen.storyboard */,
@@ -140,6 +143,7 @@
 			files = (
 				6DFDD0DC247FFFB5009F382A /* ViewController.swift in Sources */,
 				6DFDD0D8247FFFB5009F382A /* AppDelegate.swift in Sources */,
+				6DFDD0EC24800003009F382A /* LocationPointAnnotation.swift in Sources */,
 				6DFDD0DA247FFFB5009F382A /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
