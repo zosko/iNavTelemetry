@@ -84,7 +84,7 @@ class ViewController: UIViewController,MKMapViewDelegate,CBCentralManagerDelegat
         }
     }
     @IBAction func onBtnSetHomePosition(_ sender: Any){
-        let locationGS = CLLocation(latitude: packetTelemetry.lat+0.001, longitude: packetTelemetry.lng+0.001)
+        let locationGS = CLLocation(latitude: packetTelemetry.lat, longitude: packetTelemetry.lng)
         let region = MKCoordinateRegion(center: locationGS.coordinate, latitudinalMeters: 1000, longitudinalMeters: 1000)
         mapPlane.setRegion(region, animated: true)
         
