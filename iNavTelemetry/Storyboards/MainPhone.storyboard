@@ -7,10 +7,10 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
+        <!--Main Screen-->
         <scene sceneID="cZa-Xf-Yvr">
             <objects>
-                <viewController id="MXy-Zy-8AG" customClass="ViewController" customModule="iNavTelemetry" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="MXy-Zy-8AG" customClass="MainScreen" customModule="iNavTelemetry" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="xbz-KI-NPc">
                         <rect key="frame" x="0.0" y="0.0" width="896" height="414"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -22,93 +22,93 @@
                                 </connections>
                             </mapView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xIH-LM-d0m">
-                                <rect key="frame" x="44" y="0.0" width="160" height="47"/>
+                                <rect key="frame" x="44" y="0.0" width="100" height="40"/>
                                 <color key="backgroundColor" white="1" alpha="0.5" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="160" id="CxH-FF-5T6"/>
-                                    <constraint firstAttribute="height" constant="47" id="jyc-Uu-dQi"/>
+                                    <constraint firstAttribute="width" constant="100" id="CxH-FF-5T6"/>
+                                    <constraint firstAttribute="height" constant="40" id="jyc-Uu-dQi"/>
                                 </constraints>
                                 <string key="text">Latitude
 ~</string>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Hp4-hl-p9W">
-                                <rect key="frame" x="44" y="48" width="160" height="47"/>
+                                <rect key="frame" x="44" y="41" width="100" height="40"/>
                                 <color key="backgroundColor" white="1" alpha="0.5" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="47" id="hjY-Ec-xH4"/>
-                                    <constraint firstAttribute="width" constant="160" id="lTH-Mx-Okv"/>
+                                    <constraint firstAttribute="height" constant="40" id="hjY-Ec-xH4"/>
+                                    <constraint firstAttribute="width" constant="100" id="lTH-Mx-Okv"/>
                                 </constraints>
                                 <string key="text">Longitude
 ~</string>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0NW-Yc-fsA">
-                                <rect key="frame" x="44" y="96" width="160" height="47"/>
+                                <rect key="frame" x="44" y="82" width="100" height="40"/>
                                 <color key="backgroundColor" white="1" alpha="0.5" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="160" id="4Ao-Dj-0RQ"/>
-                                    <constraint firstAttribute="height" constant="47" id="GvR-of-CXL"/>
+                                    <constraint firstAttribute="width" constant="100" id="4Ao-Dj-0RQ"/>
+                                    <constraint firstAttribute="height" constant="40" id="GvR-of-CXL"/>
                                 </constraints>
                                 <string key="text">Satellites
 ~</string>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tgA-ED-kcO">
-                                <rect key="frame" x="44" y="144" width="160" height="47"/>
+                                <rect key="frame" x="44" y="123" width="100" height="40"/>
                                 <color key="backgroundColor" white="1" alpha="0.5" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="47" id="ddR-Di-Fo8"/>
-                                    <constraint firstAttribute="width" constant="160" id="dkm-Yq-WXt"/>
+                                    <constraint firstAttribute="height" constant="40" id="ddR-Di-Fo8"/>
+                                    <constraint firstAttribute="width" constant="100" id="dkm-Yq-WXt"/>
                                 </constraints>
                                 <string key="text">Distance
 ~</string>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Nb4-uz-vz3">
-                                <rect key="frame" x="44" y="192" width="160" height="47"/>
+                                <rect key="frame" x="44" y="164" width="100" height="40"/>
                                 <color key="backgroundColor" white="1" alpha="0.5" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="160" id="ZAY-ve-ZjI"/>
-                                    <constraint firstAttribute="height" constant="47" id="vdp-g5-0ZA"/>
+                                    <constraint firstAttribute="width" constant="100" id="ZAY-ve-ZjI"/>
+                                    <constraint firstAttribute="height" constant="40" id="vdp-g5-0ZA"/>
                                 </constraints>
                                 <string key="text">Altitude
 ~</string>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uxY-Ld-Ugb">
-                                <rect key="frame" x="44" y="240" width="160" height="47"/>
+                                <rect key="frame" x="44" y="205" width="100" height="40"/>
                                 <color key="backgroundColor" white="1" alpha="0.5" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="47" id="Asx-qd-195"/>
-                                    <constraint firstAttribute="width" constant="160" id="ztk-Cu-2K4"/>
+                                    <constraint firstAttribute="height" constant="40" id="Asx-qd-195"/>
+                                    <constraint firstAttribute="width" constant="100" id="ztk-Cu-2K4"/>
                                 </constraints>
                                 <string key="text">Speed
 ~</string>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Uxn-bd-gna">
-                                <rect key="frame" x="44" y="367" width="160" height="47"/>
+                                <rect key="frame" x="44" y="374" width="100" height="40"/>
                                 <color key="backgroundColor" white="1" alpha="0.5" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="47" id="3j4-NH-q3P"/>
-                                    <constraint firstAttribute="width" constant="160" id="ikX-Gl-KAO"/>
+                                    <constraint firstAttribute="height" constant="40" id="3j4-NH-q3P"/>
+                                    <constraint firstAttribute="width" constant="100" id="ikX-Gl-KAO"/>
                                 </constraints>
                                 <string key="text">Current
 ~</string>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -153,54 +153,54 @@
                                 </constraints>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CqW-pj-MUO">
-                                <rect key="frame" x="736" y="0.0" width="160" height="47"/>
+                                <rect key="frame" x="796" y="0.0" width="100" height="40"/>
                                 <color key="backgroundColor" white="1" alpha="0.5" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="160" id="fhV-ef-qH8"/>
-                                    <constraint firstAttribute="height" constant="47" id="ggf-qH-EDT"/>
+                                    <constraint firstAttribute="width" constant="100" id="fhV-ef-qH8"/>
+                                    <constraint firstAttribute="height" constant="40" id="ggf-qH-EDT"/>
                                 </constraints>
                                 <string key="text">Armed
 ~</string>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Y1t-M8-mVs">
-                                <rect key="frame" x="736" y="48" width="160" height="47"/>
+                                <rect key="frame" x="796" y="41" width="100" height="40"/>
                                 <color key="backgroundColor" white="1" alpha="0.5" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="47" id="PWC-aP-PHP"/>
-                                    <constraint firstAttribute="width" constant="160" id="U6k-1L-aWU"/>
+                                    <constraint firstAttribute="height" constant="40" id="PWC-aP-PHP"/>
+                                    <constraint firstAttribute="width" constant="100" id="U6k-1L-aWU"/>
                                 </constraints>
                                 <string key="text">Signal
 ~</string>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kQb-Wg-2R9">
-                                <rect key="frame" x="736" y="144" width="160" height="47"/>
+                                <rect key="frame" x="796" y="123" width="100" height="40"/>
                                 <color key="backgroundColor" white="1" alpha="0.5" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="160" id="Qzh-Bt-2K2"/>
-                                    <constraint firstAttribute="height" constant="47" id="ave-eS-Wu1"/>
+                                    <constraint firstAttribute="width" constant="100" id="Qzh-Bt-2K2"/>
+                                    <constraint firstAttribute="height" constant="40" id="ave-eS-Wu1"/>
                                 </constraints>
-                                <string key="text">Stabilization
+                                <string key="text">Flymode
 ~</string>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rd9-7t-SxI">
-                                <rect key="frame" x="736" y="96" width="160" height="47"/>
+                                <rect key="frame" x="796" y="82" width="100" height="40"/>
                                 <color key="backgroundColor" white="1" alpha="0.5" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="47" id="6ek-rU-g0T"/>
-                                    <constraint firstAttribute="width" constant="160" id="8KY-DI-KZk"/>
+                                    <constraint firstAttribute="height" constant="40" id="6ek-rU-g0T"/>
+                                    <constraint firstAttribute="width" constant="100" id="8KY-DI-KZk"/>
                                 </constraints>
                                 <string key="text">Fuel
 ~</string>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -233,15 +233,15 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vCf-ni-GYP">
-                                <rect key="frame" x="205" y="367" width="160" height="47"/>
+                                <rect key="frame" x="145" y="374" width="100" height="40"/>
                                 <color key="backgroundColor" white="1" alpha="0.5" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="160" id="gr8-vZ-XoB"/>
-                                    <constraint firstAttribute="height" constant="47" id="jeg-3v-qWa"/>
+                                    <constraint firstAttribute="width" constant="100" id="gr8-vZ-XoB"/>
+                                    <constraint firstAttribute="height" constant="40" id="jeg-3v-qWa"/>
                                 </constraints>
                                 <string key="text">Voltage
 ~</string>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>

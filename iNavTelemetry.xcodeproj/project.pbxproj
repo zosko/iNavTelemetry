@@ -8,8 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		6DD37D56248119980038C9DB /* MainPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6DD37D55248119980038C9DB /* MainPhone.storyboard */; };
+		6DF9826724844D4A005C9BB2 /* Telemetry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DF9826624844D4A005C9BB2 /* Telemetry.swift */; };
+		6DF9826B24845512005C9BB2 /* MainScreen+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DF9826A24845512005C9BB2 /* MainScreen+Extensions.swift */; };
 		6DFDD0D8247FFFB5009F382A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DFDD0D7247FFFB5009F382A /* AppDelegate.swift */; };
-		6DFDD0DC247FFFB5009F382A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DFDD0DB247FFFB5009F382A /* ViewController.swift */; };
+		6DFDD0DC247FFFB5009F382A /* MainScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DFDD0DB247FFFB5009F382A /* MainScreen.swift */; };
 		6DFDD0DF247FFFB5009F382A /* MainPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6DFDD0DD247FFFB5009F382A /* MainPad.storyboard */; };
 		6DFDD0E1247FFFB6009F382A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6DFDD0E0247FFFB6009F382A /* Assets.xcassets */; };
 		6DFDD0E4247FFFB6009F382A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6DFDD0E2247FFFB6009F382A /* LaunchScreen.storyboard */; };
@@ -20,9 +22,11 @@
 
 /* Begin PBXFileReference section */
 		6DD37D55248119980038C9DB /* MainPhone.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = MainPhone.storyboard; sourceTree = "<group>"; };
+		6DF9826624844D4A005C9BB2 /* Telemetry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Telemetry.swift; sourceTree = "<group>"; };
+		6DF9826A24845512005C9BB2 /* MainScreen+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MainScreen+Extensions.swift"; sourceTree = "<group>"; };
 		6DFDD0D4247FFFB5009F382A /* iNavTelemetry.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iNavTelemetry.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6DFDD0D7247FFFB5009F382A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		6DFDD0DB247FFFB5009F382A /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		6DFDD0DB247FFFB5009F382A /* MainScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScreen.swift; sourceTree = "<group>"; };
 		6DFDD0DE247FFFB5009F382A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainPad.storyboard; sourceTree = "<group>"; };
 		6DFDD0E0247FFFB6009F382A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		6DFDD0E3247FFFB6009F382A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -43,6 +47,33 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6DF9826424844D1C005C9BB2 /* Framework */ = {
+			isa = PBXGroup;
+			children = (
+				6DFDD0EB24800003009F382A /* LocationPointAnnotation.swift */,
+				6DF9826624844D4A005C9BB2 /* Telemetry.swift */,
+			);
+			path = Framework;
+			sourceTree = "<group>";
+		};
+		6DF9826824845449005C9BB2 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				6DF9826A24845512005C9BB2 /* MainScreen+Extensions.swift */,
+				6DFDD0DB247FFFB5009F382A /* MainScreen.swift */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		6DF982692484545F005C9BB2 /* Storyboards */ = {
+			isa = PBXGroup;
+			children = (
+				6DFDD0DD247FFFB5009F382A /* MainPad.storyboard */,
+				6DD37D55248119980038C9DB /* MainPhone.storyboard */,
+			);
+			path = Storyboards;
+			sourceTree = "<group>";
+		};
 		6DFDD0CB247FFFB5009F382A = {
 			isa = PBXGroup;
 			children = (
@@ -62,11 +93,10 @@
 		6DFDD0D6247FFFB5009F382A /* iNavTelemetry */ = {
 			isa = PBXGroup;
 			children = (
-				6DFDD0EB24800003009F382A /* LocationPointAnnotation.swift */,
-				6DFDD0DB247FFFB5009F382A /* ViewController.swift */,
+				6DF9826424844D1C005C9BB2 /* Framework */,
+				6DF982692484545F005C9BB2 /* Storyboards */,
+				6DF9826824845449005C9BB2 /* Screens */,
 				6DFDD0D7247FFFB5009F382A /* AppDelegate.swift */,
-				6DFDD0DD247FFFB5009F382A /* MainPad.storyboard */,
-				6DD37D55248119980038C9DB /* MainPhone.storyboard */,
 				6DFDD0E0247FFFB6009F382A /* Assets.xcassets */,
 				6DFDD0E2247FFFB6009F382A /* LaunchScreen.storyboard */,
 				6DFDD0E5247FFFB6009F382A /* Info.plist */,
@@ -154,8 +184,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6DFDD0DC247FFFB5009F382A /* ViewController.swift in Sources */,
+				6DFDD0DC247FFFB5009F382A /* MainScreen.swift in Sources */,
+				6DF9826724844D4A005C9BB2 /* Telemetry.swift in Sources */,
 				6DFDD0D8247FFFB5009F382A /* AppDelegate.swift in Sources */,
+				6DF9826B24845512005C9BB2 /* MainScreen+Extensions.swift in Sources */,
 				6DFDD0EC24800003009F382A /* LocationPointAnnotation.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
