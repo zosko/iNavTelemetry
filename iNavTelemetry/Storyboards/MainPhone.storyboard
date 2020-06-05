@@ -22,10 +22,10 @@
                                 </connections>
                             </mapView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xIH-LM-d0m">
-                                <rect key="frame" x="44" y="0.0" width="100" height="40"/>
+                                <rect key="frame" x="44" y="0.0" width="110" height="40"/>
                                 <color key="backgroundColor" white="1" alpha="0.5" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="100" id="CxH-FF-5T6"/>
+                                    <constraint firstAttribute="width" constant="110" id="CxH-FF-5T6"/>
                                     <constraint firstAttribute="height" constant="40" id="jyc-Uu-dQi"/>
                                 </constraints>
                                 <string key="text">Latitude
@@ -35,11 +35,11 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Hp4-hl-p9W">
-                                <rect key="frame" x="44" y="41" width="100" height="40"/>
+                                <rect key="frame" x="44" y="41" width="110" height="40"/>
                                 <color key="backgroundColor" white="1" alpha="0.5" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="hjY-Ec-xH4"/>
-                                    <constraint firstAttribute="width" constant="100" id="lTH-Mx-Okv"/>
+                                    <constraint firstAttribute="width" constant="110" id="lTH-Mx-Okv"/>
                                 </constraints>
                                 <string key="text">Longitude
 ~</string>
