@@ -36,7 +36,7 @@ class MainScreen: UIViewController {
     //MARK: - Variables
     var planeAnnotation : LocationPointAnnotation!
     var gsAnnotation : LocationPointAnnotation!
-    var telemetry = Telemetry()
+    var telemetry = SmartPort()
     var locationManager:CLLocationManager?
     var centralManager: CBCentralManager!
     var connectedPeripheral: CBPeripheral!
@@ -76,7 +76,7 @@ class MainScreen: UIViewController {
         gsAnnotation.imageName = "gs"
         mapPlane.addAnnotations([gsAnnotation,planeAnnotation])
     }
-    func getStabilization(telemetry: TelemetryStruct) -> String{
+    func getStabilization(telemetry: SmartPortStruct) -> String{
         let mode = telemetry.flight_mode / 10 % 10
         if mode == 2{
             return "horizon"
@@ -88,16 +88,14 @@ class MainScreen: UIViewController {
             return "manual"
         }
     }
-    func getArmed(telemetry: TelemetryStruct) -> String{
+    func getArmed(telemetry: SmartPortStruct) -> String{
         let mode = telemetry.flight_mode % 10
         if mode == 5{
             return "YES"
         }
         return "NO"
     }
-    func refreshTelemetry(telemetry: TelemetryStruct){
-        print(telemetry)
-        
+    func refreshTelemetry(telemetry: SmartPortStruct){
         lblLatitude.text = "Latitude\n \(telemetry.lat)"
         lblLongitude.text = "Longitude\n \(telemetry.lng)"
         lblSatellites.text = "Satellites\n \(telemetry.gps_sats)"

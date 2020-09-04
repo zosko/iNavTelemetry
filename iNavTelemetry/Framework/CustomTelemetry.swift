@@ -29,7 +29,7 @@ struct TelemetryStruct {
     }
 }
 
-class Telemetry : NSObject{
+class CustomTelemetry : NSObject{
     var rcv_buffer : [UInt8] = [UInt8](repeating: 0, count: 200)
     var buffer_index : Int = 0
     var found_header : Bool = false
