@@ -6,8 +6,8 @@ iNav telemetry for iOS (iPhone / iPad / soon MacOS with fpv video)
 # iPad
 ![iPad application](ipad.jpeg)
 
-# Signal Inverted used
-![Signal Inverter](inverter.jpeg)
+# Signal Inverter used
+![Signal Inverter](inverter.jpg)
 
 # Support Protocol
 - FrSky Smart Port 
