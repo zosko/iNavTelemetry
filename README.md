@@ -1,5 +1,5 @@
 # iNavTelemetry
-iNav telemetry for iOS
+iNav telemetry for iOS (iPhone / iPad)
 
 Support 
 - FrSky Smart Port 
