@@ -41,6 +41,7 @@ class MainScreen: UIViewController {
     var centralManager: CBCentralManager!
     var connectedPeripheral: CBPeripheral!
     var peripherals : [CBPeripheral] = []
+    var oldLocation : CLLocationCoordinate2D!
     
     //MARK: - IBActions
     @IBAction func onBtnConnect(_ sender: Any) {
@@ -61,6 +62,7 @@ class MainScreen: UIViewController {
     }
     @IBAction func onBtnSetHomePosition(_ sender: Any){
         gsAnnotation.coordinate = planeAnnotation.coordinate
+        oldLocation = gsAnnotation.coordinate
         let region = MKCoordinateRegion(center: gsAnnotation.coordinate, latitudinalMeters: 1000, longitudinalMeters: 1000)
         mapPlane.setRegion(region, animated: true)
     }
@@ -124,6 +126,10 @@ class MainScreen: UIViewController {
     func refreshLocation(latitude: Double, longitude: Double){
         let location = CLLocation(latitude: latitude, longitude: longitude)
         planeAnnotation.coordinate = location.coordinate
+        
+        let polyline = MKPolyline(coordinates: [oldLocation,planeAnnotation.coordinate], count: 2)
+        mapPlane.addOverlay(polyline)
+        oldLocation = planeAnnotation.coordinate
     }
     func stopSearchReader(){
         centralManager.stopScan()
@@ -158,7 +164,6 @@ class MainScreen: UIViewController {
         let overlay = MKTileOverlay(urlTemplate: urlTeplate)
         overlay.canReplaceMapContent = true
         mapPlane.addOverlay(overlay, level: .aboveLabels)
-        
     }
 }
 

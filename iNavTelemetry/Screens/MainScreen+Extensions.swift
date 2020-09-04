@@ -101,8 +101,14 @@ extension MainScreen : MKMapViewDelegate{
             let renderer = MKTileOverlayRenderer(overlay: overlay)
             return renderer
         } else {
-            return MKTileOverlayRenderer()
+            if let routePolyline = overlay as? MKPolyline {
+                let renderer = MKPolylineRenderer(polyline: routePolyline)
+                renderer.strokeColor = UIColor.red
+                renderer.lineWidth = 2
+                return renderer
+            }
         }
+        return MKTileOverlayRenderer()
     }
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         if !(annotation is LocationPointAnnotation) {
