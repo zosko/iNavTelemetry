@@ -127,7 +127,8 @@ class MainScreen: UIViewController {
         let location = CLLocation(latitude: latitude, longitude: longitude)
         planeAnnotation.coordinate = location.coordinate
         
-        let polyline = MKPolyline(coordinates: [oldLocation,planeAnnotation.coordinate], count: 2)
+        guard let tmpOldLocation = oldLocation else { return }
+        let polyline = MKPolyline(coordinates: [tmpOldLocation,planeAnnotation.coordinate], count: 2)
         mapPlane.addOverlay(polyline)
         oldLocation = planeAnnotation.coordinate
     }
@@ -160,10 +161,10 @@ class MainScreen: UIViewController {
         centralManager = CBCentralManager.init(delegate: self, queue: nil)
         addAnnotations()
         
-        let urlTeplate = "http://tile.openstreetmap.org/{z}/{x}/{y}.png"
-        let overlay = MKTileOverlay(urlTemplate: urlTeplate)
-        overlay.canReplaceMapContent = true
-        mapPlane.addOverlay(overlay, level: .aboveLabels)
+//        let urlTeplate = "http://tile.openstreetmap.org/{z}/{x}/{y}.png"
+//        let overlay = MKTileOverlay(urlTemplate: urlTeplate)
+//        overlay.canReplaceMapContent = true
+//        mapPlane.addOverlay(overlay, level: .aboveLabels)
     }
 }
 
