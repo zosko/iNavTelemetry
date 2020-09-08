@@ -173,7 +173,7 @@ class SmartPort: NSObject {
                         }
                         break
                     case CURRENT_SENSOR:
-                        packet.current = Int(Double(rawData) / 100.0)
+                        packet.current = Int(Double(rawData) / 10.0)
                         break
                     case HEADING_SENSOR:
                         packet.heading = Int(Double(rawData) / 100.0)
