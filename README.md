@@ -5,7 +5,7 @@ iNav telemetry for iOS (iPhone / iPad / MacOS)
 ![iPhone Application](iphone.jpeg)
 # iPad
 ![iPad application](ipad.jpeg)
-# iPad
+# MacOS
 ![MacOS application](osx.png)
 
 # Signal Inverter used
