@@ -6,7 +6,11 @@
 //  Copyright © 2020 Bosko Petreski. All rights reserved.
 //
 
-import UIKit
+#if os(OSX)
+    import Cocoa
+#else
+    import UIKit
+#endif
 
 struct SmartPortStruct {
     var lat = 0.0
@@ -70,6 +74,27 @@ class SmartPort: NSObject {
     var latitude : Double = 0.0
     var longitude : Double = 0.0
     var packet = SmartPortStruct()
+    
+    //MARK: Functions
+    func getStabilization() -> String{
+        let mode = packet.flight_mode / 10 % 10
+        if mode == 2{
+            return "horizon"
+        }
+        else if mode == 1 {
+            return "angle"
+        }
+        else{
+            return "manual"
+        }
+    }
+    func getArmed() -> String{
+        let mode = packet.flight_mode % 10
+        if mode == 5{
+            return "YES"
+        }
+        return "NO"
+    }
     
     //MARK: Helpers
     func buffer_get_int16(buffer: [UInt8], index : Int) -> UInt16{

@@ -9,6 +9,14 @@
 /* Begin PBXBuildFile section */
 		6D163DBD24FFCB6A000D2EA1 /* SmartPort.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D163DBC24FFCB6A000D2EA1 /* SmartPort.swift */; };
 		6DD37D56248119980038C9DB /* MainPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6DD37D55248119980038C9DB /* MainPhone.storyboard */; };
+		6DF4AB6B250829A700A513FD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DF4AB6A250829A700A513FD /* AppDelegate.swift */; };
+		6DF4AB6D250829A700A513FD /* MainApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DF4AB6C250829A700A513FD /* MainApp.swift */; };
+		6DF4AB6F250829A900A513FD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6DF4AB6E250829A900A513FD /* Assets.xcassets */; };
+		6DF4AB72250829A900A513FD /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6DF4AB70250829A900A513FD /* Main.storyboard */; };
+		6DF4AB8025082BDA00A513FD /* ORSSerial in Frameworks */ = {isa = PBXBuildFile; productRef = 6DF4AB7F25082BDA00A513FD /* ORSSerial */; };
+		6DF4AB8325082F0E00A513FD /* SmartPort.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D163DBC24FFCB6A000D2EA1 /* SmartPort.swift */; };
+		6DF4AB8425082F2800A513FD /* CustomTelemetry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DF9826624844D4A005C9BB2 /* CustomTelemetry.swift */; };
+		6DF4AB8525082FE100A513FD /* LocationPointAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DFDD0EB24800003009F382A /* LocationPointAnnotation.swift */; };
 		6DF9826724844D4A005C9BB2 /* CustomTelemetry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DF9826624844D4A005C9BB2 /* CustomTelemetry.swift */; };
 		6DF9826B24845512005C9BB2 /* MainScreen+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DF9826A24845512005C9BB2 /* MainScreen+Extensions.swift */; };
 		6DFDD0D8247FFFB5009F382A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DFDD0D7247FFFB5009F382A /* AppDelegate.swift */; };
@@ -24,6 +32,13 @@
 /* Begin PBXFileReference section */
 		6D163DBC24FFCB6A000D2EA1 /* SmartPort.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmartPort.swift; sourceTree = "<group>"; };
 		6DD37D55248119980038C9DB /* MainPhone.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = MainPhone.storyboard; sourceTree = "<group>"; };
+		6DF4AB68250829A700A513FD /* iNavTelemetryOSX.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iNavTelemetryOSX.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		6DF4AB6A250829A700A513FD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		6DF4AB6C250829A700A513FD /* MainApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainApp.swift; sourceTree = "<group>"; };
+		6DF4AB6E250829A900A513FD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		6DF4AB71250829A900A513FD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		6DF4AB73250829A900A513FD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		6DF4AB74250829A900A513FD /* iNavTelemetryOSX.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = iNavTelemetryOSX.entitlements; sourceTree = "<group>"; };
 		6DF9826624844D4A005C9BB2 /* CustomTelemetry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTelemetry.swift; sourceTree = "<group>"; };
 		6DF9826A24845512005C9BB2 /* MainScreen+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MainScreen+Extensions.swift"; sourceTree = "<group>"; };
 		6DFDD0D4247FFFB5009F382A /* iNavTelemetry.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iNavTelemetry.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -37,6 +52,14 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		6DF4AB65250829A700A513FD /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6DF4AB8025082BDA00A513FD /* ORSSerial in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		6DFDD0D1247FFFB5009F382A /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -49,6 +72,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6DF4AB69250829A700A513FD /* iNavTelemetryOSX */ = {
+			isa = PBXGroup;
+			children = (
+				6DF4AB6A250829A700A513FD /* AppDelegate.swift */,
+				6DF4AB6C250829A700A513FD /* MainApp.swift */,
+				6DF4AB6E250829A900A513FD /* Assets.xcassets */,
+				6DF4AB70250829A900A513FD /* Main.storyboard */,
+				6DF4AB73250829A900A513FD /* Info.plist */,
+				6DF4AB74250829A900A513FD /* iNavTelemetryOSX.entitlements */,
+			);
+			path = iNavTelemetryOSX;
+			sourceTree = "<group>";
+		};
 		6DF9826424844D1C005C9BB2 /* Framework */ = {
 			isa = PBXGroup;
 			children = (
@@ -81,6 +117,7 @@
 			isa = PBXGroup;
 			children = (
 				6DFDD0D6247FFFB5009F382A /* iNavTelemetry */,
+				6DF4AB69250829A700A513FD /* iNavTelemetryOSX */,
 				6DFDD0D5247FFFB5009F382A /* Products */,
 			);
 			sourceTree = "<group>";
@@ -89,6 +126,7 @@
 			isa = PBXGroup;
 			children = (
 				6DFDD0D4247FFFB5009F382A /* iNavTelemetry.app */,
+				6DF4AB68250829A700A513FD /* iNavTelemetryOSX.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -110,6 +148,26 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		6DF4AB67250829A700A513FD /* iNavTelemetryOSX */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6DF4AB77250829A900A513FD /* Build configuration list for PBXNativeTarget "iNavTelemetryOSX" */;
+			buildPhases = (
+				6DF4AB64250829A700A513FD /* Sources */,
+				6DF4AB65250829A700A513FD /* Frameworks */,
+				6DF4AB66250829A700A513FD /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = iNavTelemetryOSX;
+			packageProductDependencies = (
+				6DF4AB7F25082BDA00A513FD /* ORSSerial */,
+			);
+			productName = iNavTelemetryOSX;
+			productReference = 6DF4AB68250829A700A513FD /* iNavTelemetryOSX.app */;
+			productType = "com.apple.product-type.application";
+		};
 		6DFDD0D3247FFFB5009F382A /* iNavTelemetry */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 6DFDD0E8247FFFB6009F382A /* Build configuration list for PBXNativeTarget "iNavTelemetry" */;
@@ -137,10 +195,13 @@
 		6DFDD0CC247FFFB5009F382A /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1150;
+				LastSwiftUpdateCheck = 1160;
 				LastUpgradeCheck = 1150;
 				ORGANIZATIONNAME = "Bosko Petreski";
 				TargetAttributes = {
+					6DF4AB67250829A700A513FD = {
+						CreatedOnToolsVersion = 11.6;
+					};
 					6DFDD0D3247FFFB5009F382A = {
 						CreatedOnToolsVersion = 11.5;
 					};
@@ -158,17 +219,28 @@
 			packageReferences = (
 				6DFDD0ED2480066F009F382A /* XCRemoteSwiftPackageReference "MBProgressHUD" */,
 				6DFDD0F02480067D009F382A /* XCRemoteSwiftPackageReference "Toast-Swift" */,
+				6DF4AB7E25082BDA00A513FD /* XCRemoteSwiftPackageReference "ORSSerialPort" */,
 			);
 			productRefGroup = 6DFDD0D5247FFFB5009F382A /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
 				6DFDD0D3247FFFB5009F382A /* iNavTelemetry */,
+				6DF4AB67250829A700A513FD /* iNavTelemetryOSX */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		6DF4AB66250829A700A513FD /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6DF4AB6F250829A900A513FD /* Assets.xcassets in Resources */,
+				6DF4AB72250829A900A513FD /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		6DFDD0D2247FFFB5009F382A /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -183,6 +255,18 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		6DF4AB64250829A700A513FD /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6DF4AB8525082FE100A513FD /* LocationPointAnnotation.swift in Sources */,
+				6DF4AB6D250829A700A513FD /* MainApp.swift in Sources */,
+				6DF4AB8425082F2800A513FD /* CustomTelemetry.swift in Sources */,
+				6DF4AB8325082F0E00A513FD /* SmartPort.swift in Sources */,
+				6DF4AB6B250829A700A513FD /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		6DFDD0D0247FFFB5009F382A /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -199,6 +283,14 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
+		6DF4AB70250829A900A513FD /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				6DF4AB71250829A900A513FD /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
 		6DFDD0DD247FFFB5009F382A /* MainPad.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -218,6 +310,46 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		6DF4AB75250829A900A513FD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = iNavTelemetryOSX/iNavTelemetryOSX.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = iNavTelemetryOSX/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				PRODUCT_BUNDLE_IDENTIFIER = us.g6.testapp.app.iNavTelemetryOSX;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		6DF4AB76250829A900A513FD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = iNavTelemetryOSX/iNavTelemetryOSX.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = iNavTelemetryOSX/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				PRODUCT_BUNDLE_IDENTIFIER = us.g6.testapp.app.iNavTelemetryOSX;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
 		6DFDD0E6247FFFB6009F382A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -371,6 +503,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		6DF4AB77250829A900A513FD /* Build configuration list for PBXNativeTarget "iNavTelemetryOSX" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6DF4AB75250829A900A513FD /* Debug */,
+				6DF4AB76250829A900A513FD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		6DFDD0CF247FFFB5009F382A /* Build configuration list for PBXProject "iNavTelemetry" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -392,6 +533,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		6DF4AB7E25082BDA00A513FD /* XCRemoteSwiftPackageReference "ORSSerialPort" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/armadsen/ORSSerialPort.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.1.0;
+			};
+		};
 		6DFDD0ED2480066F009F382A /* XCRemoteSwiftPackageReference "MBProgressHUD" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/jdg/MBProgressHUD.git";
@@ -411,6 +560,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		6DF4AB7F25082BDA00A513FD /* ORSSerial */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6DF4AB7E25082BDA00A513FD /* XCRemoteSwiftPackageReference "ORSSerialPort" */;
+			productName = ORSSerial;
+		};
 		6DFDD0EE2480066F009F382A /* MBProgressHUD */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 6DFDD0ED2480066F009F382A /* XCRemoteSwiftPackageReference "MBProgressHUD" */;

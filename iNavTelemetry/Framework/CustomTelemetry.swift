@@ -6,7 +6,11 @@
 //  Copyright © 2020 Bosko Petreski. All rights reserved.
 //
 
-import UIKit
+#if os(OSX)
+    import Cocoa
+#else
+    import UIKit
+#endif
 
 struct TelemetryStruct {
     var lat = 0.0

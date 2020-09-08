@@ -78,42 +78,23 @@ class MainScreen: UIViewController {
         gsAnnotation.imageName = "gs"
         mapPlane.addAnnotations([gsAnnotation,planeAnnotation])
     }
-    func getStabilization(telemetry: SmartPortStruct) -> String{
-        let mode = telemetry.flight_mode / 10 % 10
-        if mode == 2{
-            return "horizon"
-        }
-        else if mode == 1 {
-            return "angle"
-        }
-        else{
-            return "manual"
-        }
-    }
-    func getArmed(telemetry: SmartPortStruct) -> String{
-        let mode = telemetry.flight_mode % 10
-        if mode == 5{
-            return "YES"
-        }
-        return "NO"
-    }
-    func refreshTelemetry(telemetry: SmartPortStruct){
-        lblLatitude.text = "Latitude\n \(telemetry.lat)"
-        lblLongitude.text = "Longitude\n \(telemetry.lng)"
-        lblSatellites.text = "Satellites\n \(telemetry.gps_sats)"
-        lblDistance.text = "Distance\n \(telemetry.distance) m"
-        lblAltitude.text = "Altitude\n \(telemetry.alt) m"
-        lblSpeed.text = "Speed\n \(telemetry.speed) km/h"
-        lblVoltage.text = "Voltage\n \(telemetry.voltage) V"
-        lblCurrent.text = "Current\n \(telemetry.current) Amp"
-        lblStabilization.text = "Flymode\n \(getStabilization(telemetry: telemetry))"
-        lblArmed.text = "Armed\n \(getArmed(telemetry: telemetry))"
-        lblSignalStrength.text = "Signal\n \(telemetry.rssi) %"
-        lblFuel.text = "Fuel\n \(telemetry.fuel) %"
+    func refreshTelemetry(packet: SmartPortStruct){
+        lblLatitude.text = "Latitude\n \(packet.lat)"
+        lblLongitude.text = "Longitude\n \(packet.lng)"
+        lblSatellites.text = "Satellites\n \(packet.gps_sats)"
+        lblDistance.text = "Distance\n \(packet.distance) m"
+        lblAltitude.text = "Altitude\n \(packet.alt) m"
+        lblSpeed.text = "Speed\n \(packet.speed) km/h"
+        lblVoltage.text = "Voltage\n \(packet.voltage) V"
+        lblCurrent.text = "Current\n \(packet.current) Amp"
+        lblStabilization.text = "Flymode\n \(telemetry.getStabilization())"
+        lblArmed.text = "Armed\n \(telemetry.getArmed())"
+        lblSignalStrength.text = "Signal\n \(packet.rssi) %"
+        lblFuel.text = "Fuel\n \(packet.fuel) %"
         
-        refreshLocation(latitude: telemetry.lat, longitude: telemetry.lng)
-        refreshCompass(degree: telemetry.heading)
-        refreshHorizon(pitch: -telemetry.pitch, roll: telemetry.roll)
+        refreshLocation(latitude: packet.lat, longitude: packet.lng)
+        refreshCompass(degree: packet.heading)
+        refreshHorizon(pitch: -packet.pitch, roll: packet.roll)
     }
     
     func refreshCompass(degree: Int){

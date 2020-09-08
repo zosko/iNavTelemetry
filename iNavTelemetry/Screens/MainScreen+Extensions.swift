@@ -71,7 +71,7 @@ extension MainScreen : CBCentralManagerDelegate,CBPeripheralDelegate{
             return
         }
         if telemetry.process_incoming_bytes(incomingData: characteristic.value!) {
-            refreshTelemetry(telemetry: telemetry.packet)
+            refreshTelemetry(packet: telemetry.packet)
         }
     }
     func peripheral(_ peripheral: CBPeripheral, didDiscoverServices error: Error?) {
