@@ -935,10 +935,10 @@
                                 </textFieldCell>
                             </textField>
                             <popUpButton verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="r2w-0c-S9m">
-                                <rect key="frame" x="276" y="4" width="249" height="25"/>
+                                <rect key="frame" x="8" y="77" width="205" height="25"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="21" id="nhy-Bx-Hbg"/>
-                                    <constraint firstAttribute="width" constant="244" id="oyC-L0-U2C"/>
+                                    <constraint firstAttribute="width" constant="200" id="oyC-L0-U2C"/>
                                 </constraints>
                                 <popUpButtonCell key="cell" type="push" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" id="My5-OD-8dv">
                                     <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
@@ -946,14 +946,31 @@
                                     <menu key="menu" id="F6a-rE-rUF"/>
                                 </popUpButtonCell>
                             </popUpButton>
+                            <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Gsy-9Z-mX6">
+                                <rect key="frame" x="334" y="7" width="330" height="274"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="f75-fG-QUw">
+                                        <rect key="frame" x="165" y="-2" width="168" height="25"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
+                                        <popUpButtonCell key="cell" type="push" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" id="APY-iT-15b">
+                                            <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                                            <font key="font" metaFont="system"/>
+                                            <menu key="menu" id="pNB-DA-YOt"/>
+                                        </popUpButtonCell>
+                                        <connections>
+                                            <action selector="onVideoChoose:" target="yZ5-PP-dWB" id="uRX-Oz-W4x"/>
+                                        </connections>
+                                    </popUpButton>
+                                </subviews>
+                            </customView>
                         </subviews>
                         <constraints>
                             <constraint firstItem="saS-o7-peS" firstAttribute="leading" secondItem="sYW-SW-Dhi" secondAttribute="trailing" constant="2" id="0UB-qX-Vru"/>
                             <constraint firstItem="sYW-SW-Dhi" firstAttribute="leading" secondItem="ea5-23-3Mv" secondAttribute="trailing" constant="8" id="2dd-WJ-Lkb"/>
                             <constraint firstAttribute="trailing" secondItem="FOF-eJ-Y5V" secondAttribute="trailing" id="6f8-Tc-3nn"/>
                             <constraint firstItem="6Ps-Ak-v5b" firstAttribute="top" secondItem="T9l-7J-Uqm" secondAttribute="bottom" constant="1" id="765-mR-Bn3"/>
-                            <constraint firstAttribute="bottom" secondItem="r2w-0c-S9m" secondAttribute="bottom" constant="7" id="9VP-J5-Fh6"/>
-                            <constraint firstItem="r2w-0c-S9m" firstAttribute="leading" secondItem="saS-o7-peS" secondAttribute="trailing" constant="8" id="J1Y-dv-TWJ"/>
+                            <constraint firstItem="saS-o7-peS" firstAttribute="top" secondItem="r2w-0c-S9m" secondAttribute="bottom" constant="9" id="DwT-8r-aYs"/>
                             <constraint firstAttribute="trailing" secondItem="Zlt-qs-YlW" secondAttribute="trailing" id="L9p-jA-WVo"/>
                             <constraint firstItem="Q0f-K6-NDk" firstAttribute="leading" secondItem="FPQ-hh-e5m" secondAttribute="leading" id="NgL-ln-h31"/>
                             <constraint firstItem="GNI-J1-HX9" firstAttribute="leading" secondItem="FPQ-hh-e5m" secondAttribute="leading" id="NiT-Ei-OyA"/>
@@ -980,6 +997,7 @@
                             <constraint firstAttribute="bottom" secondItem="saS-o7-peS" secondAttribute="bottom" id="v47-2L-nu8"/>
                             <constraint firstAttribute="trailing" secondItem="eRO-5m-VUg" secondAttribute="trailing" id="wog-fJ-xOS"/>
                             <constraint firstItem="ea5-23-3Mv" firstAttribute="leading" secondItem="FPQ-hh-e5m" secondAttribute="leading" id="wxA-VW-zAs"/>
+                            <constraint firstItem="r2w-0c-S9m" firstAttribute="leading" secondItem="FPQ-hh-e5m" secondAttribute="leading" constant="10" id="xGc-fI-mKx"/>
                             <constraint firstItem="Zlt-qs-YlW" firstAttribute="top" secondItem="FPQ-hh-e5m" secondAttribute="top" id="y74-uK-gEt"/>
                             <constraint firstItem="OG1-b0-Sed" firstAttribute="leading" secondItem="FPQ-hh-e5m" secondAttribute="leading" id="zhD-Ul-9jt"/>
                         </constraints>
@@ -1002,6 +1020,8 @@
                         <outlet property="lblVoltage" destination="ea5-23-3Mv" id="Wcj-R0-Dt3"/>
                         <outlet property="mapPlane" destination="Q0f-K6-NDk" id="XBS-Tw-c7h"/>
                         <outlet property="popupPorts" destination="r2w-0c-S9m" id="gUi-MY-dDO"/>
+                        <outlet property="popupVideoInput" destination="f75-fG-QUw" id="e7N-LX-Y3g"/>
+                        <outlet property="viewCockpit" destination="Gsy-9Z-mX6" id="p4r-z6-tJz"/>
                     </connections>
                 </viewController>
                 <customObject id="VvO-z8-cSq" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>

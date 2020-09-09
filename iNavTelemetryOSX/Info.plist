@@ -16,6 +16,8 @@
 	<string>iNavTelemetry</string>
 	<key>CFBundlePackageType</key>
 	<string>$(PRODUCT_BUNDLE_PACKAGE_TYPE)</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Will be used for capture video</string>
 	<key>CFBundleShortVersionString</key>
 	<string>1.0</string>
 	<key>CFBundleVersion</key>

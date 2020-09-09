@@ -9,11 +9,13 @@
 import Cocoa
 import ORSSerial
 import MapKit
+import AVFoundation
 
 class MainApp: NSViewController,ORSSerialPortDelegate,MKMapViewDelegate {
     
     // MARK: IBOutlets
     @IBOutlet var popupPorts : NSPopUpButton!
+    @IBOutlet var popupVideoInput : NSPopUpButton!
     @IBOutlet var mapPlane : MKMapView!
     @IBOutlet var btnConnect : NSButton!
     @IBOutlet var lblLatitude: NSTextField!
@@ -30,8 +32,11 @@ class MainApp: NSViewController,ORSSerialPortDelegate,MKMapViewDelegate {
     @IBOutlet var lblFuel: NSTextField!
     @IBOutlet var imgCompass: NSImageView!
     @IBOutlet var imgHorizont: NSImageView!
+    @IBOutlet var viewCockpit: NSView?
     
     //MARK: - Variables
+    let videoDevices = AVCaptureDevice.DiscoverySession(deviceTypes: [.externalUnknown], mediaType: .video, position: .unspecified).devices
+    let session: AVCaptureSession = AVCaptureSession()
     var planeAnnotation : LocationPointAnnotation!
     var gsAnnotation : LocationPointAnnotation!
     let serialPortManager = ORSSerialPortManager.shared()
@@ -56,6 +61,23 @@ class MainApp: NSViewController,ORSSerialPortDelegate,MKMapViewDelegate {
         oldLocation = gsAnnotation.coordinate
         let region = MKCoordinateRegion(center: gsAnnotation.coordinate, latitudinalMeters: 1000, longitudinalMeters: 1000)
         mapPlane.setRegion(region, animated: true)
+    }
+    @IBAction func onVideoChoose(_ sender: NSPopUpButton){
+        let device = videoDevices[popupVideoInput.indexOfSelectedItem]
+        let input = try! AVCaptureDeviceInput(device: device)
+
+        if session.canAddInput(input) {
+            session.addInput(input)
+        }
+        
+        viewCockpit?.wantsLayer = true
+        session.sessionPreset = AVCaptureSession.Preset.low
+        let previewLayer: AVCaptureVideoPreviewLayer = AVCaptureVideoPreviewLayer(session: session)
+        previewLayer.frame = viewCockpit!.bounds
+        previewLayer.videoGravity = AVLayerVideoGravity.resizeAspectFill
+        viewCockpit?.layer?.addSublayer(previewLayer)
+        session.startRunning()
+        popupVideoInput.isHidden = true
     }
     
     //MARK: - CustomFunctions
@@ -110,10 +132,11 @@ class MainApp: NSViewController,ORSSerialPortDelegate,MKMapViewDelegate {
     
     // MARK: - ORSSerialPortDelegate
     func serialPortWasOpened(_ serialPort: ORSSerialPort) {
-        btnConnect.image = NSImage(named: "power_off")
+        btnConnect.image = NSImage(named: "power_on")
+        popupPorts.isHidden = true
     }
     func serialPortWasClosed(_ serialPort: ORSSerialPort) {
-        btnConnect.image = NSImage(named: "power_on")
+        btnConnect.image = NSImage(named: "power_off")
     }
     func serialPort(_ serialPort: ORSSerialPort, didReceive data: Data) {
         if telemetry.process_incoming_bytes(incomingData: data) {
@@ -177,6 +200,10 @@ class MainApp: NSViewController,ORSSerialPortDelegate,MKMapViewDelegate {
         let availablePorts = serialPortManager.availablePorts
         for port in availablePorts {
             popupPorts.addItem(withTitle: port.name)
+        }
+        
+        for device in videoDevices {
+            self.popupVideoInput.addItem(withTitle: device.localizedName)
         }
     }
     
