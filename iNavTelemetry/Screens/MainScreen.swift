@@ -61,6 +61,9 @@ class MainScreen: UIViewController {
         }
     }
     @IBAction func onBtnSetHomePosition(_ sender: Any){
+        if oldLocation == nil {
+            return
+        }
         gsAnnotation.coordinate = planeAnnotation.coordinate
         oldLocation = gsAnnotation.coordinate
         let region = MKCoordinateRegion(center: gsAnnotation.coordinate, latitudinalMeters: 1000, longitudinalMeters: 1000)
