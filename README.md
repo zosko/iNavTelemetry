@@ -1,6 +1,9 @@
 # iNavTelemetry
 iNav telemetry for iOS (iPhone / iPad / MacOS)
 
+# Video presentation
+[![Video presentation](http://img.youtube.com/vi/9Z63v9UPBO4/0.jpg)](http://www.youtube.com/watch?v=9Z63v9UPBO4 "Testing")
+
 # iPhone
 ![iPhone Application](iphone.jpg)
 # iPad
