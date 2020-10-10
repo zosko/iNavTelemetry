@@ -13,7 +13,7 @@ iNav telemetry for iOS (iPhone / iPad / MacOS / Safari Viewer)
 ![iPad application](ipad.jpg)
 # MacOS
 ![MacOS application](osx.jpg)
-# Browser Viewer
+# Browser Viewer - watch online pilots on browser
 ![Browser](browser.jpg)
 
 # Signal Inverter used
