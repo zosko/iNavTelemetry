@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		6D163DBD24FFCB6A000D2EA1 /* SmartPort.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D163DBC24FFCB6A000D2EA1 /* SmartPort.swift */; };
+		6D7DAD632530BF9500352704 /* SocketIO in Frameworks */ = {isa = PBXBuildFile; productRef = 6D7DAD622530BF9500352704 /* SocketIO */; };
+		6DD22949252E60E60081E089 /* SocketIO in Frameworks */ = {isa = PBXBuildFile; productRef = 6DD22948252E60E60081E089 /* SocketIO */; };
+		6DD2294D252E618A0081E089 /* SocketComunicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DD2294C252E618A0081E089 /* SocketComunicator.swift */; };
+		6DD2294E252E618A0081E089 /* SocketComunicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DD2294C252E618A0081E089 /* SocketComunicator.swift */; };
 		6DD37D56248119980038C9DB /* MainPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6DD37D55248119980038C9DB /* MainPhone.storyboard */; };
 		6DF4AB6B250829A700A513FD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DF4AB6A250829A700A513FD /* AppDelegate.swift */; };
 		6DF4AB6D250829A700A513FD /* MainApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DF4AB6C250829A700A513FD /* MainApp.swift */; };
@@ -31,6 +35,7 @@
 
 /* Begin PBXFileReference section */
 		6D163DBC24FFCB6A000D2EA1 /* SmartPort.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmartPort.swift; sourceTree = "<group>"; };
+		6DD2294C252E618A0081E089 /* SocketComunicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocketComunicator.swift; sourceTree = "<group>"; };
 		6DD37D55248119980038C9DB /* MainPhone.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = MainPhone.storyboard; sourceTree = "<group>"; };
 		6DF4AB68250829A700A513FD /* iNavTelemetryOSX.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iNavTelemetryOSX.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6DF4AB6A250829A700A513FD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -57,6 +62,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6DF4AB8025082BDA00A513FD /* ORSSerial in Frameworks */,
+				6D7DAD632530BF9500352704 /* SocketIO in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -66,12 +72,20 @@
 			files = (
 				6DFDD0F22480067D009F382A /* Toast in Frameworks */,
 				6DFDD0EF2480066F009F382A /* MBProgressHUD in Frameworks */,
+				6DD22949252E60E60081E089 /* SocketIO in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6D7DAD612530BF9500352704 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		6DF4AB69250829A700A513FD /* iNavTelemetryOSX */ = {
 			isa = PBXGroup;
 			children = (
@@ -91,6 +105,7 @@
 				6DFDD0EB24800003009F382A /* LocationPointAnnotation.swift */,
 				6DF9826624844D4A005C9BB2 /* CustomTelemetry.swift */,
 				6D163DBC24FFCB6A000D2EA1 /* SmartPort.swift */,
+				6DD2294C252E618A0081E089 /* SocketComunicator.swift */,
 			);
 			path = Framework;
 			sourceTree = "<group>";
@@ -119,6 +134,7 @@
 				6DFDD0D6247FFFB5009F382A /* iNavTelemetry */,
 				6DF4AB69250829A700A513FD /* iNavTelemetryOSX */,
 				6DFDD0D5247FFFB5009F382A /* Products */,
+				6D7DAD612530BF9500352704 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -163,6 +179,7 @@
 			name = iNavTelemetryOSX;
 			packageProductDependencies = (
 				6DF4AB7F25082BDA00A513FD /* ORSSerial */,
+				6D7DAD622530BF9500352704 /* SocketIO */,
 			);
 			productName = iNavTelemetryOSX;
 			productReference = 6DF4AB68250829A700A513FD /* iNavTelemetryOSX.app */;
@@ -184,6 +201,7 @@
 			packageProductDependencies = (
 				6DFDD0EE2480066F009F382A /* MBProgressHUD */,
 				6DFDD0F12480067D009F382A /* Toast */,
+				6DD22948252E60E60081E089 /* SocketIO */,
 			);
 			productName = iNavTelemetry;
 			productReference = 6DFDD0D4247FFFB5009F382A /* iNavTelemetry.app */;
@@ -196,7 +214,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1160;
-				LastUpgradeCheck = 1160;
+				LastUpgradeCheck = 1200;
 				ORGANIZATIONNAME = "Bosko Petreski";
 				TargetAttributes = {
 					6DF4AB67250829A700A513FD = {
@@ -220,6 +238,7 @@
 				6DFDD0ED2480066F009F382A /* XCRemoteSwiftPackageReference "MBProgressHUD" */,
 				6DFDD0F02480067D009F382A /* XCRemoteSwiftPackageReference "Toast-Swift" */,
 				6DF4AB7E25082BDA00A513FD /* XCRemoteSwiftPackageReference "ORSSerialPort" */,
+				6DD22947252E60E60081E089 /* XCRemoteSwiftPackageReference "socket" */,
 			);
 			productRefGroup = 6DFDD0D5247FFFB5009F382A /* Products */;
 			projectDirPath = "";
@@ -264,6 +283,7 @@
 				6DF4AB8425082F2800A513FD /* CustomTelemetry.swift in Sources */,
 				6DF4AB8325082F0E00A513FD /* SmartPort.swift in Sources */,
 				6DF4AB6B250829A700A513FD /* AppDelegate.swift in Sources */,
+				6DD2294E252E618A0081E089 /* SocketComunicator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -277,6 +297,7 @@
 				6DFDD0D8247FFFB5009F382A /* AppDelegate.swift in Sources */,
 				6DF9826B24845512005C9BB2 /* MainScreen+Extensions.swift in Sources */,
 				6DFDD0EC24800003009F382A /* LocationPointAnnotation.swift in Sources */,
+				6DD2294D252E618A0081E089 /* SocketComunicator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -315,6 +336,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = iNavTelemetryOSX/iNavTelemetryOSX.entitlements;
+				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = iNavTelemetryOSX/Info.plist;
@@ -335,6 +357,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = iNavTelemetryOSX/iNavTelemetryOSX.entitlements;
+				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = iNavTelemetryOSX/Info.plist;
@@ -376,6 +399,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -436,6 +460,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -533,6 +558,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		6DD22947252E60E60081E089 /* XCRemoteSwiftPackageReference "socket" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/socketio/socket.io-client-swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 15.2.0;
+			};
+		};
 		6DF4AB7E25082BDA00A513FD /* XCRemoteSwiftPackageReference "ORSSerialPort" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/armadsen/ORSSerialPort.git";
@@ -560,6 +593,16 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		6D7DAD622530BF9500352704 /* SocketIO */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6DD22947252E60E60081E089 /* XCRemoteSwiftPackageReference "socket" */;
+			productName = SocketIO;
+		};
+		6DD22948252E60E60081E089 /* SocketIO */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6DD22947252E60E60081E089 /* XCRemoteSwiftPackageReference "socket" */;
+			productName = SocketIO;
+		};
 		6DF4AB7F25082BDA00A513FD /* ORSSerial */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 6DF4AB7E25082BDA00A513FD /* XCRemoteSwiftPackageReference "ORSSerialPort" */;

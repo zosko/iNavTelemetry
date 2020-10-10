@@ -8,7 +8,6 @@
 
 import UIKit
 import MBProgressHUD
-import Toast
 import MapKit
 import CoreBluetooth
 
@@ -71,6 +70,11 @@ class MainScreen: UIViewController {
     }
     
     //MARK: - CustomFunctions
+    func addSocketListeners(){
+        SocketComunicator.shared.planesLocation { (data) in
+            print(data)
+        }
+    }
     func addAnnotations(){
         planeAnnotation = LocationPointAnnotation()
         planeAnnotation.title = "Plane"
@@ -108,6 +112,7 @@ class MainScreen: UIViewController {
         imgHorizontLine.frame.origin.y = CGFloat(pitch)
     }
     func refreshLocation(latitude: Double, longitude: Double){
+        SocketComunicator.shared.sendPlaneLocation(lat: latitude, lng: longitude)
         let location = CLLocation(latitude: latitude, longitude: longitude)
         planeAnnotation.coordinate = location.coordinate
         
@@ -144,6 +149,8 @@ class MainScreen: UIViewController {
         
         centralManager = CBCentralManager.init(delegate: self, queue: nil)
         addAnnotations()
+        addSocketListeners()
+        
         
 //        let urlTeplate = "http://tile.openstreetmap.org/{z}/{x}/{y}.png"
 //        let overlay = MKTileOverlay(urlTemplate: urlTeplate)

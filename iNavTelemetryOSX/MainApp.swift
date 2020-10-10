@@ -57,6 +57,10 @@ class MainApp: NSViewController,ORSSerialPortDelegate,MKMapViewDelegate {
         }
     }
     @IBAction func onBtnSetHomePosition(_ sender: Any){
+        if oldLocation == nil {
+            return
+        }
+        SocketComunicator.shared.sendRegister()
         gsAnnotation.coordinate = planeAnnotation.coordinate
         oldLocation = gsAnnotation.coordinate
         let region = MKCoordinateRegion(center: gsAnnotation.coordinate, latitudinalMeters: 1000, longitudinalMeters: 1000)
@@ -81,6 +85,11 @@ class MainApp: NSViewController,ORSSerialPortDelegate,MKMapViewDelegate {
     }
     
     //MARK: - CustomFunctions
+    func addSocketListeners(){
+        SocketComunicator.shared.planesLocation { (data) in
+            print(data)
+        }
+    }
     func addAnnotations(){
         planeAnnotation = LocationPointAnnotation()
         planeAnnotation.title = "Plane"
@@ -121,6 +130,7 @@ class MainApp: NSViewController,ORSSerialPortDelegate,MKMapViewDelegate {
         }
     }
     func refreshLocation(latitude: Double, longitude: Double){
+        SocketComunicator.shared.sendPlaneLocation(lat: latitude, lng: longitude)
         let location = CLLocation(latitude: latitude, longitude: longitude)
         planeAnnotation.coordinate = location.coordinate
         
