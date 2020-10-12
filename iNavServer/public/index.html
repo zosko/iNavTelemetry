@@ -2,15 +2,14 @@
   <head>
     <title> iNav Viewer </title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <script src="/socket.io/socket.io.js"></script>
-    
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/openlayers/2.11/lib/OpenLayers.js"></script> 
   </head>
   <body>
     <div id="mapdiv"></div>
+    <div id="information" style="background: #eeeeee; opacity: .7; font-size:20px; padding: 10px; position: fixed; top:0; right:0; z-index:1000;">Test setst</div>
+
     <script>
       $(document).ready(function(){
         var socket = io.connect();
@@ -20,6 +19,7 @@
         });
         socket.on('connect', function(){
           console.log('Connected');
+          //socket.emit('hello', "hello from browser");
         });
       })
       map = new OpenLayers.Map("mapdiv");
@@ -28,19 +28,33 @@
       epsg4326 =  new OpenLayers.Projection("EPSG:4326");
       projectTo = map.getProjectionObject();
       var vectorLayer = new OpenLayers.Layer.Vector("Overlay");
+      var controls = { selector: new OpenLayers.Control.SelectFeature(vectorLayer, { onSelect: createPopup })};
       var lonLat = new OpenLayers.LonLat( 21.432546,41.995788 ).transform(epsg4326, projectTo);
       var zoom = 14;
-      var style = { strokeColor: "#00FF00", strokeWidth: 3, pointRadius: 6 };
+      var style = {
+                strokeColor: "#00FF00",
+                strokeWidth: 3,
+                pointRadius: 6,
+      };
       map.setCenter (lonLat, zoom);
-    
+      map.addControl(controls['selector']);
+      controls['selector'].activate();
+      
+      function createPopup(feature) {
+        $("#information").html(feature.attributes.description);
+      }
       function removePins(){
         vectorLayer.destroyFeatures();
       }
       function addPins(planes){
         console.log(planes);
         for(var i in planes) {
+          var info = "[Location] " + planes[i].lat + ", " + planes[i].lng + "<br>";
+          info = info + "[Altitude] " + planes[i].alt + " m<br>";
+          info = info + "[Speed] " + planes[i].speed + " km/h<br>";
+          info = info + "[Heading] " + planes[i].heading + " deg<br>";
           var ol = new OpenLayers.Geometry.Point(planes[i].lng,planes[i].lat).transform(epsg4326, projectTo);
-          var feature = new OpenLayers.Feature.Vector(ol,null,style);
+          var feature = new OpenLayers.Feature.Vector(ol,{description: info},style);
           vectorLayer.addFeatures(feature);        
           map.addLayer(vectorLayer);
         }
@@ -48,4 +62,5 @@
       </script>
     </body>
   </html>
+
 
