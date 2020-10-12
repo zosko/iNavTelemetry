@@ -23,10 +23,11 @@ io.sockets.on("connection", function(socket) {
   // socket.roomnum
   
   socket.on("planeLocation", function(plane) {
-    database[socket.id] = {lat:plane.lat,lng:plane.lng};
+    database[socket.id] = {lat:plane.lat,lng:plane.lng,alt:plane.alt,speed:plane.speed,heading:plane.heading};
   });
   socket.on("disconnect", function() {
     //remove plane from database
     delete database[socket.id];
   });
 });
+
