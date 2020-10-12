@@ -102,6 +102,8 @@ class MainScreen: UIViewController {
         refreshLocation(latitude: packet.lat, longitude: packet.lng)
         refreshCompass(degree: packet.heading)
         refreshHorizon(pitch: -packet.pitch, roll: packet.roll)
+        
+        SocketComunicator.shared.sendPlaneData(packet: packet)
     }
     
     func refreshCompass(degree: Int){
@@ -112,7 +114,6 @@ class MainScreen: UIViewController {
         imgHorizontLine.frame.origin.y = CGFloat(pitch)
     }
     func refreshLocation(latitude: Double, longitude: Double){
-        SocketComunicator.shared.sendPlaneLocation(lat: latitude, lng: longitude)
         let location = CLLocation(latitude: latitude, longitude: longitude)
         planeAnnotation.coordinate = location.coordinate
         

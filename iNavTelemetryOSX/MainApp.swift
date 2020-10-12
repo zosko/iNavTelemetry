@@ -60,7 +60,6 @@ class MainApp: NSViewController,ORSSerialPortDelegate,MKMapViewDelegate {
         if oldLocation == nil {
             return
         }
-        SocketComunicator.shared.sendRegister()
         gsAnnotation.coordinate = planeAnnotation.coordinate
         oldLocation = gsAnnotation.coordinate
         let region = MKCoordinateRegion(center: gsAnnotation.coordinate, latitudinalMeters: 1000, longitudinalMeters: 1000)
@@ -101,6 +100,8 @@ class MainApp: NSViewController,ORSSerialPortDelegate,MKMapViewDelegate {
         mapPlane.addAnnotations([gsAnnotation,planeAnnotation])
     }
     func refreshTelemetry(packet: SmartPortStruct){
+        SocketComunicator.shared.sendPlaneData(packet: packet)
+        
         lblLatitude.stringValue = "Latitude\n \(packet.lat)"
         lblLongitude.stringValue = "Longitude\n \(packet.lng)"
         lblSatellites.stringValue = "Satellites\n \(packet.gps_sats)"
@@ -130,7 +131,6 @@ class MainApp: NSViewController,ORSSerialPortDelegate,MKMapViewDelegate {
         }
     }
     func refreshLocation(latitude: Double, longitude: Double){
-        SocketComunicator.shared.sendPlaneLocation(lat: latitude, lng: longitude)
         let location = CLLocation(latitude: latitude, longitude: longitude)
         planeAnnotation.coordinate = location.coordinate
         
