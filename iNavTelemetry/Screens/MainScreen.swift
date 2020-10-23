@@ -31,6 +31,7 @@ class MainScreen: UIViewController {
     @IBOutlet var imgCompass: UIImageView!
     @IBOutlet var imgHorizontPlane: UIImageView!
     @IBOutlet var imgHorizontLine: UIImageView!
+    @IBOutlet var switchLive: UISwitch!
     
     //MARK: - Variables
     var planeAnnotation : LocationPointAnnotation!
@@ -72,13 +73,28 @@ class MainScreen: UIViewController {
     //MARK: - CustomFunctions
     func addSocketListeners(){
         SocketComunicator.shared.planesLocation { (data) in
-            print(data)
+            let annotations = self.mapPlane.annotations as! [LocationPointAnnotation]
+            let annotationsToRemove = annotations.filter { $0.imageName == "other_plane" }
+            self.mapPlane.removeAnnotations(annotationsToRemove)
+            
+            for (key,planeData) in data {
+                let object = planeData as! [String:Any]
+                let lat = CLLocationDegrees(object["lat"] as! Double)
+                let lng = CLLocationDegrees(object["lng"] as! Double)
+                
+                let location = CLLocation(latitude: lat, longitude: lng)
+                let otherPlane = LocationPointAnnotation()
+                otherPlane.title = key
+                otherPlane.imageName = "other_plane"
+                otherPlane.coordinate = location.coordinate
+                self.mapPlane.addAnnotation(otherPlane)
+            }
         }
     }
     func addAnnotations(){
         planeAnnotation = LocationPointAnnotation()
-        planeAnnotation.title = "Plane"
-        planeAnnotation.imageName = "plane"
+        planeAnnotation.title = "My Plane"
+        planeAnnotation.imageName = "my_plane"
         
         gsAnnotation = LocationPointAnnotation()
         gsAnnotation.title = "Ground Station"
@@ -103,7 +119,9 @@ class MainScreen: UIViewController {
         refreshCompass(degree: packet.heading)
         refreshHorizon(pitch: -packet.pitch, roll: packet.roll)
         
-        SocketComunicator.shared.sendPlaneData(packet: packet)
+        if switchLive.isOn {
+            SocketComunicator.shared.sendPlaneData(packet: packet)
+        }
     }
     
     func refreshCompass(degree: Int){

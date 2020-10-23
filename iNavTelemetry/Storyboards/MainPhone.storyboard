@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="MXy-Zy-8AG">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="MXy-Zy-8AG">
     <device id="retina6_1" orientation="landscape" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17125"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -245,11 +247,32 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" title="LIVE" translatesAutoresizingMaskIntoConstraints="NO" id="jq7-6N-jUW">
+                                <rect key="frame" x="839" y="258" width="49" height="31"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="47" id="xwM-oX-Vd9"/>
+                                    <constraint firstAttribute="height" constant="31" id="yfd-1N-GlF"/>
+                                </constraints>
+                            </switch>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="LIVE" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KtZ-Ac-dTx">
+                                <rect key="frame" x="789" y="258.5" width="50" height="30"/>
+                                <color key="backgroundColor" white="1" alpha="0.5" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="50" id="Gj5-GD-RiX"/>
+                                    <constraint firstAttribute="height" constant="30" id="OR5-W6-EPt"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <viewLayoutGuide key="safeArea" id="RgM-JB-72g"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
+                            <constraint firstItem="jq7-6N-jUW" firstAttribute="leading" secondItem="KtZ-Ac-dTx" secondAttribute="trailing" id="0iH-mo-Wqb"/>
                             <constraint firstItem="0NW-Yc-fsA" firstAttribute="leading" secondItem="RgM-JB-72g" secondAttribute="leading" id="1Vo-Ok-a12"/>
                             <constraint firstAttribute="trailing" secondItem="CqW-pj-MUO" secondAttribute="trailing" id="1fc-3i-Ptf"/>
+                            <constraint firstItem="wHc-RW-Dol" firstAttribute="top" secondItem="jq7-6N-jUW" secondAttribute="bottom" constant="5" id="36d-MB-eYe"/>
                             <constraint firstAttribute="trailing" secondItem="9yf-ZG-nXx" secondAttribute="trailing" id="43H-xA-A13"/>
                             <constraint firstItem="9yf-ZG-nXx" firstAttribute="leading" secondItem="xbz-KI-NPc" secondAttribute="leading" id="5Fa-7a-hJA"/>
                             <constraint firstAttribute="trailing" secondItem="Y1t-M8-mVs" secondAttribute="trailing" id="6nI-Ld-55h"/>
@@ -265,6 +288,8 @@
                             <constraint firstItem="MeL-qK-nEV" firstAttribute="leading" secondItem="itk-xC-YTO" secondAttribute="trailing" constant="1" id="Qkk-kD-rXg"/>
                             <constraint firstItem="Nb4-uz-vz3" firstAttribute="top" secondItem="tgA-ED-kcO" secondAttribute="bottom" constant="1" id="TC0-nU-ZHs"/>
                             <constraint firstItem="0NW-Yc-fsA" firstAttribute="top" secondItem="Hp4-hl-p9W" secondAttribute="bottom" constant="1" id="VEs-4J-KiX"/>
+                            <constraint firstItem="KtZ-Ac-dTx" firstAttribute="centerY" secondItem="jq7-6N-jUW" secondAttribute="centerY" id="Vxt-B7-g59"/>
+                            <constraint firstAttribute="trailing" secondItem="jq7-6N-jUW" secondAttribute="trailing" constant="10" id="Wp2-zE-ULZ"/>
                             <constraint firstAttribute="bottom" secondItem="9yf-ZG-nXx" secondAttribute="bottom" id="WqR-oY-IYq"/>
                             <constraint firstItem="rd9-7t-SxI" firstAttribute="top" secondItem="Y1t-M8-mVs" secondAttribute="bottom" constant="1" id="Xn1-4J-DPf"/>
                             <constraint firstItem="tgA-ED-kcO" firstAttribute="top" secondItem="0NW-Yc-fsA" secondAttribute="bottom" constant="1" id="ZvC-U6-MeU"/>
@@ -285,7 +310,6 @@
                             <constraint firstItem="scZ-LK-3Vh" firstAttribute="top" secondItem="itk-xC-YTO" secondAttribute="bottom" id="vO5-4N-pcP"/>
                             <constraint firstItem="uxY-Ld-Ugb" firstAttribute="leading" secondItem="RgM-JB-72g" secondAttribute="leading" id="z6q-kH-JSE"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="RgM-JB-72g"/>
                     </view>
                     <connections>
                         <outlet property="btnConnect" destination="scZ-LK-3Vh" id="rEc-Y6-pdD"/>
@@ -305,11 +329,12 @@
                         <outlet property="lblStabilization" destination="kQb-Wg-2R9" id="Fe7-5L-bWy"/>
                         <outlet property="lblVoltage" destination="vCf-ni-GYP" id="QJv-0C-6tJ"/>
                         <outlet property="mapPlane" destination="9yf-ZG-nXx" id="QoZ-Ny-dpl"/>
+                        <outlet property="switchLive" destination="jq7-6N-jUW" id="6s4-Rk-ZjB"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wmj-wI-fAj" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="327.5390625" y="87.5"/>
+            <point key="canvasLocation" x="327.45535714285711" y="86.956521739130437"/>
         </scene>
     </scenes>
     <resources>
@@ -320,5 +345,8 @@
         <image name="horizon_line" width="420" height="420"/>
         <image name="horizon_plane" width="420" height="420"/>
         <image name="power_off" width="230" height="230"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
     </resources>
 </document>

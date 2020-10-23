@@ -13,7 +13,7 @@
 #endif
 import SocketIO
 
-typealias socketDataReceive = (_ json: Any) -> Void
+typealias socketDataReceive = (_ json: [String:Any]) -> Void
 
 class SocketComunicator: NSObject {
     static let shared = SocketComunicator()
@@ -46,7 +46,7 @@ class SocketComunicator: NSObject {
     
     func planesLocation(completion: @escaping socketDataReceive) {
         socket.on("planesLocation") {data, ack in
-            completion(data)
+            completion(data[0] as! [String:Any])
         }
     }
     func sendPlaneData(packet: SmartPortStruct){
