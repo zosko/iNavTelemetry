@@ -11,6 +11,10 @@ app.use(express.static(path.join(__dirname, 'public')))
 app.get('/', function(req, res){
   res.sendFile('public/index.html', { root : __dirname })
 })
+app.get('/restart', function(req, res){
+  database = {};
+  res.sendFile('public/index.html', { root : __dirname })
+})
 
 io.sockets.on("connection", function(socket) {
   setInterval(function(){ socket.emit("planesLocation", database); }, 1500);
