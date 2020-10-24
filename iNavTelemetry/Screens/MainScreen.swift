@@ -61,13 +61,11 @@ class MainScreen: UIViewController {
         }
     }
     @IBAction func onBtnSetHomePosition(_ sender: Any){
-        if oldLocation == nil {
-            return
+        if planeAnnotation.coordinate.latitude != CLLocationCoordinate2D(latitude: 0, longitude: 0).latitude {
+            gsAnnotation.coordinate = planeAnnotation.coordinate
+            let region = MKCoordinateRegion(center: gsAnnotation.coordinate, latitudinalMeters: 1000, longitudinalMeters: 1000)
+            mapPlane.setRegion(region, animated: true)
         }
-        gsAnnotation.coordinate = planeAnnotation.coordinate
-        oldLocation = gsAnnotation.coordinate
-        let region = MKCoordinateRegion(center: gsAnnotation.coordinate, latitudinalMeters: 1000, longitudinalMeters: 1000)
-        mapPlane.setRegion(region, animated: true)
     }
     
     //MARK: - CustomFunctions

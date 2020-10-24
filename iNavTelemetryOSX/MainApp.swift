@@ -7,14 +7,13 @@
 //
 
 import Cocoa
-import ORSSerial
 import MapKit
 import AVFoundation
+import CoreBluetooth
 
-class MainApp: NSViewController,ORSSerialPortDelegate,MKMapViewDelegate {
+class MainApp: NSViewController,AVCapturePhotoCaptureDelegate {
     
     // MARK: IBOutlets
-    @IBOutlet var popupPorts : NSPopUpButton!
     @IBOutlet var popupVideoInput : NSPopUpButton!
     @IBOutlet var mapPlane : MKMapView!
     @IBOutlet var btnConnect : NSButton!
@@ -38,33 +37,39 @@ class MainApp: NSViewController,ORSSerialPortDelegate,MKMapViewDelegate {
     //MARK: - Variables
     let videoDevices = AVCaptureDevice.DiscoverySession(deviceTypes: [.externalUnknown], mediaType: .video, position: .unspecified).devices
     let session: AVCaptureSession = AVCaptureSession()
+    let photoOutput = AVCapturePhotoOutput()
     var planeAnnotation : LocationPointAnnotation!
     var gsAnnotation : LocationPointAnnotation!
-    let serialPortManager = ORSSerialPortManager.shared()
-    var serialPort: ORSSerialPort?
     var telemetry = SmartPort()
     var oldLocation : CLLocationCoordinate2D!
+    var centralManager: CBCentralManager!
+    var connectedPeripheral: CBPeripheral!
+    var peripherals : [CBPeripheral] = []
+    var tempCapturePhotoCamera : String = ""
     
     //MARK: - IBActions
     @IBAction func onBtnConnect(_ sender: Any) {
-        if((serialPort?.isOpen) != nil){
-            serialPort?.close()
+        if connectedPeripheral != nil {
+            centralManager.cancelPeripheralConnection(connectedPeripheral)
+            connectedPeripheral = nil;
+            peripherals.removeAll()
         }
         else{
-            serialPort = ORSSerialPort(path: "/dev/tty."+popupPorts.selectedItem!.title)
-            serialPort?.baudRate = 57600
-            serialPort?.delegate = self
-            serialPort?.open()
+            peripherals.removeAll()
+            centralManager.scanForPeripherals(withServices: [CBUUID(string: "FFE0")], options: nil)
+            
+            showProgress()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+                self.stopSearchReader()
+            }
         }
     }
     @IBAction func onBtnSetHomePosition(_ sender: Any){
-        if oldLocation == nil {
-            return
+        if planeAnnotation.coordinate.latitude != CLLocationCoordinate2D(latitude: 0, longitude: 0).latitude {
+            gsAnnotation.coordinate = planeAnnotation.coordinate
+            let region = MKCoordinateRegion(center: gsAnnotation.coordinate, latitudinalMeters: 1000, longitudinalMeters: 1000)
+            mapPlane.setRegion(region, animated: true)
         }
-        gsAnnotation.coordinate = planeAnnotation.coordinate
-        oldLocation = gsAnnotation.coordinate
-        let region = MKCoordinateRegion(center: gsAnnotation.coordinate, latitudinalMeters: 1000, longitudinalMeters: 1000)
-        mapPlane.setRegion(region, animated: true)
     }
     @IBAction func onVideoChoose(_ sender: NSPopUpButton){
         let device = videoDevices[popupVideoInput.indexOfSelectedItem]
@@ -72,6 +77,10 @@ class MainApp: NSViewController,ORSSerialPortDelegate,MKMapViewDelegate {
 
         if session.canAddInput(input) {
             session.addInput(input)
+        }
+        
+        if session.canAddOutput(photoOutput) {
+            session.addOutput(photoOutput)
         }
         
         viewCockpit?.wantsLayer = true
@@ -85,6 +94,31 @@ class MainApp: NSViewController,ORSSerialPortDelegate,MKMapViewDelegate {
     }
     
     //MARK: - CustomFunctions
+    func capturePhoto(){
+        if session.isRunning {
+            let settings = AVCapturePhotoSettings()
+            photoOutput.capturePhoto(with: settings, delegate: self)
+        }
+    }
+    func showProgress(){
+        let bgView = NSView(frame: self.view.frame)
+        bgView.wantsLayer = true
+        bgView.layer?.backgroundColor = NSColor.white.cgColor
+        bgView.layer?.opacity = 0.7
+        
+        let label = NSTextView(frame: NSRect(x: 0, y: 300, width: bgView.frame.size.width, height: 300))
+        label.string = "Searching for device"
+        label.textColor = NSColor.black
+        label.alignment = .center
+        label.font = NSFont.labelFont(ofSize: 40)
+        bgView.addSubview(label)
+        
+        self.view.addSubview(bgView)
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+            bgView.removeFromSuperview()
+        }
+    }
     func addSocketListeners(){
         SocketComunicator.shared.planesLocation { (data) in
             let annotations = self.mapPlane.annotations as! [LocationPointAnnotation]
@@ -134,11 +168,11 @@ class MainApp: NSViewController,ORSSerialPortDelegate,MKMapViewDelegate {
         refreshHorizon(pitch: CGFloat(packet.pitch), roll: CGFloat(-packet.roll))
         
         if switchLive.state == .on {
-            SocketComunicator.shared.sendPlaneData(packet: packet)
+            capturePhoto()
+            SocketComunicator.shared.sendPlaneData(packet: packet, photo: tempCapturePhotoCamera)
         }
         
     }
-    
     func refreshCompass(degree: CGFloat){
         DispatchQueue.main.async {
             self.imgCompass.frameCenterRotation = degree
@@ -158,61 +192,33 @@ class MainApp: NSViewController,ORSSerialPortDelegate,MKMapViewDelegate {
         mapPlane.addOverlay(polyline)
         oldLocation = planeAnnotation.coordinate
     }
-    
-    // MARK: - ORSSerialPortDelegate
-    func serialPortWasOpened(_ serialPort: ORSSerialPort) {
-        btnConnect.image = NSImage(named: "power_on")
-        popupPorts.isHidden = true
-    }
-    func serialPortWasClosed(_ serialPort: ORSSerialPort) {
-        btnConnect.image = NSImage(named: "power_off")
-    }
-    func serialPort(_ serialPort: ORSSerialPort, didReceive data: Data) {
-        if telemetry.process_incoming_bytes(incomingData: data) {
-            refreshTelemetry(packet: telemetry.packet)
-        }
-    }
-    func serialPortWasRemovedFromSystem(_ serialPort: ORSSerialPort) {
-        print("serialPortWasRemovedFromSystem")
-    }
-    func serialPort(_ serialPort: ORSSerialPort, didEncounterError error: Error) {
-        print("SerialPort \(serialPort) encountered an error: \(error)")
-    }
-    
-    // MARK: - MAPViewDelegate
-    func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
-        if overlay is MKTileOverlay {
-            let renderer = MKTileOverlayRenderer(overlay: overlay)
-            return renderer
-        } else {
-            if let routePolyline = overlay as? MKPolyline {
-                let renderer = MKPolylineRenderer(polyline: routePolyline)
-                renderer.strokeColor = NSColor.red
-                renderer.lineWidth = 2
-                return renderer
-            }
-        }
-        return MKTileOverlayRenderer()
-    }
-    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-        if !(annotation is LocationPointAnnotation) {
-            return nil
-        }
-        let reuseId = "LocationPin"
-        var anView = mapView.dequeueReusableAnnotationView(withIdentifier: reuseId)
-        if anView == nil {
-            anView = MKAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
-            anView?.canShowCallout = true
-        }
-        else {
-            anView?.annotation = annotation
+    func stopSearchReader(){
+        centralManager.stopScan()
+        
+        let alert = NSAlert()
+        alert.messageText = "Select Smart Port device"
+        alert.alertStyle = .informational
+        alert.addButton(withTitle: "Cancel")
+        
+        for periperal in peripherals{
+            alert.addButton(withTitle: periperal.name ?? "no_name")
         }
         
-        let cpa = annotation as! LocationPointAnnotation
-        if cpa.imageName != nil{
-            anView?.image = NSImage(named:cpa.imageName)
+        alert.beginSheetModal(for: self.view.window!) { (response) in
+            if response != .alertFirstButtonReturn {
+                let deviceIndex = response.rawValue - 1001 // to get index 0.1.2...
+                print("selected device: \(deviceIndex)")
+                self.centralManager.connect(self.peripherals[deviceIndex], options: nil)
+            }
         }
-        return anView
+    }
+    
+    // MARK: - CapturePhoto
+    func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
+        let imageData = photo.fileDataRepresentation()
+        if let data = imageData {
+            tempCapturePhotoCamera = data.base64EncodedString()
+        }
     }
     
     // MARK: - UIViewDelegates
@@ -225,11 +231,7 @@ class MainApp: NSViewController,ORSSerialPortDelegate,MKMapViewDelegate {
 //        mapPlane.addOverlay(overlay, level: .aboveLabels)
         
         addAnnotations()
-        
-        let availablePorts = serialPortManager.availablePorts
-        for port in availablePorts {
-            popupPorts.addItem(withTitle: port.name)
-        }
+        centralManager = CBCentralManager.init(delegate: self, queue: nil)
         
         for device in videoDevices {
             self.popupVideoInput.addItem(withTitle: device.localizedName)

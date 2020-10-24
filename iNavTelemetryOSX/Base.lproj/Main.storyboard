@@ -935,18 +935,6 @@
                                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.50385123239999996" colorSpace="custom" customColorSpace="sRGB"/>
                                 </textFieldCell>
                             </textField>
-                            <popUpButton verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="r2w-0c-S9m">
-                                <rect key="frame" x="8" y="77" width="205" height="25"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="21" id="nhy-Bx-Hbg"/>
-                                    <constraint firstAttribute="width" constant="200" id="oyC-L0-U2C"/>
-                                </constraints>
-                                <popUpButtonCell key="cell" type="push" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" id="My5-OD-8dv">
-                                    <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
-                                    <font key="font" metaFont="menu"/>
-                                    <menu key="menu" id="F6a-rE-rUF"/>
-                                </popUpButtonCell>
-                            </popUpButton>
                             <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Gsy-9Z-mX6">
                                 <rect key="frame" x="334" y="7" width="330" height="274"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
@@ -966,14 +954,14 @@
                                 </subviews>
                             </customView>
                             <switch horizontalHuggingPriority="750" verticalHuggingPriority="750" baseWritingDirection="leftToRight" alignment="left" translatesAutoresizingMaskIntoConstraints="NO" id="Z36-qe-YjG">
-                                <rect key="frame" x="8" y="108" width="42" height="24"/>
+                                <rect key="frame" x="8" y="79" width="42" height="24"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="21" id="9Fi-io-sJ6"/>
                                     <constraint firstAttribute="width" constant="38" id="I5u-pt-OHy"/>
                                 </constraints>
                             </switch>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="GYU-de-ESB">
-                                <rect key="frame" x="52" y="112" width="60" height="17"/>
+                                <rect key="frame" x="52" y="83" width="60" height="17"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="60" id="iaf-nw-yJe"/>
                                     <constraint firstAttribute="height" constant="17" id="vL8-Kz-mFf"/>
@@ -990,8 +978,7 @@
                             <constraint firstItem="sYW-SW-Dhi" firstAttribute="leading" secondItem="ea5-23-3Mv" secondAttribute="trailing" constant="8" id="2dd-WJ-Lkb"/>
                             <constraint firstAttribute="trailing" secondItem="FOF-eJ-Y5V" secondAttribute="trailing" id="6f8-Tc-3nn"/>
                             <constraint firstItem="6Ps-Ak-v5b" firstAttribute="top" secondItem="T9l-7J-Uqm" secondAttribute="bottom" constant="1" id="765-mR-Bn3"/>
-                            <constraint firstItem="saS-o7-peS" firstAttribute="top" secondItem="r2w-0c-S9m" secondAttribute="bottom" constant="9" id="DwT-8r-aYs"/>
-                            <constraint firstItem="r2w-0c-S9m" firstAttribute="top" secondItem="Z36-qe-YjG" secondAttribute="bottom" constant="9" id="ERZ-Sa-Lf8"/>
+                            <constraint firstItem="ea5-23-3Mv" firstAttribute="top" secondItem="Z36-qe-YjG" secondAttribute="bottom" constant="10" id="CdO-L7-vZ3"/>
                             <constraint firstAttribute="trailing" secondItem="Zlt-qs-YlW" secondAttribute="trailing" id="L9p-jA-WVo"/>
                             <constraint firstItem="Q0f-K6-NDk" firstAttribute="leading" secondItem="FPQ-hh-e5m" secondAttribute="leading" id="NgL-ln-h31"/>
                             <constraint firstItem="GNI-J1-HX9" firstAttribute="leading" secondItem="FPQ-hh-e5m" secondAttribute="leading" id="NiT-Ei-OyA"/>
@@ -1021,7 +1008,6 @@
                             <constraint firstAttribute="bottom" secondItem="saS-o7-peS" secondAttribute="bottom" id="v47-2L-nu8"/>
                             <constraint firstAttribute="trailing" secondItem="eRO-5m-VUg" secondAttribute="trailing" id="wog-fJ-xOS"/>
                             <constraint firstItem="ea5-23-3Mv" firstAttribute="leading" secondItem="FPQ-hh-e5m" secondAttribute="leading" id="wxA-VW-zAs"/>
-                            <constraint firstItem="r2w-0c-S9m" firstAttribute="leading" secondItem="FPQ-hh-e5m" secondAttribute="leading" constant="10" id="xGc-fI-mKx"/>
                             <constraint firstItem="Zlt-qs-YlW" firstAttribute="top" secondItem="FPQ-hh-e5m" secondAttribute="top" id="y74-uK-gEt"/>
                             <constraint firstItem="OG1-b0-Sed" firstAttribute="leading" secondItem="FPQ-hh-e5m" secondAttribute="leading" id="zhD-Ul-9jt"/>
                         </constraints>
@@ -1043,7 +1029,6 @@
                         <outlet property="lblStabilization" destination="eyd-6k-WRP" id="bdE-Pm-g3J"/>
                         <outlet property="lblVoltage" destination="ea5-23-3Mv" id="Wcj-R0-Dt3"/>
                         <outlet property="mapPlane" destination="Q0f-K6-NDk" id="XBS-Tw-c7h"/>
-                        <outlet property="popupPorts" destination="r2w-0c-S9m" id="gUi-MY-dDO"/>
                         <outlet property="popupVideoInput" destination="f75-fG-QUw" id="e7N-LX-Y3g"/>
                         <outlet property="switchLive" destination="Z36-qe-YjG" id="V3C-Bn-4Np"/>
                         <outlet property="viewCockpit" destination="Gsy-9Z-mX6" id="p4r-z6-tJz"/>

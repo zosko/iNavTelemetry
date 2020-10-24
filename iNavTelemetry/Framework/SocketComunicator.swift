@@ -33,7 +33,6 @@ class SocketComunicator: NSObject {
         }
         socket.on(clientEvent: .error) {data, ack in
             print("socket disconnect")
-            self.socket.connect()
         }
         socket.on(clientEvent: .statusChange) {data, ack in
             print("socket status: \(data)")
@@ -55,6 +54,15 @@ class SocketComunicator: NSObject {
                                              "alt":packet.alt,
                                              "speed":packet.speed,
                                              "heading":packet.heading
+        ]])
+    }
+    func sendPlaneData(packet: SmartPortStruct, photo : String){
+        socket.emit("planeLocation", with: [["lat":packet.lat,
+                                             "lng":packet.lng,
+                                             "alt":packet.alt,
+                                             "speed":packet.speed,
+                                             "heading":packet.heading,
+                                             "photo": photo
         ]])
     }
 }
