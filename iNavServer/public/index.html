@@ -53,6 +53,7 @@
           info = info + "[Altitude] " + planes[i].alt + " m<br>";
           info = info + "[Speed] " + planes[i].speed + " km/h<br>";
           info = info + "[Heading] " + planes[i].heading + " deg<br>";
+          info = info + '<img width="200" src="data:image/jpeg;base64, '+ planes[i].photo + '" />';
           var ol = new OpenLayers.Geometry.Point(planes[i].lng,planes[i].lat).transform(epsg4326, projectTo);
           var feature = new OpenLayers.Feature.Vector(ol,{description: info},style);
           vectorLayer.addFeatures(feature);        
