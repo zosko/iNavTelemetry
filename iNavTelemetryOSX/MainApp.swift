@@ -33,6 +33,7 @@ class MainApp: NSViewController,ORSSerialPortDelegate,MKMapViewDelegate {
     @IBOutlet var imgCompass: NSImageView!
     @IBOutlet var imgHorizont: NSImageView!
     @IBOutlet var viewCockpit: NSView?
+    @IBOutlet var switchLive : NSSwitch!
     
     //MARK: - Variables
     let videoDevices = AVCaptureDevice.DiscoverySession(deviceTypes: [.externalUnknown], mediaType: .video, position: .unspecified).devices
@@ -86,13 +87,28 @@ class MainApp: NSViewController,ORSSerialPortDelegate,MKMapViewDelegate {
     //MARK: - CustomFunctions
     func addSocketListeners(){
         SocketComunicator.shared.planesLocation { (data) in
-            print(data)
+            let annotations = self.mapPlane.annotations as! [LocationPointAnnotation]
+            let annotationsToRemove = annotations.filter { $0.imageName == "other_plane" }
+            self.mapPlane.removeAnnotations(annotationsToRemove)
+            
+            for (key,planeData) in data {
+                let object = planeData as! [String:Any]
+                let lat = CLLocationDegrees(object["lat"] as! Double)
+                let lng = CLLocationDegrees(object["lng"] as! Double)
+                
+                let location = CLLocation(latitude: lat, longitude: lng)
+                let otherPlane = LocationPointAnnotation()
+                otherPlane.title = key
+                otherPlane.imageName = "other_plane"
+                otherPlane.coordinate = location.coordinate
+                self.mapPlane.addAnnotation(otherPlane)
+            }
         }
     }
     func addAnnotations(){
         planeAnnotation = LocationPointAnnotation()
-        planeAnnotation.title = "Plane"
-        planeAnnotation.imageName = "plane"
+        planeAnnotation.title = "My Plane"
+        planeAnnotation.imageName = "my_plane"
         
         gsAnnotation = LocationPointAnnotation()
         gsAnnotation.title = "Ground Station"
@@ -100,8 +116,6 @@ class MainApp: NSViewController,ORSSerialPortDelegate,MKMapViewDelegate {
         mapPlane.addAnnotations([gsAnnotation,planeAnnotation])
     }
     func refreshTelemetry(packet: SmartPortStruct){
-        SocketComunicator.shared.sendPlaneData(packet: packet)
-        
         lblLatitude.stringValue = "Latitude\n \(packet.lat)"
         lblLongitude.stringValue = "Longitude\n \(packet.lng)"
         lblSatellites.stringValue = "Satellites\n \(packet.gps_sats)"
@@ -118,6 +132,11 @@ class MainApp: NSViewController,ORSSerialPortDelegate,MKMapViewDelegate {
         refreshLocation(latitude: packet.lat, longitude: packet.lng)
         refreshCompass(degree: CGFloat(-packet.heading))
         refreshHorizon(pitch: CGFloat(packet.pitch), roll: CGFloat(-packet.roll))
+        
+        if switchLive.state == .on {
+            SocketComunicator.shared.sendPlaneData(packet: packet)
+        }
+        
     }
     
     func refreshCompass(degree: CGFloat){

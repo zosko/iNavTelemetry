@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="16097.2" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="17156" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="16097.2"/>
-        <plugIn identifier="com.apple.MapKitIBPlugin" version="16097.2"/>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="17156"/>
+        <plugIn identifier="com.apple.MapKitIBPlugin" version="17156"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -942,7 +943,7 @@
                                 </constraints>
                                 <popUpButtonCell key="cell" type="push" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" id="My5-OD-8dv">
                                     <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
-                                    <font key="font" metaFont="system"/>
+                                    <font key="font" metaFont="menu"/>
                                     <menu key="menu" id="F6a-rE-rUF"/>
                                 </popUpButtonCell>
                             </popUpButton>
@@ -955,7 +956,7 @@
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                                         <popUpButtonCell key="cell" type="push" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" id="APY-iT-15b">
                                             <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
-                                            <font key="font" metaFont="system"/>
+                                            <font key="font" metaFont="menu"/>
                                             <menu key="menu" id="pNB-DA-YOt"/>
                                         </popUpButtonCell>
                                         <connections>
@@ -964,6 +965,25 @@
                                     </popUpButton>
                                 </subviews>
                             </customView>
+                            <switch horizontalHuggingPriority="750" verticalHuggingPriority="750" baseWritingDirection="leftToRight" alignment="left" translatesAutoresizingMaskIntoConstraints="NO" id="Z36-qe-YjG">
+                                <rect key="frame" x="8" y="108" width="42" height="24"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="21" id="9Fi-io-sJ6"/>
+                                    <constraint firstAttribute="width" constant="38" id="I5u-pt-OHy"/>
+                                </constraints>
+                            </switch>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="GYU-de-ESB">
+                                <rect key="frame" x="52" y="112" width="60" height="17"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="60" id="iaf-nw-yJe"/>
+                                    <constraint firstAttribute="height" constant="17" id="vL8-Kz-mFf"/>
+                                </constraints>
+                                <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="LIVE" drawsBackground="YES" id="8ZX-RZ-Ltd">
+                                    <font key="font" metaFont="systemBold"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.50385123239999996" colorSpace="custom" customColorSpace="sRGB"/>
+                                </textFieldCell>
+                            </textField>
                         </subviews>
                         <constraints>
                             <constraint firstItem="saS-o7-peS" firstAttribute="leading" secondItem="sYW-SW-Dhi" secondAttribute="trailing" constant="2" id="0UB-qX-Vru"/>
@@ -971,13 +991,16 @@
                             <constraint firstAttribute="trailing" secondItem="FOF-eJ-Y5V" secondAttribute="trailing" id="6f8-Tc-3nn"/>
                             <constraint firstItem="6Ps-Ak-v5b" firstAttribute="top" secondItem="T9l-7J-Uqm" secondAttribute="bottom" constant="1" id="765-mR-Bn3"/>
                             <constraint firstItem="saS-o7-peS" firstAttribute="top" secondItem="r2w-0c-S9m" secondAttribute="bottom" constant="9" id="DwT-8r-aYs"/>
+                            <constraint firstItem="r2w-0c-S9m" firstAttribute="top" secondItem="Z36-qe-YjG" secondAttribute="bottom" constant="9" id="ERZ-Sa-Lf8"/>
                             <constraint firstAttribute="trailing" secondItem="Zlt-qs-YlW" secondAttribute="trailing" id="L9p-jA-WVo"/>
                             <constraint firstItem="Q0f-K6-NDk" firstAttribute="leading" secondItem="FPQ-hh-e5m" secondAttribute="leading" id="NgL-ln-h31"/>
                             <constraint firstItem="GNI-J1-HX9" firstAttribute="leading" secondItem="FPQ-hh-e5m" secondAttribute="leading" id="NiT-Ei-OyA"/>
                             <constraint firstItem="6Ps-Ak-v5b" firstAttribute="centerY" secondItem="FPQ-hh-e5m" secondAttribute="centerY" id="T5q-Tg-3qi"/>
                             <constraint firstItem="FOF-eJ-Y5V" firstAttribute="top" secondItem="eRO-5m-VUg" secondAttribute="bottom" constant="1" id="WHQ-iv-yye"/>
                             <constraint firstItem="TM2-Bn-NiG" firstAttribute="leading" secondItem="FPQ-hh-e5m" secondAttribute="leading" id="XzB-zl-G0p"/>
+                            <constraint firstItem="Z36-qe-YjG" firstAttribute="leading" secondItem="FPQ-hh-e5m" secondAttribute="leading" constant="10" id="b8D-Mt-YLz"/>
                             <constraint firstAttribute="bottom" secondItem="sYW-SW-Dhi" secondAttribute="bottom" id="bp5-w3-pSN"/>
+                            <constraint firstItem="GYU-de-ESB" firstAttribute="leading" secondItem="Z36-qe-YjG" secondAttribute="trailing" constant="4" id="cLB-OY-hEa"/>
                             <constraint firstItem="OG1-b0-Sed" firstAttribute="top" secondItem="FPQ-hh-e5m" secondAttribute="top" id="e4H-tP-BjY"/>
                             <constraint firstItem="TpD-U8-Wa9" firstAttribute="leading" secondItem="FPQ-hh-e5m" secondAttribute="leading" id="eSc-hF-OsZ"/>
                             <constraint firstAttribute="bottom" secondItem="LHa-5i-hc3" secondAttribute="bottom" id="f1X-GH-p9f"/>
@@ -985,6 +1008,7 @@
                             <constraint firstItem="TpD-U8-Wa9" firstAttribute="top" secondItem="6Ps-Ak-v5b" secondAttribute="bottom" constant="1" id="gjD-XJ-rTh"/>
                             <constraint firstItem="eyd-6k-WRP" firstAttribute="top" secondItem="FPQ-hh-e5m" secondAttribute="top" id="gwI-qU-QZP"/>
                             <constraint firstItem="Zlt-qs-YlW" firstAttribute="leading" secondItem="eyd-6k-WRP" secondAttribute="trailing" constant="1" id="hn3-zk-Lhd"/>
+                            <constraint firstItem="GYU-de-ESB" firstAttribute="centerY" secondItem="Z36-qe-YjG" secondAttribute="centerY" id="hon-KC-8qD"/>
                             <constraint firstItem="6Ps-Ak-v5b" firstAttribute="leading" secondItem="FPQ-hh-e5m" secondAttribute="leading" id="iO4-9U-eaW"/>
                             <constraint firstItem="GNI-J1-HX9" firstAttribute="top" secondItem="TM2-Bn-NiG" secondAttribute="bottom" constant="1" id="kLs-0T-w0H"/>
                             <constraint firstItem="eRO-5m-VUg" firstAttribute="top" secondItem="Zlt-qs-YlW" secondAttribute="bottom" constant="1" id="mC6-Nw-2Tt"/>
@@ -1021,6 +1045,7 @@
                         <outlet property="mapPlane" destination="Q0f-K6-NDk" id="XBS-Tw-c7h"/>
                         <outlet property="popupPorts" destination="r2w-0c-S9m" id="gUi-MY-dDO"/>
                         <outlet property="popupVideoInput" destination="f75-fG-QUw" id="e7N-LX-Y3g"/>
+                        <outlet property="switchLive" destination="Z36-qe-YjG" id="V3C-Bn-4Np"/>
                         <outlet property="viewCockpit" destination="Gsy-9Z-mX6" id="p4r-z6-tJz"/>
                     </connections>
                 </viewController>
