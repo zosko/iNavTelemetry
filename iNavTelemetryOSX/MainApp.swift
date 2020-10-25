@@ -236,6 +236,7 @@ class MainApp: NSViewController,AVCapturePhotoCaptureDelegate {
         for device in videoDevices {
             self.popupVideoInput.addItem(withTitle: device.localizedName)
         }
+        popupVideoInput.isHidden = videoDevices.count == 0
     }
     
     override var representedObject: Any? {

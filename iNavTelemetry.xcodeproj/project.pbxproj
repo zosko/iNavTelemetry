@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		6D163DBD24FFCB6A000D2EA1 /* SmartPort.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D163DBC24FFCB6A000D2EA1 /* SmartPort.swift */; };
+		6D6625612545D8DF006E948C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6DFDD0E0247FFFB6009F382A /* Assets.xcassets */; };
 		6D7DAD632530BF9500352704 /* SocketIO in Frameworks */ = {isa = PBXBuildFile; productRef = 6D7DAD622530BF9500352704 /* SocketIO */; };
 		6DAEB9CB2544B1E100EE5011 /* MainApp+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DAEB9CA2544B1E100EE5011 /* MainApp+Extensions.swift */; };
 		6DD22949252E60E60081E089 /* SocketIO in Frameworks */ = {isa = PBXBuildFile; productRef = 6DD22948252E60E60081E089 /* SocketIO */; };
@@ -16,7 +17,6 @@
 		6DD37D56248119980038C9DB /* MainPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6DD37D55248119980038C9DB /* MainPhone.storyboard */; };
 		6DF4AB6B250829A700A513FD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DF4AB6A250829A700A513FD /* AppDelegate.swift */; };
 		6DF4AB6D250829A700A513FD /* MainApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DF4AB6C250829A700A513FD /* MainApp.swift */; };
-		6DF4AB6F250829A900A513FD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6DF4AB6E250829A900A513FD /* Assets.xcassets */; };
 		6DF4AB72250829A900A513FD /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6DF4AB70250829A900A513FD /* Main.storyboard */; };
 		6DF4AB8325082F0E00A513FD /* SmartPort.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D163DBC24FFCB6A000D2EA1 /* SmartPort.swift */; };
 		6DF4AB8425082F2800A513FD /* CustomTelemetry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DF9826624844D4A005C9BB2 /* CustomTelemetry.swift */; };
@@ -41,7 +41,6 @@
 		6DF4AB68250829A700A513FD /* iNavTelemetryOSX.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iNavTelemetryOSX.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6DF4AB6A250829A700A513FD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		6DF4AB6C250829A700A513FD /* MainApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainApp.swift; sourceTree = "<group>"; };
-		6DF4AB6E250829A900A513FD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		6DF4AB71250829A900A513FD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		6DF4AB73250829A900A513FD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6DF4AB74250829A900A513FD /* iNavTelemetryOSX.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = iNavTelemetryOSX.entitlements; sourceTree = "<group>"; };
@@ -92,7 +91,6 @@
 				6DF4AB6A250829A700A513FD /* AppDelegate.swift */,
 				6DF4AB6C250829A700A513FD /* MainApp.swift */,
 				6DAEB9CA2544B1E100EE5011 /* MainApp+Extensions.swift */,
-				6DF4AB6E250829A900A513FD /* Assets.xcassets */,
 				6DF4AB70250829A900A513FD /* Main.storyboard */,
 				6DF4AB73250829A900A513FD /* Info.plist */,
 				6DF4AB74250829A900A513FD /* iNavTelemetryOSX.entitlements */,
@@ -254,7 +252,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6DF4AB6F250829A900A513FD /* Assets.xcassets in Resources */,
+				6D6625612545D8DF006E948C /* Assets.xcassets in Resources */,
 				6DF4AB72250829A900A513FD /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
