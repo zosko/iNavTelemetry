@@ -13,7 +13,16 @@
 #endif
 import SocketIO
 
-typealias socketDataReceive = (_ json: [String:Any]) -> Void
+typealias socketDataReceive = (_ planes: [PlaneData]) -> Void
+
+struct PlaneData : Codable {
+    var lat : Double
+    var lng : Double
+    var alt : Int
+    var speed : Int
+    var heading : Int
+    var photo : String
+}
 
 class SocketComunicator: NSObject {
     static let shared = SocketComunicator()
@@ -28,24 +37,31 @@ class SocketComunicator: NSObject {
         manager = SocketManager(socketURL: URL(string: "https://deadpan-rightful-aunt.glitch.me")!, config: [.log(false), .compress])
         socket = manager.defaultSocket
         
-        socket.on(clientEvent: .connect) {data, ack in
+        socket.on(clientEvent: .connect) {_, _ in
             print("socket connected")
         }
-        socket.on(clientEvent: .error) {data, ack in
+        socket.on(clientEvent: .error) {_, _ in
             print("socket disconnect")
         }
-        socket.on(clientEvent: .statusChange) {data, ack in
+        socket.on(clientEvent: .statusChange) {data, _ in
             print("socket status: \(data)")
         }
-        socket.on(clientEvent: .disconnect) {data, ack in
+        socket.on(clientEvent: .disconnect) {_, _ in
             print("socket disconnect")
         }
         socket.connect()
     }
     
     func planesLocation(completion: @escaping socketDataReceive) {
-        socket.on("planesLocation") {data, ack in
-            completion(data[0] as! [String:Any])
+        socket.on("planesLocation") { (data, _) in
+            let jsonData = try! JSONSerialization.data(withJSONObject: data[0])
+            let decoder = JSONDecoder()
+            do {
+                let planes = try decoder.decode([PlaneData].self, from: jsonData)
+                completion(planes)
+            } catch {
+                print(error)
+            }
         }
     }
     func sendPlaneData(packet: SmartPortStruct, photo : String = ""){

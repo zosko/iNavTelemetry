@@ -70,19 +70,15 @@ class MainScreen: UIViewController {
     
     //MARK: - CustomFunctions
     func addSocketListeners(){
-        SocketComunicator.shared.planesLocation { (data) in
+        SocketComunicator.shared.planesLocation { (planes) in
             let annotations = self.mapPlane.annotations as! [LocationPointAnnotation]
             let annotationsToRemove = annotations.filter { $0.imageName == "other_plane" }
             self.mapPlane.removeAnnotations(annotationsToRemove)
             
-            for (key,planeData) in data {
-                let object = planeData as! [String:Any]
-                let lat = CLLocationDegrees(object["lat"] as! Double)
-                let lng = CLLocationDegrees(object["lng"] as! Double)
-                
-                let location = CLLocation(latitude: lat, longitude: lng)
+            for plane in planes {
+                let location = CLLocation(latitude: plane.lat, longitude: plane.lng)
                 let otherPlane = LocationPointAnnotation()
-                otherPlane.title = key
+                otherPlane.title = "Other Plane"
                 otherPlane.imageName = "other_plane"
                 otherPlane.coordinate = location.coordinate
                 self.mapPlane.addAnnotation(otherPlane)

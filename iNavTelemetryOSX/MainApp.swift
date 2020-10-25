@@ -124,15 +124,11 @@ class MainApp: NSViewController,AVCapturePhotoCaptureDelegate {
             let annotations = self.mapPlane.annotations as! [LocationPointAnnotation]
             let annotationsToRemove = annotations.filter { $0.imageName == "other_plane" }
             self.mapPlane.removeAnnotations(annotationsToRemove)
-            
-            for (key,planeData) in data {
-                let object = planeData as! [String:Any]
-                let lat = CLLocationDegrees(object["lat"] as! Double)
-                let lng = CLLocationDegrees(object["lng"] as! Double)
-                
-                let location = CLLocation(latitude: lat, longitude: lng)
+
+            for plane in data {
+                let location = CLLocation(latitude: plane.lat, longitude: plane.lng)
                 let otherPlane = LocationPointAnnotation()
-                otherPlane.title = key
+                otherPlane.title = "Other Plane"
                 otherPlane.imageName = "other_plane"
                 otherPlane.coordinate = location.coordinate
                 self.mapPlane.addAnnotation(otherPlane)
@@ -207,7 +203,6 @@ class MainApp: NSViewController,AVCapturePhotoCaptureDelegate {
         alert.beginSheetModal(for: self.view.window!) { (response) in
             if response != .alertFirstButtonReturn {
                 let deviceIndex = response.rawValue - 1001 // to get index 0.1.2...
-                print("selected device: \(deviceIndex)")
                 self.centralManager.connect(self.peripherals[deviceIndex], options: nil)
             }
         }
@@ -224,6 +219,7 @@ class MainApp: NSViewController,AVCapturePhotoCaptureDelegate {
     // MARK: - UIViewDelegates
     override func viewDidLoad() {
         super.viewDidLoad()
+        SocketComunicator.shared.socketConnectionSetup()
         
 //        let urlTeplate = "http://tile.openstreetmap.org/{z}/{x}/{y}.png"
 //        let overlay = MKTileOverlay(urlTemplate: urlTeplate)
@@ -231,6 +227,7 @@ class MainApp: NSViewController,AVCapturePhotoCaptureDelegate {
 //        mapPlane.addOverlay(overlay, level: .aboveLabels)
         
         addAnnotations()
+        addSocketListeners()
         centralManager = CBCentralManager.init(delegate: self, queue: nil)
         
         for device in videoDevices {
