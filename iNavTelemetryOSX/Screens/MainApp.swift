@@ -11,7 +11,7 @@ import MapKit
 import AVFoundation
 import CoreBluetooth
 
-class MainApp: NSViewController,AVCapturePhotoCaptureDelegate {
+class MainApp: NSViewController {
     
     // MARK: IBOutlets
     @IBOutlet var popupVideoInput : NSPopUpButton!
@@ -205,14 +205,6 @@ class MainApp: NSViewController,AVCapturePhotoCaptureDelegate {
                 let deviceIndex = response.rawValue - 1001 // to get index 0.1.2...
                 self.centralManager.connect(self.peripherals[deviceIndex], options: nil)
             }
-        }
-    }
-    
-    // MARK: - CapturePhoto
-    func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
-        let imageData = photo.fileDataRepresentation()
-        if let data = imageData {
-            tempCapturePhotoCamera = data.base64EncodedString()
         }
     }
     

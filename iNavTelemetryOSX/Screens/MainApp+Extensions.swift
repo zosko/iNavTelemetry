@@ -9,6 +9,17 @@
 import Cocoa
 import CoreBluetooth
 import MapKit
+import AVFoundation
+
+extension MainApp : AVCapturePhotoCaptureDelegate {
+    // MARK: - CapturePhoto
+    func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
+        let imageData = photo.fileDataRepresentation()
+        if let data = imageData {
+            tempCapturePhotoCamera = data.base64EncodedString()
+        }
+    }
+}
 
 extension MainApp : MKMapViewDelegate{
     // MARK: - MAPViewDelegate

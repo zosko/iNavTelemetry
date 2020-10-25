@@ -15,15 +15,6 @@ import SocketIO
 
 typealias socketDataReceive = (_ planes: [PlaneData]) -> Void
 
-struct PlaneData : Codable {
-    var lat : Double
-    var lng : Double
-    var alt : Int
-    var speed : Int
-    var heading : Int
-    var photo : String
-}
-
 class SocketComunicator: NSObject {
     static let shared = SocketComunicator()
     var manager : SocketManager!
