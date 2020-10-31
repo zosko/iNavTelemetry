@@ -42,6 +42,7 @@ class MainScreen: UIViewController {
     var connectedPeripheral: CBPeripheral!
     var peripherals : [CBPeripheral] = []
     var oldLocation : CLLocationCoordinate2D!
+    var currentTime = 0.0
     
     //MARK: - IBActions
     @IBAction func onBtnConnect(_ sender: Any) {
@@ -62,10 +63,39 @@ class MainScreen: UIViewController {
     }
     @IBAction func onBtnSetHomePosition(_ sender: Any){
         if planeAnnotation.coordinate.latitude != CLLocationCoordinate2D(latitude: 0, longitude: 0).latitude {
+            Database.shared.startLogging()
+            
             gsAnnotation.coordinate = planeAnnotation.coordinate
             let region = MKCoordinateRegion(center: gsAnnotation.coordinate, latitudinalMeters: 1000, longitudinalMeters: 1000)
             mapPlane.setRegion(region, animated: true)
         }
+    }
+    @IBAction func onBtnLogs(_ sender : Any){
+        let alert = UIAlertController.init(title: "FLIGHT LOGS", message: "", preferredStyle: .actionSheet)
+        
+        for log in Database.shared.getLogs(){
+            let action = UIAlertAction.init(title: toDate(timestamp: Double(log.pathComponents.last!)!), style: .default) { (action) in
+                self.openLog(urlLog: log)
+            }
+            alert.addAction(action)
+        }
+        
+        if Database.shared.getLogs().count > 0 {
+            let action = UIAlertAction.init(title: "Clean Database", style: .destructive) { (action) in
+                Database.shared.cleanDatabase()
+            }
+            alert.addAction(action)
+        }
+        
+        let actionCancel = UIAlertAction.init(title: "Cancel", style: .cancel) { (action) in
+        }
+        alert.addAction(actionCancel)
+        
+        if let presenter = alert.popoverPresentationController {
+            presenter.sourceView = btnConnect;
+            presenter.sourceRect = btnConnect.bounds;
+        }
+        self.present(alert, animated: true, completion: nil)
     }
     
     //MARK: - CustomFunctions
@@ -96,6 +126,7 @@ class MainScreen: UIViewController {
         mapPlane.addAnnotations([gsAnnotation,planeAnnotation])
     }
     func refreshTelemetry(packet: SmartPortStruct){
+        
         lblLatitude.text = "Latitude\n \(packet.lat)"
         lblLongitude.text = "Longitude\n \(packet.lng)"
         lblSatellites.text = "Satellites\n \(packet.gps_sats)"
@@ -113,8 +144,12 @@ class MainScreen: UIViewController {
         refreshCompass(degree: packet.heading)
         refreshHorizon(pitch: -packet.pitch, roll: packet.roll)
         
-        if switchLive.isOn {
-            SocketComunicator.shared.sendPlaneData(packet: packet)
+        if Date().timeIntervalSince1970 - currentTime > 1 { // send/save data every second
+            if switchLive.isOn {
+                SocketComunicator.shared.sendPlaneData(packet: packet)
+            }
+            Database.shared.saveTelemetryData(packet: packet)
+            currentTime = Date().timeIntervalSince1970
         }
     }
     

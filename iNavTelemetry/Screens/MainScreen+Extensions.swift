@@ -46,12 +46,40 @@ extension MainScreen : CBCentralManagerDelegate,CBPeripheralDelegate{
     func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Error?) {
         if error != nil {
             print("FailToDisconnect" + error!.localizedDescription)
-            
             centralManager.cancelPeripheralConnection(connectedPeripheral)
-            connectedPeripheral = nil;
             peripherals.removeAll()
-            return
+            
+            var timeoutSeconds = 0;
+            Timer.scheduledTimer(withTimeInterval: 1, repeats: true, block: { (timer) in
+                timeoutSeconds += 1
+                
+                if self.connectedPeripheral.state == .connected {
+                    print("connected....")
+                    timer.invalidate();
+                }
+                else if self.connectedPeripheral.state == .connecting{
+                    print("connecting....")
+                }
+                else if self.connectedPeripheral.state == .disconnecting{
+                    print("disconnecting....")
+                }
+                else if self.connectedPeripheral.state == .disconnected{
+                    print("disconnected....")
+                    self.centralManager.connect(self.connectedPeripheral, options: nil)
+                }
+                
+                if timeoutSeconds > 100 {
+                    print("timeout")
+                    Database.shared.stopLogging()
+                    self.btnConnect.setImage(UIImage(named: "power_off"), for: .normal)
+                    timer.invalidate();
+                }
+                
+            })
         }
+        
+        Database.shared.stopLogging()
+        
         self.view.makeToast("Disconnected from tracker")
         btnConnect.setImage(UIImage(named: "power_off"), for: .normal)
     }
@@ -130,5 +158,23 @@ extension MainScreen : MKMapViewDelegate{
             anView?.image = UIImage(named:cpa.imageName)
         }
         return anView
+    }
+}
+
+extension MainScreen {
+    // Helpers
+    func toDate(timestamp : Double) -> String{
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy MMM dddd [hh:mm]"
+        let date = Date(timeIntervalSince1970: timestamp)
+        return dateFormatter.string(from: date)
+    }
+    func openLog(urlLog : URL){
+        let jsonData = try! Data(contentsOf: urlLog)
+        let logData = try! JSONDecoder().decode([SmartPortStruct].self, from: jsonData)
+        
+        let controller : LogScreen = self.storyboard!.instantiateViewController(identifier: "LogScreen")
+        controller.logData = logData
+        self.present(controller, animated: true, completion: nil)
     }
 }

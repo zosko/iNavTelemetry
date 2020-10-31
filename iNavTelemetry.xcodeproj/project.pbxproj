@@ -10,6 +10,9 @@
 		6D0610DE25461F170020BCA0 /* PlaneData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D0610DD25461F170020BCA0 /* PlaneData.swift */; };
 		6D0610DF25461F170020BCA0 /* PlaneData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D0610DD25461F170020BCA0 /* PlaneData.swift */; };
 		6D163DBD24FFCB6A000D2EA1 /* SmartPort.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D163DBC24FFCB6A000D2EA1 /* SmartPort.swift */; };
+		6D633A72254DE40800C17125 /* Database.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D633A71254DE40800C17125 /* Database.swift */; };
+		6D633A73254DE40800C17125 /* Database.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D633A71254DE40800C17125 /* Database.swift */; };
+		6D633A77254DE75300C17125 /* LogScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D633A76254DE75300C17125 /* LogScreen.swift */; };
 		6D6625612545D8DF006E948C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6DFDD0E0247FFFB6009F382A /* Assets.xcassets */; };
 		6D7DAD632530BF9500352704 /* SocketIO in Frameworks */ = {isa = PBXBuildFile; productRef = 6D7DAD622530BF9500352704 /* SocketIO */; };
 		6DAEB9CB2544B1E100EE5011 /* MainApp+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DAEB9CA2544B1E100EE5011 /* MainApp+Extensions.swift */; };
@@ -38,6 +41,8 @@
 /* Begin PBXFileReference section */
 		6D0610DD25461F170020BCA0 /* PlaneData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaneData.swift; sourceTree = "<group>"; };
 		6D163DBC24FFCB6A000D2EA1 /* SmartPort.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmartPort.swift; sourceTree = "<group>"; };
+		6D633A71254DE40800C17125 /* Database.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Database.swift; sourceTree = "<group>"; };
+		6D633A76254DE75300C17125 /* LogScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogScreen.swift; sourceTree = "<group>"; };
 		6DAEB9CA2544B1E100EE5011 /* MainApp+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MainApp+Extensions.swift"; sourceTree = "<group>"; };
 		6DD2294C252E618A0081E089 /* SocketComunicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocketComunicator.swift; sourceTree = "<group>"; };
 		6DD37D55248119980038C9DB /* MainPhone.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = MainPhone.storyboard; sourceTree = "<group>"; };
@@ -125,6 +130,7 @@
 				6D163DBC24FFCB6A000D2EA1 /* SmartPort.swift */,
 				6DD2294C252E618A0081E089 /* SocketComunicator.swift */,
 				6D0610DD25461F170020BCA0 /* PlaneData.swift */,
+				6D633A71254DE40800C17125 /* Database.swift */,
 			);
 			path = Framework;
 			sourceTree = "<group>";
@@ -134,6 +140,7 @@
 			children = (
 				6DF9826A24845512005C9BB2 /* MainScreen+Extensions.swift */,
 				6DFDD0DB247FFFB5009F382A /* MainScreen.swift */,
+				6D633A76254DE75300C17125 /* LogScreen.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -301,6 +308,7 @@
 				6DF4AB8425082F2800A513FD /* CustomTelemetry.swift in Sources */,
 				6D0610DF25461F170020BCA0 /* PlaneData.swift in Sources */,
 				6DF4AB8325082F0E00A513FD /* SmartPort.swift in Sources */,
+				6D633A73254DE40800C17125 /* Database.swift in Sources */,
 				6DF4AB6B250829A700A513FD /* AppDelegate.swift in Sources */,
 				6DD2294E252E618A0081E089 /* SocketComunicator.swift in Sources */,
 			);
@@ -310,12 +318,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6D633A77254DE75300C17125 /* LogScreen.swift in Sources */,
 				6D163DBD24FFCB6A000D2EA1 /* SmartPort.swift in Sources */,
 				6DFDD0DC247FFFB5009F382A /* MainScreen.swift in Sources */,
 				6DF9826724844D4A005C9BB2 /* CustomTelemetry.swift in Sources */,
 				6DFDD0D8247FFFB5009F382A /* AppDelegate.swift in Sources */,
 				6D0610DE25461F170020BCA0 /* PlaneData.swift in Sources */,
 				6DF9826B24845512005C9BB2 /* MainScreen+Extensions.swift in Sources */,
+				6D633A72254DE40800C17125 /* Database.swift in Sources */,
 				6DFDD0EC24800003009F382A /* LocationPointAnnotation.swift in Sources */,
 				6DD2294D252E618A0081E089 /* SocketComunicator.swift in Sources */,
 			);

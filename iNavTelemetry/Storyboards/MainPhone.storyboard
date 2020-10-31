@@ -3,7 +3,7 @@
     <device id="retina6_1" orientation="landscape" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17125"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17126"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -265,6 +265,17 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BDU-5X-kGI">
+                                <rect key="frame" x="534" y="354" width="60" height="60"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="60" id="4oi-Vb-bd0"/>
+                                    <constraint firstAttribute="width" constant="60" id="YDD-Ws-iYr"/>
+                                </constraints>
+                                <state key="normal" title="Button" image="log"/>
+                                <connections>
+                                    <action selector="onBtnLogs:" destination="MXy-Zy-8AG" eventType="touchUpInside" id="IM7-rO-sNR"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="RgM-JB-72g"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -276,6 +287,7 @@
                             <constraint firstAttribute="trailing" secondItem="9yf-ZG-nXx" secondAttribute="trailing" id="43H-xA-A13"/>
                             <constraint firstItem="9yf-ZG-nXx" firstAttribute="leading" secondItem="xbz-KI-NPc" secondAttribute="leading" id="5Fa-7a-hJA"/>
                             <constraint firstAttribute="trailing" secondItem="Y1t-M8-mVs" secondAttribute="trailing" id="6nI-Ld-55h"/>
+                            <constraint firstAttribute="bottom" secondItem="BDU-5X-kGI" secondAttribute="bottom" id="6yD-0v-S0i"/>
                             <constraint firstItem="tgA-ED-kcO" firstAttribute="leading" secondItem="RgM-JB-72g" secondAttribute="leading" id="8mc-ww-Qk7"/>
                             <constraint firstAttribute="bottom" secondItem="Uxn-bd-gna" secondAttribute="bottom" id="B1h-8z-qM6"/>
                             <constraint firstItem="xIH-LM-d0m" firstAttribute="leading" secondItem="RgM-JB-72g" secondAttribute="leading" id="BYJ-lS-8bx"/>
@@ -308,6 +320,7 @@
                             <constraint firstItem="Nb4-uz-vz3" firstAttribute="leading" secondItem="RgM-JB-72g" secondAttribute="leading" id="ss6-Ao-61c"/>
                             <constraint firstItem="wHc-RW-Dol" firstAttribute="leading" secondItem="MeL-qK-nEV" secondAttribute="trailing" constant="1" id="tef-5i-EP8"/>
                             <constraint firstItem="scZ-LK-3Vh" firstAttribute="top" secondItem="itk-xC-YTO" secondAttribute="bottom" id="vO5-4N-pcP"/>
+                            <constraint firstItem="scZ-LK-3Vh" firstAttribute="leading" secondItem="BDU-5X-kGI" secondAttribute="trailing" id="yaF-FQ-mnc"/>
                             <constraint firstItem="uxY-Ld-Ugb" firstAttribute="leading" secondItem="RgM-JB-72g" secondAttribute="leading" id="z6q-kH-JSE"/>
                         </constraints>
                     </view>
@@ -336,14 +349,61 @@
             </objects>
             <point key="canvasLocation" x="327.45535714285711" y="86.956521739130437"/>
         </scene>
+        <!--Log Screen-->
+        <scene sceneID="1v2-wg-qKy">
+            <objects>
+                <viewController storyboardIdentifier="LogScreen" id="WAs-89-g7T" customClass="LogScreen" customModule="iNavTelemetry" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="w0X-IC-UIc">
+                        <rect key="frame" x="0.0" y="0.0" width="896" height="414"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="zz3-oz-tqW">
+                                <rect key="frame" x="0.0" y="0.0" width="896" height="414"/>
+                                <connections>
+                                    <outlet property="delegate" destination="WAs-89-g7T" id="Bcg-dR-j0h"/>
+                                </connections>
+                            </mapView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="t3D-4Q-yvq">
+                                <rect key="frame" x="20" y="20" width="60" height="60"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="60" id="ICj-70-S0v"/>
+                                    <constraint firstAttribute="width" constant="60" id="PgP-t3-hDb"/>
+                                </constraints>
+                                <state key="normal" title="BACK" image="back"/>
+                                <connections>
+                                    <action selector="onBtnBack" destination="WAs-89-g7T" eventType="touchUpInside" id="Ih9-MX-Flw"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="mjG-0J-r57"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="t3D-4Q-yvq" firstAttribute="top" secondItem="w0X-IC-UIc" secondAttribute="top" constant="20" id="92C-LJ-Ows"/>
+                            <constraint firstItem="zz3-oz-tqW" firstAttribute="top" secondItem="mjG-0J-r57" secondAttribute="top" id="CjW-JN-Xfx"/>
+                            <constraint firstItem="t3D-4Q-yvq" firstAttribute="leading" secondItem="w0X-IC-UIc" secondAttribute="leading" constant="20" id="TSc-5p-vqJ"/>
+                            <constraint firstItem="zz3-oz-tqW" firstAttribute="leading" secondItem="w0X-IC-UIc" secondAttribute="leading" id="XfL-fQ-fqX"/>
+                            <constraint firstAttribute="bottom" secondItem="zz3-oz-tqW" secondAttribute="bottom" id="kaJ-iP-naL"/>
+                            <constraint firstAttribute="trailing" secondItem="zz3-oz-tqW" secondAttribute="trailing" id="zwu-EN-1Lp"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="mapPlane" destination="zz3-oz-tqW" id="DMS-2D-uPd"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="g7P-Zc-GHj" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="327.45535714285711" y="807.24637681159425"/>
+        </scene>
     </scenes>
     <resources>
+        <image name="back" width="512" height="512"/>
         <image name="compass" width="420" height="420"/>
         <image name="compass_plane" width="420" height="420"/>
         <image name="home_pos" width="504" height="501"/>
         <image name="horizon" width="420" height="420"/>
         <image name="horizon_line" width="420" height="420"/>
         <image name="horizon_plane" width="420" height="420"/>
+        <image name="log" width="512" height="512"/>
         <image name="power_off" width="230" height="230"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

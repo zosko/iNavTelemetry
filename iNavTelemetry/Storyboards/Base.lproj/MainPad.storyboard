@@ -3,7 +3,7 @@
     <device id="ipad9_7" orientation="landscape" layout="fullscreen" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17125"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17126"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -246,6 +246,17 @@
                                     <action selector="onBtnConnect:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Dbw-c7-Ia5"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wph-qX-xrq">
+                                <rect key="frame" x="422" y="668" width="100" height="100"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="100" id="YRP-Em-G6h"/>
+                                    <constraint firstAttribute="width" constant="100" id="kng-uY-VIO"/>
+                                </constraints>
+                                <state key="normal" title="Button" image="log"/>
+                                <connections>
+                                    <action selector="onBtnLogs:" destination="BYZ-38-t0r" eventType="touchUpInside" id="aPh-CQ-7uj"/>
+                                </connections>
+                            </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qAK-mh-PyC">
                                 <rect key="frame" x="522" y="567" width="100" height="100"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -311,8 +322,10 @@
                             <constraint firstItem="92G-06-Btk" firstAttribute="top" secondItem="mj9-Zj-6fe" secondAttribute="bottom" constant="1" id="k6f-cc-KNP"/>
                             <constraint firstItem="npN-YZ-ILV" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="kAi-8A-g2X"/>
                             <constraint firstItem="pmP-dK-GRa" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="mao-Yr-5Lm"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="wph-qX-xrq" secondAttribute="bottom" id="o6H-eW-sTw"/>
                             <constraint firstItem="a34-Se-597" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="oIk-ai-xzg"/>
                             <constraint firstItem="uFq-yg-t5U" firstAttribute="top" secondItem="1PJ-iE-sEQ" secondAttribute="bottom" constant="1" id="oq1-Vu-5yp"/>
+                            <constraint firstItem="Gcd-B3-8py" firstAttribute="leading" secondItem="wph-qX-xrq" secondAttribute="trailing" id="pSr-fs-FCr"/>
                             <constraint firstItem="Gcd-B3-8py" firstAttribute="top" secondItem="qAK-mh-PyC" secondAttribute="bottom" constant="1" id="qsC-Ll-yyy"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="fIB-kk-jha" secondAttribute="trailing" constant="10" id="sjC-Jy-S1R"/>
                             <constraint firstItem="vig-Md-PfB" firstAttribute="leading" secondItem="aFt-PY-13g" secondAttribute="trailing" constant="1" id="tzo-Ft-vqR"/>
@@ -345,14 +358,61 @@
             </objects>
             <point key="canvasLocation" x="327.5390625" y="87.5"/>
         </scene>
+        <!--Log Screen-->
+        <scene sceneID="Mo1-dY-aB5">
+            <objects>
+                <viewController storyboardIdentifier="LogScreen" id="nVT-ed-b70" customClass="LogScreen" customModule="iNavTelemetry" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Pxe-va-be6">
+                        <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="Evd-1j-KZ2">
+                                <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
+                                <connections>
+                                    <outlet property="delegate" destination="nVT-ed-b70" id="EMc-Ty-5Fz"/>
+                                </connections>
+                            </mapView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YRm-e0-HyS">
+                                <rect key="frame" x="50" y="50" width="100" height="100"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="100" id="Ixv-bO-NDY"/>
+                                    <constraint firstAttribute="width" constant="100" id="OFr-VO-bLt"/>
+                                </constraints>
+                                <state key="normal" title="BACK" image="back"/>
+                                <connections>
+                                    <action selector="onBtnBack" destination="nVT-ed-b70" eventType="touchUpInside" id="1sZ-za-miN"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="dYo-0T-QGh"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="YRm-e0-HyS" firstAttribute="leading" secondItem="Pxe-va-be6" secondAttribute="leading" constant="50" id="7cX-Gu-xpA"/>
+                            <constraint firstItem="dYo-0T-QGh" firstAttribute="bottom" secondItem="Evd-1j-KZ2" secondAttribute="bottom" id="CNa-tm-AMz"/>
+                            <constraint firstItem="Evd-1j-KZ2" firstAttribute="top" secondItem="dYo-0T-QGh" secondAttribute="top" id="JXz-HA-Wii"/>
+                            <constraint firstItem="YRm-e0-HyS" firstAttribute="top" secondItem="Pxe-va-be6" secondAttribute="top" constant="50" id="MWD-xZ-8FF"/>
+                            <constraint firstItem="Evd-1j-KZ2" firstAttribute="leading" secondItem="dYo-0T-QGh" secondAttribute="leading" id="MyI-De-EHd"/>
+                            <constraint firstItem="dYo-0T-QGh" firstAttribute="trailing" secondItem="Evd-1j-KZ2" secondAttribute="trailing" id="mVz-Bw-9OA"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="mapPlane" destination="Evd-1j-KZ2" id="vvz-xz-Gms"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="pS0-c3-CB5" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="330" y="742"/>
+        </scene>
     </scenes>
     <resources>
+        <image name="back" width="512" height="512"/>
         <image name="compass" width="420" height="420"/>
         <image name="compass_plane" width="420" height="420"/>
         <image name="home_pos" width="504" height="501"/>
         <image name="horizon" width="420" height="420"/>
         <image name="horizon_line" width="420" height="420"/>
         <image name="horizon_plane" width="420" height="420"/>
+        <image name="log" width="512" height="512"/>
         <image name="power_off" width="230" height="230"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

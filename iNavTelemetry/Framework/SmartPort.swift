@@ -12,7 +12,7 @@
     import UIKit
 #endif
 
-struct SmartPortStruct {
+struct SmartPortStruct : Codable {
     var lat = 0.0
     var lng = 0.0
     var alt = 0
