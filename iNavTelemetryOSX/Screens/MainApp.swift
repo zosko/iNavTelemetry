@@ -67,8 +67,11 @@ class MainApp: NSViewController {
     @IBAction func onBtnSetHomePosition(_ sender: Any){
         if planeAnnotation.coordinate.latitude != CLLocationCoordinate2D(latitude: 0, longitude: 0).latitude {
             gsAnnotation.coordinate = planeAnnotation.coordinate
+            
             let region = MKCoordinateRegion(center: gsAnnotation.coordinate, latitudinalMeters: 1000, longitudinalMeters: 1000)
             mapPlane.setRegion(region, animated: true)
+            
+            oldLocation = gsAnnotation.coordinate
         }
     }
     @IBAction func onVideoChoose(_ sender: NSPopUpButton){

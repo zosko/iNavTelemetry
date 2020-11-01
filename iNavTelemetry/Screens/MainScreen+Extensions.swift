@@ -162,10 +162,10 @@ extension MainScreen : MKMapViewDelegate{
 }
 
 extension MainScreen {
-    // Helpers
+    // MARK: -Helpers
     func toDate(timestamp : Double) -> String{
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy MMM dddd [hh:mm]"
+        dateFormatter.dateFormat = "yyyy MMM d [hh:mm]"
         let date = Date(timeIntervalSince1970: timestamp)
         return dateFormatter.string(from: date)
     }

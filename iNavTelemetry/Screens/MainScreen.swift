@@ -68,6 +68,8 @@ class MainScreen: UIViewController {
             gsAnnotation.coordinate = planeAnnotation.coordinate
             let region = MKCoordinateRegion(center: gsAnnotation.coordinate, latitudinalMeters: 1000, longitudinalMeters: 1000)
             mapPlane.setRegion(region, animated: true)
+            
+            oldLocation = gsAnnotation.coordinate
         }
     }
     @IBAction func onBtnLogs(_ sender : Any){
@@ -126,7 +128,6 @@ class MainScreen: UIViewController {
         mapPlane.addAnnotations([gsAnnotation,planeAnnotation])
     }
     func refreshTelemetry(packet: SmartPortStruct){
-        
         lblLatitude.text = "Latitude\n \(packet.lat)"
         lblLongitude.text = "Longitude\n \(packet.lng)"
         lblSatellites.text = "Satellites\n \(packet.gps_sats)"
