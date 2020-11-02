@@ -29,12 +29,7 @@
       var vectorLayer = new OpenLayers.Layer.Vector("Overlay");
       var controls = { selector: new OpenLayers.Control.SelectFeature(vectorLayer, { onSelect: createPopup })};
       var lonLat = new OpenLayers.LonLat( 21.432546,41.995788 ).transform(epsg4326, projectTo);
-      var zoom = 14;
-      var style = {
-                strokeColor: "#00FF00",
-                strokeWidth: 3,
-                pointRadius: 6,
-      };
+      var zoom = 12;
       map.setCenter (lonLat, zoom);
       map.addControl(controls['selector']);
       controls['selector'].activate();
@@ -51,9 +46,25 @@
           info = info + "[Altitude] " + planes[i].alt + " m<br>";
           info = info + "[Speed] " + planes[i].speed + " km/h<br>";
           info = info + "[Heading] " + planes[i].heading + " deg<br>";
-          info = info + '<img width="200" src="data:image/jpeg;base64, '+ planes[i].photo + '" />';
+          info = info + "[Pilot] " + planes[i].pilot + "<br>";
+          info = info + '<img width="300" src="data:image/jpeg;base64,'+ planes[i].photo + '" />';
+          
+          var description = {
+              description: info
+          }
+          
+          var style = {
+            strokeColor: "red",
+            fillColor: "cyan",
+            strokeWidth: 3,
+            pointRadius: 6,
+            label: planes[i].pilot,
+            labelYOffset: 15,
+            fontColor: "black"
+          };
+          
           var ol = new OpenLayers.Geometry.Point(planes[i].lng,planes[i].lat).transform(epsg4326, projectTo);
-          var feature = new OpenLayers.Feature.Vector(ol,{description: info},style);
+          var feature = new OpenLayers.Feature.Vector(ol,description,style);
           vectorLayer.addFeatures(feature);        
           map.addLayer(vectorLayer);
         }
