@@ -6,7 +6,11 @@
 //  Copyright © 2020 Bosko Petreski. All rights reserved.
 //
 
-import UIKit
+#if os(OSX)
+    import Cocoa
+#else
+    import UIKit
+#endif
 
 class Database: NSObject {
     var jsonDatabase : [SmartPortStruct] = []
@@ -65,6 +69,9 @@ class Database: NSObject {
     func getLogs() -> [URL]{
         let documentsUrl =  FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
         let directoryContents = try! FileManager.default.contentsOfDirectory(at: documentsUrl, includingPropertiesForKeys: nil, options: [.skipsHiddenFiles])
-        return directoryContents
+        return directoryContents.filter { url in
+            let nameFile = url.lastPathComponent
+            return !nameFile.isEmpty && nameFile.rangeOfCharacter(from: CharacterSet.decimalDigits.inverted) == nil
+        }
     }
 }

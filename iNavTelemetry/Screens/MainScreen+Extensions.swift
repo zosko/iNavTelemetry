@@ -70,6 +70,7 @@ extension MainScreen : CBCentralManagerDelegate,CBPeripheralDelegate{
                 
                 if timeoutSeconds > 100 {
                     print("timeout")
+                    self.connectedPeripheral = nil;
                     Database.shared.stopLogging()
                     self.btnConnect.setImage(UIImage(named: "power_off"), for: .normal)
                     timer.invalidate();
@@ -162,7 +163,7 @@ extension MainScreen : MKMapViewDelegate{
 }
 
 extension MainScreen {
-    // MARK: -Helpers
+    // MARK: - Helpers
     func toDate(timestamp : Double) -> String{
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy MMM d [hh:mm]"

@@ -46,6 +46,7 @@ class MainApp: NSViewController {
     var connectedPeripheral: CBPeripheral!
     var peripherals : [CBPeripheral] = []
     var tempCapturePhotoCamera : String = ""
+    var currentTime = 0.0
     
     //MARK: - IBActions
     @IBAction func onBtnConnect(_ sender: Any) {
@@ -66,6 +67,8 @@ class MainApp: NSViewController {
     }
     @IBAction func onBtnSetHomePosition(_ sender: Any){
         if planeAnnotation.coordinate.latitude != CLLocationCoordinate2D(latitude: 0, longitude: 0).latitude {
+            Database.shared.startLogging()
+            
             gsAnnotation.coordinate = planeAnnotation.coordinate
             
             let region = MKCoordinateRegion(center: gsAnnotation.coordinate, latitudinalMeters: 1000, longitudinalMeters: 1000)
@@ -94,6 +97,25 @@ class MainApp: NSViewController {
         viewCockpit?.layer?.addSublayer(previewLayer)
         session.startRunning()
         popupVideoInput.isHidden = true
+    }
+    @IBAction func onBtnLogs(_ sender : Any){
+        let alert = NSAlert()
+        alert.messageText = "FLIGHT LOGS"
+        alert.alertStyle = .informational
+        alert.addButton(withTitle: "Cancel")
+        
+        let allLogs = Database.shared.getLogs()
+        
+        for log in allLogs {
+            alert.addButton(withTitle: toDate(timestamp: Double(log.pathComponents.last!)!))
+        }
+        
+        alert.beginSheetModal(for: self.view.window!) { (response) in
+            if response != .alertFirstButtonReturn {
+                let deviceIndex = response.rawValue - 1001 // to get index 0.1.2...
+                self.openLog(urlLog: allLogs[deviceIndex])
+            }
+        }
     }
     
     //MARK: - CustomFunctions
@@ -166,9 +188,13 @@ class MainApp: NSViewController {
         refreshCompass(degree: CGFloat(-packet.heading))
         refreshHorizon(pitch: CGFloat(packet.pitch), roll: CGFloat(-packet.roll))
         
-        if switchLive.state == .on {
-            capturePhoto()
-            SocketComunicator.shared.sendPlaneData(packet: packet, photo: tempCapturePhotoCamera)
+        if Date().timeIntervalSince1970 - currentTime > 1 { // send/save data every second
+            if switchLive.state == .on {
+                capturePhoto()
+                SocketComunicator.shared.sendPlaneData(packet: packet, photo: tempCapturePhotoCamera)
+            }
+            Database.shared.saveTelemetryData(packet: packet)
+            currentTime = Date().timeIntervalSince1970
         }
         
     }
@@ -211,7 +237,7 @@ class MainApp: NSViewController {
         }
     }
     
-    // MARK: - UIViewDelegates
+    // MARK: - NSViewDelegates
     override func viewDidLoad() {
         super.viewDidLoad()
         SocketComunicator.shared.socketConnectionSetup()

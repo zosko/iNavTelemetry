@@ -880,7 +880,7 @@
                                 </textFieldCell>
                             </textField>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="saS-o7-peS">
-                                <rect key="frame" x="190" y="0.0" width="80" height="71"/>
+                                <rect key="frame" x="180" y="0.0" width="80" height="71"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="80" id="LkW-zj-Muv"/>
                                     <constraint firstAttribute="height" constant="71" id="Wcn-q8-UfR"/>
@@ -894,7 +894,7 @@
                                 </connections>
                             </button>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="sYW-SW-Dhi">
-                                <rect key="frame" x="108" y="0.0" width="80" height="71"/>
+                                <rect key="frame" x="100" y="0.0" width="80" height="71"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="80" id="G2N-rj-7wf"/>
                                     <constraint firstAttribute="height" constant="71" id="WLq-fi-aHS"/>
@@ -936,7 +936,7 @@
                                 </textFieldCell>
                             </textField>
                             <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Gsy-9Z-mX6">
-                                <rect key="frame" x="334" y="7" width="330" height="274"/>
+                                <rect key="frame" x="341" y="0.0" width="330" height="274"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                                 <subviews>
                                     <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="f75-fG-QUw">
@@ -972,10 +972,25 @@
                                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.50385123239999996" colorSpace="custom" customColorSpace="sRGB"/>
                                 </textFieldCell>
                             </textField>
+                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="E8Z-dA-0LE">
+                                <rect key="frame" x="260" y="0.0" width="80" height="71"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="71" id="CRv-dx-xu3"/>
+                                    <constraint firstAttribute="width" constant="80" id="Vx7-k3-6vO"/>
+                                </constraints>
+                                <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="log" imagePosition="only" borderStyle="border" transparent="YES" imageScaling="proportionallyUpOrDown" inset="2" id="d9w-kN-DlW">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="onBtnLogs:" target="yZ5-PP-dWB" id="xDe-go-mBp"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <constraints>
-                            <constraint firstItem="saS-o7-peS" firstAttribute="leading" secondItem="sYW-SW-Dhi" secondAttribute="trailing" constant="2" id="0UB-qX-Vru"/>
-                            <constraint firstItem="sYW-SW-Dhi" firstAttribute="leading" secondItem="ea5-23-3Mv" secondAttribute="trailing" constant="8" id="2dd-WJ-Lkb"/>
+                            <constraint firstAttribute="bottom" secondItem="E8Z-dA-0LE" secondAttribute="bottom" id="07f-it-O5P"/>
+                            <constraint firstItem="saS-o7-peS" firstAttribute="leading" secondItem="sYW-SW-Dhi" secondAttribute="trailing" id="0UB-qX-Vru"/>
+                            <constraint firstItem="sYW-SW-Dhi" firstAttribute="leading" secondItem="ea5-23-3Mv" secondAttribute="trailing" id="2dd-WJ-Lkb"/>
                             <constraint firstAttribute="trailing" secondItem="FOF-eJ-Y5V" secondAttribute="trailing" id="6f8-Tc-3nn"/>
                             <constraint firstItem="6Ps-Ak-v5b" firstAttribute="top" secondItem="T9l-7J-Uqm" secondAttribute="bottom" constant="1" id="765-mR-Bn3"/>
                             <constraint firstItem="ea5-23-3Mv" firstAttribute="top" secondItem="Z36-qe-YjG" secondAttribute="bottom" constant="10" id="CdO-L7-vZ3"/>
@@ -985,6 +1000,7 @@
                             <constraint firstItem="6Ps-Ak-v5b" firstAttribute="centerY" secondItem="FPQ-hh-e5m" secondAttribute="centerY" id="T5q-Tg-3qi"/>
                             <constraint firstItem="FOF-eJ-Y5V" firstAttribute="top" secondItem="eRO-5m-VUg" secondAttribute="bottom" constant="1" id="WHQ-iv-yye"/>
                             <constraint firstItem="TM2-Bn-NiG" firstAttribute="leading" secondItem="FPQ-hh-e5m" secondAttribute="leading" id="XzB-zl-G0p"/>
+                            <constraint firstItem="E8Z-dA-0LE" firstAttribute="leading" secondItem="saS-o7-peS" secondAttribute="trailing" id="b2v-kb-1Tu"/>
                             <constraint firstItem="Z36-qe-YjG" firstAttribute="leading" secondItem="FPQ-hh-e5m" secondAttribute="leading" constant="10" id="b8D-Mt-YLz"/>
                             <constraint firstAttribute="bottom" secondItem="sYW-SW-Dhi" secondAttribute="bottom" id="bp5-w3-pSN"/>
                             <constraint firstItem="GYU-de-ESB" firstAttribute="leading" secondItem="Z36-qe-YjG" secondAttribute="trailing" constant="4" id="cLB-OY-hEa"/>
@@ -1038,13 +1054,58 @@
             </objects>
             <point key="canvasLocation" x="75" y="876"/>
         </scene>
+        <!--Log-->
+        <scene sceneID="7TN-mx-hYc">
+            <objects>
+                <viewController title="Log" storyboardIdentifier="LogScreen" id="aRm-Dn-g61" customClass="LogScreen" customModule="iNavTelemetryOSX" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" id="e6t-1N-37R">
+                        <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <mapView fixedFrame="YES" mapType="satellite" pitchEnabled="NO" showsBuildings="NO" showsPointsOfInterest="NO" showsCompass="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vc7-Kk-3VL">
+                                <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <connections>
+                                    <outlet property="delegate" destination="aRm-Dn-g61" id="LQp-Bp-Eqm"/>
+                                </connections>
+                            </mapView>
+                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="nPh-Yg-Wm5">
+                                <rect key="frame" x="0.0" y="229" width="80" height="71"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="80" id="36K-kA-Wwm"/>
+                                    <constraint firstAttribute="height" constant="71" id="a9N-E9-K8G"/>
+                                </constraints>
+                                <buttonCell key="cell" type="square" title="Back" bezelStyle="shadowlessSquare" image="back" imagePosition="overlaps" alignment="center" borderStyle="border" transparent="YES" imageScaling="proportionallyDown" inset="2" id="bIF-dm-v1E">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="onBtnBack:" target="aRm-Dn-g61" id="rGf-El-EEi"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="nPh-Yg-Wm5" firstAttribute="leading" secondItem="e6t-1N-37R" secondAttribute="leading" id="atb-5v-kmP"/>
+                            <constraint firstItem="nPh-Yg-Wm5" firstAttribute="top" secondItem="e6t-1N-37R" secondAttribute="top" id="xC7-UD-qsn"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="mapPlane" destination="vc7-Kk-3VL" id="kwY-74-mnv"/>
+                    </connections>
+                </viewController>
+                <customObject id="YtQ-V6-lRO" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="19" y="1417"/>
+        </scene>
     </scenes>
     <resources>
+        <image name="back" width="512" height="512"/>
         <image name="compass" width="420" height="420"/>
         <image name="compass_plane" width="420" height="420"/>
         <image name="home_pos" width="504" height="501"/>
         <image name="horizon" width="420" height="420"/>
         <image name="horizon_plane" width="420" height="420"/>
+        <image name="log" width="512" height="512"/>
         <image name="power_off" width="230" height="230"/>
     </resources>
 </document>

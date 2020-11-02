@@ -91,12 +91,40 @@ extension MainApp : CBCentralManagerDelegate, CBPeripheralDelegate {
     func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Error?) {
         if error != nil {
             print("FailToDisconnect" + error!.localizedDescription)
-            
             centralManager.cancelPeripheralConnection(connectedPeripheral)
-            connectedPeripheral = nil;
             peripherals.removeAll()
-            return
+            
+            var timeoutSeconds = 0;
+            Timer.scheduledTimer(withTimeInterval: 1, repeats: true, block: { (timer) in
+                timeoutSeconds += 1
+                
+                if self.connectedPeripheral.state == .connected {
+                    print("connected....")
+                    timer.invalidate();
+                }
+                else if self.connectedPeripheral.state == .connecting{
+                    print("connecting....")
+                }
+                else if self.connectedPeripheral.state == .disconnecting{
+                    print("disconnecting....")
+                }
+                else if self.connectedPeripheral.state == .disconnected{
+                    print("disconnected....")
+                    self.centralManager.connect(self.connectedPeripheral, options: nil)
+                }
+                
+                if timeoutSeconds > 100 {
+                    print("timeout")
+                    self.connectedPeripheral = nil;
+                    Database.shared.stopLogging()
+                    self.btnConnect.image = NSImage(named: "power_off")
+                    timer.invalidate();
+                }
+                
+            })
         }
+        
+        Database.shared.stopLogging()
         btnConnect.image = NSImage(named: "power_off")
     }
     
@@ -136,5 +164,22 @@ extension MainApp : CBCentralManagerDelegate, CBPeripheralDelegate {
                 peripheral.setNotifyValue(true, for: characteristic)
             }
         }
+    }
+}
+extension MainApp {
+    // MARK: - Helpers
+    func toDate(timestamp : Double) -> String{
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy MMM d [hh:mm]"
+        let date = Date(timeIntervalSince1970: timestamp)
+        return dateFormatter.string(from: date)
+    }
+    func openLog(urlLog : URL){
+        let jsonData = try! Data(contentsOf: urlLog)
+        let logData = try! JSONDecoder().decode([SmartPortStruct].self, from: jsonData)
+        
+        let controller : LogScreen = self.storyboard!.instantiateController(identifier: "LogScreen")
+        controller.logData = logData
+        self.presentAsSheet(controller)
     }
 }
