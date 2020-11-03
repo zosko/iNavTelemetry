@@ -106,15 +106,31 @@ class MainApp: NSViewController {
         
         let allLogs = Database.shared.getLogs()
         
+        if allLogs.count > 0{
+            alert.addButton(withTitle: "Clear Database")
+        }
+        
         for log in allLogs {
             alert.addButton(withTitle: toDate(timestamp: Double(log.pathComponents.last!)!))
         }
         
         alert.beginSheetModal(for: self.view.window!) { (response) in
-            if response != .alertFirstButtonReturn {
-                let deviceIndex = response.rawValue - 1001 // to get index 0.1.2...
-                self.openLog(urlLog: allLogs[deviceIndex])
+            if allLogs.count > 0 {
+                if response != .alertFirstButtonReturn && response != .alertSecondButtonReturn {
+                    let deviceIndex = response.rawValue - 1002 // to get index 0.1.2...
+                    self.openLog(urlLog: allLogs[deviceIndex])
+                }
+                else if response == .alertSecondButtonReturn { //clean DB
+                    Database.shared.cleanDatabase()
+                }
             }
+            else{
+                if response != .alertFirstButtonReturn {
+                    let deviceIndex = response.rawValue - 1001 // to get index 0.1.2...
+                    self.openLog(urlLog: allLogs[deviceIndex])
+                }
+            }
+            
         }
     }
     

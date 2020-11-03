@@ -1059,18 +1059,17 @@
             <objects>
                 <viewController title="Log" storyboardIdentifier="LogScreen" id="aRm-Dn-g61" customClass="LogScreen" customModule="iNavTelemetryOSX" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="e6t-1N-37R">
-                        <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="400"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <mapView fixedFrame="YES" mapType="satellite" pitchEnabled="NO" showsBuildings="NO" showsPointsOfInterest="NO" showsCompass="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vc7-Kk-3VL">
-                                <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                            <mapView mapType="satellite" pitchEnabled="NO" showsBuildings="NO" showsPointsOfInterest="NO" showsCompass="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vc7-Kk-3VL">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="400"/>
                                 <connections>
                                     <outlet property="delegate" destination="aRm-Dn-g61" id="LQp-Bp-Eqm"/>
                                 </connections>
                             </mapView>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="nPh-Yg-Wm5">
-                                <rect key="frame" x="0.0" y="229" width="80" height="71"/>
+                                <rect key="frame" x="0.0" y="329" width="80" height="71"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="80" id="36K-kA-Wwm"/>
                                     <constraint firstAttribute="height" constant="71" id="a9N-E9-K8G"/>
@@ -1085,8 +1084,12 @@
                             </button>
                         </subviews>
                         <constraints>
+                            <constraint firstItem="vc7-Kk-3VL" firstAttribute="top" secondItem="e6t-1N-37R" secondAttribute="top" id="7KQ-de-qVH"/>
+                            <constraint firstAttribute="trailing" secondItem="vc7-Kk-3VL" secondAttribute="trailing" id="H2Q-1K-P3N"/>
+                            <constraint firstItem="vc7-Kk-3VL" firstAttribute="leading" secondItem="e6t-1N-37R" secondAttribute="leading" id="ZnN-8m-fQg"/>
                             <constraint firstItem="nPh-Yg-Wm5" firstAttribute="leading" secondItem="e6t-1N-37R" secondAttribute="leading" id="atb-5v-kmP"/>
                             <constraint firstItem="nPh-Yg-Wm5" firstAttribute="top" secondItem="e6t-1N-37R" secondAttribute="top" id="xC7-UD-qsn"/>
+                            <constraint firstAttribute="bottom" secondItem="vc7-Kk-3VL" secondAttribute="bottom" id="zTd-gd-rSx"/>
                         </constraints>
                     </view>
                     <connections>
@@ -1095,7 +1098,7 @@
                 </viewController>
                 <customObject id="YtQ-V6-lRO" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="19" y="1417"/>
+            <point key="canvasLocation" x="15" y="1442"/>
         </scene>
     </scenes>
     <resources>
