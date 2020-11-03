@@ -1,6 +1,10 @@
 # iNavTelemetry
 iNav telemetry for iOS (iPhone / iPad / MacOS / Safari Viewer)
 
+# Setup on iNav flight controller
+- smartport_fuel_unit = PERCENT
+- frsky_pitch_roll = ON
+
 # Video presentation application
 [![Video presentation](http://img.youtube.com/vi/9Z63v9UPBO4/0.jpg)](http://www.youtube.com/watch?v=9Z63v9UPBO4 "Testing")
 
