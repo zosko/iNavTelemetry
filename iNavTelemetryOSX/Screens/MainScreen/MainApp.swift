@@ -33,6 +33,7 @@ class MainApp: NSViewController {
     @IBOutlet var imgHorizont: NSImageView!
     @IBOutlet var viewCockpit: NSView?
     @IBOutlet var switchLive : NSSwitch!
+    @IBOutlet var lblFlyTime: NSTextField!
     
     //MARK: - Variables
     let videoDevices = AVCaptureDevice.DiscoverySession(deviceTypes: [.externalUnknown], mediaType: .video, position: .unspecified).devices
@@ -47,6 +48,7 @@ class MainApp: NSViewController {
     var peripherals : [CBPeripheral] = []
     var tempCapturePhotoCamera : String = ""
     var currentTime = 0.0
+    var seconds = 0
     
     //MARK: - IBActions
     @IBAction func onBtnConnect(_ sender: Any) {
@@ -199,12 +201,15 @@ class MainApp: NSViewController {
         lblArmed.stringValue = "Armed\n \(telemetry.getArmed())"
         lblSignalStrength.stringValue = "Signal\n \(packet.rssi) %"
         lblFuel.stringValue = "Fuel\n \(packet.fuel) %"
+        lblFlyTime.stringValue = String(format:"Fly time\n%02ld:%02ld:%02ld", seconds / 3600, (seconds / 60) % 60, seconds % 60)
         
         refreshLocation(latitude: packet.lat, longitude: packet.lng)
         refreshCompass(degree: CGFloat(-packet.heading))
         refreshHorizon(pitch: CGFloat(packet.pitch), roll: CGFloat(-packet.roll))
         
         if Date().timeIntervalSince1970 - currentTime > 1 { // send/save data every second
+            seconds += 1
+            
             if switchLive.state == .on {
                 capturePhoto()
                 SocketComunicator.shared.sendPlaneData(packet: packet, photo: tempCapturePhotoCamera)

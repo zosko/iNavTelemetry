@@ -276,6 +276,19 @@
                                     <action selector="onBtnLogs:" destination="MXy-Zy-8AG" eventType="touchUpInside" id="IM7-rO-sNR"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fTG-Gw-DBt">
+                                <rect key="frame" x="796" y="164" width="100" height="40"/>
+                                <color key="backgroundColor" white="1" alpha="0.5" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="ACs-Va-AZh"/>
+                                    <constraint firstAttribute="width" constant="100" id="Qny-Kf-BVh"/>
+                                </constraints>
+                                <string key="text">Fly time
+~</string>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="RgM-JB-72g"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -293,12 +306,14 @@
                             <constraint firstItem="xIH-LM-d0m" firstAttribute="leading" secondItem="RgM-JB-72g" secondAttribute="leading" id="BYJ-lS-8bx"/>
                             <constraint firstItem="kQb-Wg-2R9" firstAttribute="top" secondItem="rd9-7t-SxI" secondAttribute="bottom" constant="1" id="C3Y-le-kfw"/>
                             <constraint firstAttribute="bottom" secondItem="scZ-LK-3Vh" secondAttribute="bottom" id="C8o-No-Ckp"/>
+                            <constraint firstItem="fTG-Gw-DBt" firstAttribute="top" secondItem="kQb-Wg-2R9" secondAttribute="bottom" constant="1" id="GVC-OL-wPf"/>
                             <constraint firstItem="Uxn-bd-gna" firstAttribute="leading" secondItem="RgM-JB-72g" secondAttribute="leading" id="IvP-uZ-8Xh"/>
                             <constraint firstAttribute="trailing" secondItem="kQb-Wg-2R9" secondAttribute="trailing" id="LoD-aJ-Miq"/>
                             <constraint firstItem="xIH-LM-d0m" firstAttribute="top" secondItem="RgM-JB-72g" secondAttribute="top" id="MRp-Vy-wZT"/>
                             <constraint firstAttribute="bottom" secondItem="vCf-ni-GYP" secondAttribute="bottom" id="MhF-ZX-TPr"/>
                             <constraint firstItem="MeL-qK-nEV" firstAttribute="leading" secondItem="itk-xC-YTO" secondAttribute="trailing" constant="1" id="Qkk-kD-rXg"/>
                             <constraint firstItem="Nb4-uz-vz3" firstAttribute="top" secondItem="tgA-ED-kcO" secondAttribute="bottom" constant="1" id="TC0-nU-ZHs"/>
+                            <constraint firstAttribute="trailing" secondItem="fTG-Gw-DBt" secondAttribute="trailing" id="V6M-Uj-iXq"/>
                             <constraint firstItem="0NW-Yc-fsA" firstAttribute="top" secondItem="Hp4-hl-p9W" secondAttribute="bottom" constant="1" id="VEs-4J-KiX"/>
                             <constraint firstItem="KtZ-Ac-dTx" firstAttribute="centerY" secondItem="jq7-6N-jUW" secondAttribute="centerY" id="Vxt-B7-g59"/>
                             <constraint firstAttribute="trailing" secondItem="jq7-6N-jUW" secondAttribute="trailing" constant="10" id="Wp2-zE-ULZ"/>
@@ -333,6 +348,7 @@
                         <outlet property="lblArmed" destination="CqW-pj-MUO" id="F0N-ks-DKd"/>
                         <outlet property="lblCurrent" destination="Uxn-bd-gna" id="2pD-EB-8Vo"/>
                         <outlet property="lblDistance" destination="tgA-ED-kcO" id="yVT-oO-TqX"/>
+                        <outlet property="lblFlyTime" destination="fTG-Gw-DBt" id="DO2-U1-JrR"/>
                         <outlet property="lblFuel" destination="rd9-7t-SxI" id="f7Y-xh-ddb"/>
                         <outlet property="lblLatitude" destination="xIH-LM-d0m" id="quh-xC-7kF"/>
                         <outlet property="lblLongitude" destination="Hp4-hl-p9W" id="jHV-Ce-taH"/>

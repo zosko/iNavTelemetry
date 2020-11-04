@@ -289,6 +289,19 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DUJ-XM-Irk">
+                                <rect key="frame" x="864" y="192" width="160" height="47"/>
+                                <color key="backgroundColor" white="1" alpha="0.5" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="160" id="4JX-y5-IIR"/>
+                                    <constraint firstAttribute="height" constant="47" id="ato-ET-wLF"/>
+                                </constraints>
+                                <string key="text">Fly time
+~</string>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -317,11 +330,13 @@
                             <constraint firstItem="hOL-3R-YkL" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="fEH-v3-h0X"/>
                             <constraint firstItem="vig-Md-PfB" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="fpf-l2-Ktk"/>
                             <constraint firstItem="uFq-yg-t5U" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="gRx-cu-T0s"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="DUJ-XM-Irk" secondAttribute="trailing" id="hx0-kd-19S"/>
                             <constraint firstItem="uFq-yg-t5U" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="izG-AT-fYL"/>
                             <constraint firstItem="1PJ-iE-sEQ" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="jjk-2D-bXE"/>
                             <constraint firstItem="92G-06-Btk" firstAttribute="top" secondItem="mj9-Zj-6fe" secondAttribute="bottom" constant="1" id="k6f-cc-KNP"/>
                             <constraint firstItem="npN-YZ-ILV" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="kAi-8A-g2X"/>
                             <constraint firstItem="pmP-dK-GRa" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="mao-Yr-5Lm"/>
+                            <constraint firstItem="DUJ-XM-Irk" firstAttribute="top" secondItem="Crr-Iu-bUj" secondAttribute="bottom" constant="1" id="o1S-ho-fl3"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="wph-qX-xrq" secondAttribute="bottom" id="o6H-eW-sTw"/>
                             <constraint firstItem="a34-Se-597" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="oIk-ai-xzg"/>
                             <constraint firstItem="uFq-yg-t5U" firstAttribute="top" secondItem="1PJ-iE-sEQ" secondAttribute="bottom" constant="1" id="oq1-Vu-5yp"/>
@@ -342,6 +357,7 @@
                         <outlet property="lblArmed" destination="pmP-dK-GRa" id="ead-Gm-6Wo"/>
                         <outlet property="lblCurrent" destination="uFq-yg-t5U" id="E6v-EG-wR5"/>
                         <outlet property="lblDistance" destination="mj9-Zj-6fe" id="HRa-L2-eVV"/>
+                        <outlet property="lblFlyTime" destination="DUJ-XM-Irk" id="Qzq-5n-Dsq"/>
                         <outlet property="lblFuel" destination="a34-Se-597" id="rQB-xL-GBD"/>
                         <outlet property="lblLatitude" destination="RWD-8h-6wN" id="Uej-uk-WES"/>
                         <outlet property="lblLongitude" destination="npN-YZ-ILV" id="Xpj-bd-1lL"/>

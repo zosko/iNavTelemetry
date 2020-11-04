@@ -922,7 +922,7 @@
                                 </textFieldCell>
                             </textField>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="eyd-6k-WRP">
-                                <rect key="frame" x="611" y="563" width="100" height="35"/>
+                                <rect key="frame" x="712" y="455" width="100" height="35"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="100" id="WhX-Bj-heJ"/>
                                     <constraint firstAttribute="height" constant="35" id="sqA-o7-MTe"/>
@@ -986,6 +986,20 @@
                                     <action selector="onBtnLogs:" target="yZ5-PP-dWB" id="xDe-go-mBp"/>
                                 </connections>
                             </button>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="p2Z-vf-zez">
+                                <rect key="frame" x="712" y="419" width="100" height="35"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="35" id="0We-HL-XUc"/>
+                                    <constraint firstAttribute="width" constant="100" id="kuf-S8-9OW"/>
+                                </constraints>
+                                <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" drawsBackground="YES" id="iZT-71-8OH">
+                                    <font key="font" metaFont="systemBold"/>
+                                    <string key="title">Fly time
+~</string>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.50385123239999996" colorSpace="custom" customColorSpace="sRGB"/>
+                                </textFieldCell>
+                            </textField>
                         </subviews>
                         <constraints>
                             <constraint firstAttribute="bottom" secondItem="E8Z-dA-0LE" secondAttribute="bottom" id="07f-it-O5P"/>
@@ -997,6 +1011,7 @@
                             <constraint firstAttribute="trailing" secondItem="Zlt-qs-YlW" secondAttribute="trailing" id="L9p-jA-WVo"/>
                             <constraint firstItem="Q0f-K6-NDk" firstAttribute="leading" secondItem="FPQ-hh-e5m" secondAttribute="leading" id="NgL-ln-h31"/>
                             <constraint firstItem="GNI-J1-HX9" firstAttribute="leading" secondItem="FPQ-hh-e5m" secondAttribute="leading" id="NiT-Ei-OyA"/>
+                            <constraint firstItem="eyd-6k-WRP" firstAttribute="top" secondItem="FOF-eJ-Y5V" secondAttribute="bottom" constant="1" id="OWX-Pu-odP"/>
                             <constraint firstItem="6Ps-Ak-v5b" firstAttribute="centerY" secondItem="FPQ-hh-e5m" secondAttribute="centerY" id="T5q-Tg-3qi"/>
                             <constraint firstItem="FOF-eJ-Y5V" firstAttribute="top" secondItem="eRO-5m-VUg" secondAttribute="bottom" constant="1" id="WHQ-iv-yye"/>
                             <constraint firstItem="TM2-Bn-NiG" firstAttribute="leading" secondItem="FPQ-hh-e5m" secondAttribute="leading" id="XzB-zl-G0p"/>
@@ -1009,16 +1024,17 @@
                             <constraint firstAttribute="bottom" secondItem="LHa-5i-hc3" secondAttribute="bottom" id="f1X-GH-p9f"/>
                             <constraint firstItem="TM2-Bn-NiG" firstAttribute="top" secondItem="OG1-b0-Sed" secondAttribute="bottom" constant="1" id="fXZ-Sn-X6B"/>
                             <constraint firstItem="TpD-U8-Wa9" firstAttribute="top" secondItem="6Ps-Ak-v5b" secondAttribute="bottom" constant="1" id="gjD-XJ-rTh"/>
-                            <constraint firstItem="eyd-6k-WRP" firstAttribute="top" secondItem="FPQ-hh-e5m" secondAttribute="top" id="gwI-qU-QZP"/>
-                            <constraint firstItem="Zlt-qs-YlW" firstAttribute="leading" secondItem="eyd-6k-WRP" secondAttribute="trailing" constant="1" id="hn3-zk-Lhd"/>
                             <constraint firstItem="GYU-de-ESB" firstAttribute="centerY" secondItem="Z36-qe-YjG" secondAttribute="centerY" id="hon-KC-8qD"/>
                             <constraint firstItem="6Ps-Ak-v5b" firstAttribute="leading" secondItem="FPQ-hh-e5m" secondAttribute="leading" id="iO4-9U-eaW"/>
                             <constraint firstItem="GNI-J1-HX9" firstAttribute="top" secondItem="TM2-Bn-NiG" secondAttribute="bottom" constant="1" id="kLs-0T-w0H"/>
+                            <constraint firstAttribute="trailing" secondItem="eyd-6k-WRP" secondAttribute="trailing" id="mA8-UZ-xpz"/>
                             <constraint firstItem="eRO-5m-VUg" firstAttribute="top" secondItem="Zlt-qs-YlW" secondAttribute="bottom" constant="1" id="mC6-Nw-2Tt"/>
                             <constraint firstItem="T9l-7J-Uqm" firstAttribute="leading" secondItem="FPQ-hh-e5m" secondAttribute="leading" id="niR-Be-jeH"/>
                             <constraint firstItem="LHa-5i-hc3" firstAttribute="top" secondItem="ea5-23-3Mv" secondAttribute="bottom" constant="1" id="oNQ-Z3-2sL"/>
                             <constraint firstItem="LHa-5i-hc3" firstAttribute="leading" secondItem="FPQ-hh-e5m" secondAttribute="leading" id="p0u-Lq-tbJ"/>
+                            <constraint firstItem="p2Z-vf-zez" firstAttribute="top" secondItem="eyd-6k-WRP" secondAttribute="bottom" constant="1" id="qDe-2V-fKE"/>
                             <constraint firstAttribute="bottom" secondItem="Q0f-K6-NDk" secondAttribute="bottom" id="rFX-vf-C8g"/>
+                            <constraint firstAttribute="trailing" secondItem="p2Z-vf-zez" secondAttribute="trailing" id="t1B-Nc-hlO"/>
                             <constraint firstAttribute="trailing" secondItem="Q0f-K6-NDk" secondAttribute="trailing" id="t7c-iv-Cqz"/>
                             <constraint firstItem="Q0f-K6-NDk" firstAttribute="top" secondItem="FPQ-hh-e5m" secondAttribute="top" id="ujM-j9-oO1"/>
                             <constraint firstAttribute="bottom" secondItem="saS-o7-peS" secondAttribute="bottom" id="v47-2L-nu8"/>
@@ -1036,6 +1052,7 @@
                         <outlet property="lblArmed" destination="Zlt-qs-YlW" id="n4b-x7-JDY"/>
                         <outlet property="lblCurrent" destination="LHa-5i-hc3" id="fct-16-K2f"/>
                         <outlet property="lblDistance" destination="T9l-7J-Uqm" id="nsG-Cn-mQ2"/>
+                        <outlet property="lblFlyTime" destination="p2Z-vf-zez" id="bSb-Gf-f31"/>
                         <outlet property="lblFuel" destination="FOF-eJ-Y5V" id="JF8-fR-VPj"/>
                         <outlet property="lblLatitude" destination="OG1-b0-Sed" id="6fE-a6-y9q"/>
                         <outlet property="lblLongitude" destination="TM2-Bn-NiG" id="pHc-mg-kay"/>

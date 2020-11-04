@@ -32,6 +32,7 @@ class MainScreen: UIViewController {
     @IBOutlet var imgHorizontPlane: UIImageView!
     @IBOutlet var imgHorizontLine: UIImageView!
     @IBOutlet var switchLive: UISwitch!
+    @IBOutlet var lblFlyTime: UILabel!
     
     //MARK: - Variables
     var planeAnnotation : LocationPointAnnotation!
@@ -43,6 +44,7 @@ class MainScreen: UIViewController {
     var peripherals : [CBPeripheral] = []
     var oldLocation : CLLocationCoordinate2D!
     var currentTime = 0.0
+    var seconds = 0
     
     //MARK: - IBActions
     @IBAction func onBtnConnect(_ sender: Any) {
@@ -140,12 +142,15 @@ class MainScreen: UIViewController {
         lblArmed.text = "Armed\n \(telemetry.getArmed())"
         lblSignalStrength.text = "Signal\n \(packet.rssi) %"
         lblFuel.text = "Fuel\n \(packet.fuel) %"
+        lblFlyTime.text = String(format:"%02ld:%02ld:%02ld", seconds / 3600, (seconds / 60) % 60, seconds % 60)
         
         refreshLocation(latitude: packet.lat, longitude: packet.lng)
         refreshCompass(degree: packet.heading)
         refreshHorizon(pitch: -packet.pitch, roll: packet.roll)
         
         if Date().timeIntervalSince1970 - currentTime > 1 { // send/save data every second
+            seconds += 1
+            
             if switchLive.isOn {
                 SocketComunicator.shared.sendPlaneData(packet: packet)
             }
