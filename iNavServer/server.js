@@ -42,7 +42,7 @@ io.sockets.on("connection", function(socket) {
                            speed : plane.speed,
                            heading : plane.heading,
                            photo : plane.photo,
-                           type : 1, // type 0 - RCPlace, type 1 - Plane
+                           type : 1, // type 0 - airport, type 1 - plane
                            name: plane.name
                           };
   });
