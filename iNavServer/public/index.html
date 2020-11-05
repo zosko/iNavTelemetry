@@ -46,21 +46,23 @@
           info = info + "[Altitude] " + planes[i].alt + " m<br>";
           info = info + "[Speed] " + planes[i].speed + " km/h<br>";
           info = info + "[Heading] " + planes[i].heading + " deg<br>";
-          info = info + "[Pilot] " + planes[i].pilot + "<br>";
+          info = info + "[Name] " + planes[i].name + "<br>";
           info = info + '<img width="300" src="data:image/jpeg;base64,'+ planes[i].photo + '" />';
           
           var description = {
               description: info
           }
           
+          //http://dev.openlayers.org/docs/files/OpenLayers/Feature/Vector-js.html#OpenLayers.Feature.Vector.style
           var style = {
             strokeColor: "red",
             fillColor: "cyan",
             strokeWidth: 3,
             pointRadius: 6,
-            label: planes[i].pilot,
+            label: planes[i].name,
             labelYOffset: 15,
-            fontColor: "black"
+            fontColor: "black",
+            graphicName: planes[i].type == 0 ? "triangle" : "circle"
           };
           
           var ol = new OpenLayers.Geometry.Point(planes[i].lng,planes[i].lat).transform(epsg4326, projectTo);
