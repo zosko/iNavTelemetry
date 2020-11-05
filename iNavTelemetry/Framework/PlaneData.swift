@@ -6,6 +6,11 @@
 //  Copyright © 2020 Bosko Petreski. All rights reserved.
 //
 
+enum PlaneType : Int, Codable {
+    case airport = 0
+    case plane = 1
+}
+
 struct PlaneData : Codable {
     var lat : Double
     var lng : Double
@@ -13,4 +18,6 @@ struct PlaneData : Codable {
     var speed : Int
     var heading : Int
     var photo : String
+    var name : String
+    var type : PlaneType
 }

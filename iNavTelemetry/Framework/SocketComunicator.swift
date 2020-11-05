@@ -62,7 +62,8 @@ class SocketComunicator: NSObject {
                                              "alt":packet.alt,
                                              "speed":packet.speed,
                                              "heading":packet.heading,
-                                             "photo": photo
+                                             "photo": photo,
+                                             "name": "Pilot X"
         ]])
     }
 }
