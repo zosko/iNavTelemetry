@@ -18,6 +18,11 @@ app.get('/restart', function(req, res){
 })
 
 io.sockets.on("connection", function(socket) {
+  database["rcPlace_1"] = {lat:41.985904,lng:21.486492,alt:0,speed:0,heading:0,photo:"",name:"B1",type:0};
+  database["rcPlace_2"] = {lat:41.976906,lng:21.503710,alt:0,speed:0,heading:0,photo:"",name:"B2",type:0};
+  database["rcPlace_3"] = {lat:42.060316,lng:21.384396,alt:0,speed:0,heading:0,photo:"",name:"Stenkovec",type:0};
+  database["rcPlace_4"] = {lat:41.915790,lng:21.487247,alt:0,speed:0,heading:0,photo:"",name:"Piramida",type:0};
+ 
   setInterval(function(){ 
     var planes = Object.keys(database).map(key => database[key]);
     socket.emit("planesLocation", planes); 
@@ -31,7 +36,15 @@ io.sockets.on("connection", function(socket) {
   // socket.roomnum
   
   socket.on("planeLocation", function(plane) {
-    database[socket.id] = {lat:plane.lat,lng:plane.lng,alt:plane.alt,speed:plane.speed,heading:plane.heading,photo:plane.photo};
+    database[socket.id] = {lat : plane.lat,
+                           lng : plane.lng,
+                           alt : plane.alt,
+                           speed : plane.speed,
+                           heading : plane.heading,
+                           photo : plane.photo,
+                           type : 1, // type 0 - RCPlace, type 1 - Plane
+                           name: plane.name
+                          };
   });
   socket.on("disconnect", function() {
     //remove plane from database
