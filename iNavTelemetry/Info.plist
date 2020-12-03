@@ -26,10 +26,6 @@
 	<string>To connect with radio</string>
 	<key>NSBluetoothPeripheralUsageDescription</key>
 	<string>To connect with radio</string>
-	<key>NSMainNibFile~ipad</key>
-	<string></string>
-	<key>NSMainNibFile~iphone</key>
-	<string></string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>bluetooth-central</string>
