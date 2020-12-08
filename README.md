@@ -1,3 +1,6 @@
+# Available on AppStore 
+https://apps.apple.com/us/app/inav-telemetry/id1543244904
+
 # iNavTelemetry
 iNav telemetry for iOS (iPhone / iPad / MacOS / Safari Viewer)
 
