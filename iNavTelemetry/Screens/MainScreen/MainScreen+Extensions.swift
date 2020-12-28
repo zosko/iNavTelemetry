@@ -9,26 +9,27 @@
 import UIKit
 import MapKit
 import MBProgressHUD
-import FSKModem
+import CocoaAsyncSocket
 
-extension MainScreen : JMFSKModemDelegate {
-    //MARK: JMFSKModemDelegate
-    func modemDidConnect(_ modem: JMFSKModem!) {
-        btnConnect.setImage(UIImage(named: "power_on"), for: .normal)
-        print("modem connected")
-        self.showMessage(message: "Connected to modem")
+extension MainScreen : GCDAsyncSocketDelegate {
+    //MARK: - GCDAsyncSocketDelegate
+    func socket(_ sock: GCDAsyncSocket, didRead data: Data, withTag tag: Int) {
+        socket.readData(withTimeout: -1, tag: 0)
+        if telemetry.process_incoming_bytes(incomingData: data) {
+            refreshTelemetry(packet: telemetry.packet)
+        }
     }
-    func modemDidDisconnect(_ modem: JMFSKModem!) {
+    func socketDidDisconnect(_ sock: GCDAsyncSocket, withError err: Error?) {
         btnConnect.setImage(UIImage(named: "power_off"), for: .normal)
         Database.shared.stopLogging()
         self.showMessage(message: "Disconnected from modem")
         print("modem disconnected")
     }
-    func modem(_ modem: JMFSKModem!, didReceive data: Data!) {
-        print("aasads");
-        if telemetry.process_incoming_bytes(incomingData: data) {
-            refreshTelemetry(packet: telemetry.packet)
-        }
+    func socket(_ sock: GCDAsyncSocket, didConnectToHost host: String, port: UInt16) {
+        socket.readData(withTimeout: -1, tag: 0)
+        btnConnect.setImage(UIImage(named: "power_on"), for: .normal)
+        self.showMessage(message: "Connected to modem")
+        print("modem connected")
     }
 }
 

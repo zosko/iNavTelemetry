@@ -9,7 +9,7 @@
 import UIKit
 import MBProgressHUD
 import MapKit
-import FSKModem
+import CocoaAsyncSocket
 
 class MainScreen: UIViewController {
 
@@ -41,19 +41,15 @@ class MainScreen: UIViewController {
     var oldLocation : CLLocationCoordinate2D!
     var currentTime = 0.0
     var seconds = 0
-    var modem : JMFSKModem!
+    var socket : GCDAsyncSocket!
     
     //MARK: - IBActions
     @IBAction func onBtnConnect(_ sender: Any) {
-        if modem.connected {
-            modem.disconnect { (disconnected) in
-                print("disconnected : \(disconnected)")
-            }
+        if socket.isConnected {
+            socket.disconnect()
         }
         else{
-            modem.connect { (connected) in
-                print("connect : \(connected)")
-            }
+            do { try socket.connect(toHost: "192.168.0.1", onPort: 9876) } catch { print("socket.connect error") }
         }
     }
     @IBAction func onBtnSetHomePosition(_ sender: Any){
@@ -173,8 +169,7 @@ class MainScreen: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        modem = JMFSKModem(configuration: JMFSKModemConfiguration.highSpeed())
-        modem.delegate = self
+        socket = GCDAsyncSocket(delegate: self, delegateQueue: .main)
         
         addAnnotations()
         addSocketListeners()

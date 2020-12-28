@@ -8,13 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		6D0610DE25461F170020BCA0 /* PlaneData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D0610DD25461F170020BCA0 /* PlaneData.swift */; };
-		6D0752BC2599150000AA9F0A /* FSKModem.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D0752BA259914E000AA9F0A /* FSKModem.framework */; };
-		6D0752BD2599150000AA9F0A /* FSKModem.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6D0752BA259914E000AA9F0A /* FSKModem.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		6D163DBD24FFCB6A000D2EA1 /* SmartPort.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D163DBC24FFCB6A000D2EA1 /* SmartPort.swift */; };
+		6D4D8421259A61F600ED2B2B /* CocoaAsyncSocket in Frameworks */ = {isa = PBXBuildFile; productRef = 6D4D8420259A61F600ED2B2B /* CocoaAsyncSocket */; };
 		6D633A72254DE40800C17125 /* Database.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D633A71254DE40800C17125 /* Database.swift */; };
 		6D633A77254DE75300C17125 /* LogScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D633A76254DE75300C17125 /* LogScreen.swift */; };
-		6DA1EA91259A308300A6BC26 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D0752AC2599106100AA9F0A /* AVFoundation.framework */; };
-		6DA1EA92259A308B00A6BC26 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D0752AE2599106500AA9F0A /* AudioToolbox.framework */; };
 		6DD22949252E60E60081E089 /* SocketIO in Frameworks */ = {isa = PBXBuildFile; productRef = 6DD22948252E60E60081E089 /* SocketIO */; };
 		6DD2294D252E618A0081E089 /* SocketComunicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DD2294C252E618A0081E089 /* SocketComunicator.swift */; };
 		6DD37D56248119980038C9DB /* MainPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6DD37D55248119980038C9DB /* MainPhone.storyboard */; };
@@ -36,7 +33,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				6D0752BD2599150000AA9F0A /* FSKModem.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -47,7 +43,6 @@
 		6D0610DD25461F170020BCA0 /* PlaneData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaneData.swift; sourceTree = "<group>"; };
 		6D0752AC2599106100AA9F0A /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		6D0752AE2599106500AA9F0A /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
-		6D0752BA259914E000AA9F0A /* FSKModem.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FSKModem.framework; sourceTree = "<group>"; };
 		6D163DBC24FFCB6A000D2EA1 /* SmartPort.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmartPort.swift; sourceTree = "<group>"; };
 		6D633A71254DE40800C17125 /* Database.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Database.swift; sourceTree = "<group>"; };
 		6D633A76254DE75300C17125 /* LogScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogScreen.swift; sourceTree = "<group>"; };
@@ -70,11 +65,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6DA1EA92259A308B00A6BC26 /* AudioToolbox.framework in Frameworks */,
-				6DA1EA91259A308300A6BC26 /* AVFoundation.framework in Frameworks */,
 				6DFDD0EF2480066F009F382A /* MBProgressHUD in Frameworks */,
-				6D0752BC2599150000AA9F0A /* FSKModem.framework in Frameworks */,
 				6DD22949252E60E60081E089 /* SocketIO in Frameworks */,
+				6D4D8421259A61F600ED2B2B /* CocoaAsyncSocket in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -110,7 +103,6 @@
 		6DF9826424844D1C005C9BB2 /* Framework */ = {
 			isa = PBXGroup;
 			children = (
-				6D0752BA259914E000AA9F0A /* FSKModem.framework */,
 				6DFDD0EB24800003009F382A /* LocationPointAnnotation.swift */,
 				6DF9826624844D4A005C9BB2 /* CustomTelemetry.swift */,
 				6D163DBC24FFCB6A000D2EA1 /* SmartPort.swift */,
@@ -190,6 +182,7 @@
 			packageProductDependencies = (
 				6DFDD0EE2480066F009F382A /* MBProgressHUD */,
 				6DD22948252E60E60081E089 /* SocketIO */,
+				6D4D8420259A61F600ED2B2B /* CocoaAsyncSocket */,
 			);
 			productName = iNavTelemetry;
 			productReference = 6DFDD0D4247FFFB5009F382A /* iNavTelemetry.app */;
@@ -222,6 +215,7 @@
 			packageReferences = (
 				6DFDD0ED2480066F009F382A /* XCRemoteSwiftPackageReference "MBProgressHUD" */,
 				6DD22947252E60E60081E089 /* XCRemoteSwiftPackageReference "socket" */,
+				6D4D841F259A61F600ED2B2B /* XCRemoteSwiftPackageReference "CocoaAsyncSocket" */,
 			);
 			productRefGroup = 6DFDD0D5247FFFB5009F382A /* Products */;
 			projectDirPath = "";
@@ -419,11 +413,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0.0;
-				OTHER_LDFLAGS = (
-					"-lstdc++",
-					"-ObjC",
-					"-all_load",
-				);
+				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = us.g6.iNavTelemetry;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -448,11 +438,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0.0;
-				OTHER_LDFLAGS = (
-					"-lstdc++",
-					"-ObjC",
-					"-all_load",
-				);
+				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = us.g6.iNavTelemetry;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -484,6 +470,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		6D4D841F259A61F600ED2B2B /* XCRemoteSwiftPackageReference "CocoaAsyncSocket" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/robbiehanson/CocoaAsyncSocket";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 7.6.5;
+			};
+		};
 		6DD22947252E60E60081E089 /* XCRemoteSwiftPackageReference "socket" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/socketio/socket.io-client-swift";
@@ -503,6 +497,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		6D4D8420259A61F600ED2B2B /* CocoaAsyncSocket */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6D4D841F259A61F600ED2B2B /* XCRemoteSwiftPackageReference "CocoaAsyncSocket" */;
+			productName = CocoaAsyncSocket;
+		};
 		6DD22948252E60E60081E089 /* SocketIO */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 6DD22947252E60E60081E089 /* XCRemoteSwiftPackageReference "socket" */;
