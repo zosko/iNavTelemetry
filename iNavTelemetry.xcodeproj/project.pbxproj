@@ -10,6 +10,7 @@
 		6D0610DE25461F170020BCA0 /* PlaneData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D0610DD25461F170020BCA0 /* PlaneData.swift */; };
 		6D163DBD24FFCB6A000D2EA1 /* SmartPort.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D163DBC24FFCB6A000D2EA1 /* SmartPort.swift */; };
 		6D4D8421259A61F600ED2B2B /* CocoaAsyncSocket in Frameworks */ = {isa = PBXBuildFile; productRef = 6D4D8420259A61F600ED2B2B /* CocoaAsyncSocket */; };
+		6D4D8423259A760600ED2B2B /* ESP_Bridge.txt in Sources */ = {isa = PBXBuildFile; fileRef = 6D4D8422259A760600ED2B2B /* ESP_Bridge.txt */; };
 		6D633A72254DE40800C17125 /* Database.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D633A71254DE40800C17125 /* Database.swift */; };
 		6D633A77254DE75300C17125 /* LogScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D633A76254DE75300C17125 /* LogScreen.swift */; };
 		6DD22949252E60E60081E089 /* SocketIO in Frameworks */ = {isa = PBXBuildFile; productRef = 6DD22948252E60E60081E089 /* SocketIO */; };
@@ -44,6 +45,7 @@
 		6D0752AC2599106100AA9F0A /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		6D0752AE2599106500AA9F0A /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		6D163DBC24FFCB6A000D2EA1 /* SmartPort.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmartPort.swift; sourceTree = "<group>"; };
+		6D4D8422259A760600ED2B2B /* ESP_Bridge.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = ESP_Bridge.txt; sourceTree = "<group>"; };
 		6D633A71254DE40800C17125 /* Database.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Database.swift; sourceTree = "<group>"; };
 		6D633A76254DE75300C17125 /* LogScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogScreen.swift; sourceTree = "<group>"; };
 		6DD2294C252E618A0081E089 /* SocketComunicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocketComunicator.swift; sourceTree = "<group>"; };
@@ -109,6 +111,7 @@
 				6DD2294C252E618A0081E089 /* SocketComunicator.swift */,
 				6D0610DD25461F170020BCA0 /* PlaneData.swift */,
 				6D633A71254DE40800C17125 /* Database.swift */,
+				6D4D8422259A760600ED2B2B /* ESP_Bridge.txt */,
 			);
 			path = Framework;
 			sourceTree = "<group>";
@@ -247,6 +250,7 @@
 			files = (
 				6D633A77254DE75300C17125 /* LogScreen.swift in Sources */,
 				6D163DBD24FFCB6A000D2EA1 /* SmartPort.swift in Sources */,
+				6D4D8423259A760600ED2B2B /* ESP_Bridge.txt in Sources */,
 				6DFDD0DC247FFFB5009F382A /* MainScreen.swift in Sources */,
 				6DF9826724844D4A005C9BB2 /* CustomTelemetry.swift in Sources */,
 				6DFDD0D8247FFFB5009F382A /* AppDelegate.swift in Sources */,
