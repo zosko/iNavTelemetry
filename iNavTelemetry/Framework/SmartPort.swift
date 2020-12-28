@@ -6,11 +6,7 @@
 //  Copyright © 2020 Bosko Petreski. All rights reserved.
 //
 
-#if os(OSX)
-    import Cocoa
-#else
-    import UIKit
-#endif
+import UIKit
 
 struct SmartPortStruct : Codable {
     var lat = 0.0
@@ -183,13 +179,13 @@ class SmartPort: NSObject {
                         if (rawData & 0x40000000 > 0) {
                             gpsData = -gpsData
                         }
-                        if (Int(rawData) & Int(0x80000000) == 0) {
-                            newLatitude = true
-                            latitude = gpsData
-                        } else {
-                            newLongitude = true
-                            longitude = gpsData
-                        }
+//                        if (Int(rawData) & Int(0x80000000) == 0) {
+//                            newLatitude = true
+//                            latitude = gpsData
+//                        } else {
+//                            newLongitude = true
+//                            longitude = gpsData
+//                        }
                         if (newLatitude && newLongitude) {
                             newLongitude = false
                             newLatitude = false

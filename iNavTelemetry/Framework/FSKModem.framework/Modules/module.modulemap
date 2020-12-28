@@ -1,0 +1,6 @@
+framework module FSKModem {
+  umbrella header "FSKModem.h"
+
+  export *
+  module * { export * }
+}

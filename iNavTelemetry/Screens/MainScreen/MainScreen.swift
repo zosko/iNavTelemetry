@@ -9,7 +9,7 @@
 import UIKit
 import MBProgressHUD
 import MapKit
-import CoreBluetooth
+import FSKModem
 
 class MainScreen: UIViewController {
 
@@ -38,28 +38,21 @@ class MainScreen: UIViewController {
     var planeAnnotation : LocationPointAnnotation!
     var gsAnnotation : LocationPointAnnotation!
     var telemetry = SmartPort()
-    var locationManager:CLLocationManager?
-    var centralManager: CBCentralManager!
-    var connectedPeripheral: CBPeripheral!
-    var peripherals : [CBPeripheral] = []
     var oldLocation : CLLocationCoordinate2D!
     var currentTime = 0.0
     var seconds = 0
+    var modem : JMFSKModem!
     
     //MARK: - IBActions
     @IBAction func onBtnConnect(_ sender: Any) {
-        if connectedPeripheral != nil {
-            centralManager.cancelPeripheralConnection(connectedPeripheral)
-            connectedPeripheral = nil;
-            peripherals.removeAll()
+        if modem.connected {
+            modem.disconnect { (disconnected) in
+                print("disconnected : \(disconnected)")
+            }
         }
         else{
-            peripherals.removeAll()
-            centralManager.scanForPeripherals(withServices: [CBUUID(string: "FFE0")], options: nil)
-            MBProgressHUD.showAdded(to: self.view, animated: true)
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                MBProgressHUD.hide(for: self.view, animated: true)
-                self.stopSearchReader()
+            modem.connect { (connected) in
+                print("connect : \(connected)")
             }
         }
     }
@@ -175,37 +168,17 @@ class MainScreen: UIViewController {
         mapPlane.addOverlay(polyline)
         oldLocation = planeAnnotation.coordinate
     }
-    func stopSearchReader(){
-        centralManager.stopScan()
-        
-        let alert = UIAlertController.init(title: "Search device", message: "Choose Tracker device", preferredStyle: .actionSheet)
-        
-        for periperal in peripherals{
-            let action = UIAlertAction.init(title: periperal.name ?? "no_name", style: .default) { (action) in
-                self.centralManager.connect(periperal, options: nil)
-            }
-            alert.addAction(action)
-        }
-        let actionCancel = UIAlertAction.init(title: "Cancel", style: .destructive) { (action) in
-        }
-        alert.addAction(actionCancel)
-        
-        if let presenter = alert.popoverPresentationController {
-            presenter.sourceView = btnConnect;
-            presenter.sourceRect = btnConnect.bounds;
-        }
-        self.present(alert, animated: true, completion: nil)
-    }
     
     // MARK: - UIViewDelegates
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        centralManager = CBCentralManager.init(delegate: self, queue: nil)
+        modem = JMFSKModem(configuration: JMFSKModemConfiguration.highSpeed())
+        modem.delegate = self
+        
         addAnnotations()
         addSocketListeners()
-        
-        
+                
 //        let urlTeplate = "http://tile.openstreetmap.org/{z}/{x}/{y}.png"
 //        let overlay = MKTileOverlay(urlTemplate: urlTeplate)
 //        overlay.canReplaceMapContent = true

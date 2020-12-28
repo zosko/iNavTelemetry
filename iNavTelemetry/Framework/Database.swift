@@ -6,11 +6,7 @@
 //  Copyright © 2020 Bosko Petreski. All rights reserved.
 //
 
-#if os(OSX)
-    import Cocoa
-#else
-    import UIKit
-#endif
+import UIKit
 
 class Database: NSObject {
     var jsonDatabase : [SmartPortStruct] = []
@@ -43,7 +39,7 @@ class Database: NSObject {
         }
     }
     func generateName() ->String{
-        return "\(Int(NSDate.now.timeIntervalSince1970))"
+        return "\(Int(NSDate.init().timeIntervalSince1970))"
     }
     func startLogging(){
         nameFile = generateName()
