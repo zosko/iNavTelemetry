@@ -31,7 +31,6 @@ class MainScreen: UIViewController {
     @IBOutlet var imgCompass: UIImageView!
     @IBOutlet var imgHorizontPlane: UIImageView!
     @IBOutlet var imgHorizontLine: UIImageView!
-    @IBOutlet var switchLive: UISwitch!
     @IBOutlet var lblFlyTime: UILabel!
     
     //MARK: - Variables
@@ -49,7 +48,11 @@ class MainScreen: UIViewController {
             socket.disconnect()
         }
         else{
-            do { try socket.connect(toHost: "192.168.0.1", onPort: 9876) } catch { print("socket.connect error") }
+            do {
+                try socket.connect(toHost: "192.168.0.1", onPort: 9876)
+            } catch {
+                self.showMessage(message: "Cant connect")
+            }
         }
     }
     @IBAction func onBtnSetHomePosition(_ sender: Any){
@@ -92,22 +95,6 @@ class MainScreen: UIViewController {
     }
     
     //MARK: - CustomFunctions
-    func addSocketListeners(){
-        SocketComunicator.shared.planesLocation { (planes) in
-            let annotations = self.mapPlane.annotations as! [LocationPointAnnotation]
-            let annotationsToRemove = annotations.filter { $0.imageName == "other_plane" || $0.imageName == "airport"  }
-            self.mapPlane.removeAnnotations(annotationsToRemove)
-            
-            for plane in planes {
-                let location = CLLocation(latitude: plane.lat, longitude: plane.lng)
-                let otherPlane = LocationPointAnnotation()
-                otherPlane.title = plane.name
-                otherPlane.imageName = plane.type == .airport ? "airport" : "other_plane"
-                otherPlane.coordinate = location.coordinate
-                self.mapPlane.addAnnotation(otherPlane)
-            }
-        }
-    }
     func addAnnotations(){
         planeAnnotation = LocationPointAnnotation()
         planeAnnotation.title = "My Plane"
@@ -140,9 +127,6 @@ class MainScreen: UIViewController {
         if Date().timeIntervalSince1970 - currentTime > 1 { // send/save data every second
             seconds += 1
             
-            if switchLive.isOn {
-                SocketComunicator.shared.sendPlaneData(packet: packet)
-            }
             Database.shared.saveTelemetryData(packet: packet)
             currentTime = Date().timeIntervalSince1970
         }
@@ -172,12 +156,6 @@ class MainScreen: UIViewController {
         socket = GCDAsyncSocket(delegate: self, delegateQueue: .main)
         
         addAnnotations()
-        addSocketListeners()
-                
-//        let urlTeplate = "http://tile.openstreetmap.org/{z}/{x}/{y}.png"
-//        let overlay = MKTileOverlay(urlTemplate: urlTeplate)
-//        overlay.canReplaceMapContent = true
-//        mapPlane.addOverlay(overlay, level: .aboveLabels)
     }
 }
 

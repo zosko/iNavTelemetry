@@ -22,14 +22,12 @@ extension MainScreen : GCDAsyncSocketDelegate {
     func socketDidDisconnect(_ sock: GCDAsyncSocket, withError err: Error?) {
         btnConnect.setImage(UIImage(named: "power_off"), for: .normal)
         Database.shared.stopLogging()
-        self.showMessage(message: "Disconnected from modem")
-        print("modem disconnected")
+        self.showMessage(message: "Disconnected")
     }
     func socket(_ sock: GCDAsyncSocket, didConnectToHost host: String, port: UInt16) {
         socket.readData(withTimeout: -1, tag: 0)
         btnConnect.setImage(UIImage(named: "power_on"), for: .normal)
-        self.showMessage(message: "Connected to modem")
-        print("modem connected")
+        self.showMessage(message: "Connected")
     }
 }
 

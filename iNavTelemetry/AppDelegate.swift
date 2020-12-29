@@ -16,8 +16,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         UIApplication.shared.isIdleTimerDisabled = true
         
-        SocketComunicator.shared.socketConnectionSetup()
-        
         return true
     }
 
