@@ -179,8 +179,7 @@ class SmartPort: NSObject {
                         if (rawData & 0x40000000 > 0) {
                             gpsData = -gpsData
                         }
-                        let bigNumber:UInt32 = 0x80000000
-                        if (Int(rawData) & Int(bigNumber) == 0) {
+                        if (Int(rawData) > 0) {
                             newLatitude = true
                             latitude = gpsData
                         } else {
