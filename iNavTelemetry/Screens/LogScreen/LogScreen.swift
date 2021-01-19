@@ -34,7 +34,7 @@ class LogScreen: UIViewController, MKMapViewDelegate {
         gsAnnotation.imageName = "gs"
         mapPlane.addAnnotations([gsAnnotation,planeAnnotation])
 
-        let location = CLLocation(latitude: logData.first!.lat, longitude: logData.first!.lng)
+        let location = CLLocation(latitude: logData.first?.lat ?? 0, longitude: logData.first?.lng ?? 0)
         gsAnnotation.coordinate = location.coordinate
         let region = MKCoordinateRegion(center: gsAnnotation.coordinate, latitudinalMeters: 1000, longitudinalMeters: 1000)
         mapPlane.setRegion(region, animated: true)
