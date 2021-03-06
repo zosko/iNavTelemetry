@@ -11,6 +11,11 @@ import MBProgressHUD
 import MapKit
 import CoreBluetooth
 
+enum BluetoothType : Int {
+    case HM_10 = 0
+    case FRSKY_BUILT_IN = 1
+}
+
 class MainScreen: UIViewController {
 
     // MARK: IBOutlets
@@ -45,6 +50,7 @@ class MainScreen: UIViewController {
     var oldLocation : CLLocationCoordinate2D!
     var currentTime = 0.0
     var seconds = 0
+    var connectionType : BluetoothType = .FRSKY_BUILT_IN
     
     //MARK: - IBActions
     @IBAction func onBtnConnect(_ sender: Any) {
@@ -55,7 +61,7 @@ class MainScreen: UIViewController {
         }
         else{
             peripherals.removeAll()
-            centralManager.scanForPeripherals(withServices: [CBUUID(string: "FFE0")], options: nil)
+            centralManager.scanForPeripherals(withServices: [getServiceUUID()], options: nil)
             MBProgressHUD.showAdded(to: self.view, animated: true)
             DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                 MBProgressHUD.hide(for: self.view, animated: true)

@@ -12,6 +12,21 @@
     import UIKit
 #endif
 
+extension Array where Element == UInt8 {
+    func bytesToHex(spacing: String) -> String {
+        var hexString: String = ""
+        var count = self.count
+        for byte in self {
+            hexString.append(String(format:"%02X", byte))
+            count = count - 1
+            if count > 0{
+                hexString.append(spacing)
+            }
+        }
+        return hexString
+    }
+}
+    
 struct SmartPortStruct : Codable {
     var lat = 0.0
     var lng = 0.0
@@ -113,7 +128,7 @@ class SmartPort: NSObject {
     //MARK: Telemetry functions
     func process_incoming_bytes(incomingData: Data) -> Bool{
         let data: [UInt8] = incomingData.map{ $0 }
-        
+//        print("data: \(data.bytesToHex(spacing: " "))")
         for i in 0 ..< data.count {
             switch state {
             case .IDLE:

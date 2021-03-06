@@ -33,7 +33,7 @@ extension MainScreen : CBCentralManagerDelegate,CBPeripheralDelegate{
     func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
         connectedPeripheral = peripheral
         connectedPeripheral.delegate = self
-        connectedPeripheral.discoverServices([CBUUID (string: "FFE0")])
+        connectedPeripheral.discoverServices([getServiceUUID()])
         self.view.makeToast("Connected to tracker")
         btnConnect.setImage(UIImage(named: "power_on"), for: .normal)
     }
@@ -106,7 +106,7 @@ extension MainScreen : CBCentralManagerDelegate,CBPeripheralDelegate{
     }
     func peripheral(_ peripheral: CBPeripheral, didDiscoverServices error: Error?) {
         for service in peripheral.services!{
-            peripheral.discoverCharacteristics([CBUUID (string: "FFE1")], for: service)
+            peripheral.discoverCharacteristics([getCharUUID()], for: service)
         }
     }
     func peripheral(_ peripheral: CBPeripheral, didUpdateNotificationStateFor characteristic: CBCharacteristic, error: Error?) {
@@ -117,7 +117,7 @@ extension MainScreen : CBCentralManagerDelegate,CBPeripheralDelegate{
     }
     func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?) {
         for characteristic in service.characteristics! {
-            if characteristic.uuid == CBUUID(string: "FFE1"){
+            if characteristic.uuid == getCharUUID(){
                 peripheral.setNotifyValue(true, for: characteristic)
             }
         }
@@ -177,5 +177,11 @@ extension MainScreen {
         let controller : LogScreen = self.storyboard!.instantiateViewController(identifier: "LogScreen")
         controller.logData = logData
         self.present(controller, animated: true, completion: nil)
+    }
+    func getServiceUUID() -> CBUUID {
+        return CBUUID(string: connectionType == .FRSKY_BUILT_IN ? "FFF0" : "FFE0")
+    }
+    func getCharUUID() -> CBUUID {
+        return CBUUID(string: connectionType == .FRSKY_BUILT_IN ? "FFF6" : "FFE1")
     }
 }
