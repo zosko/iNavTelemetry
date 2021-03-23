@@ -32,7 +32,6 @@ class Database: NSObject {
         return fileURL!
     }
     func saveTelemetryData(packet : SmartPortStruct){
-        if !active { return }
         jsonDatabase.append(packet)
     }
     func removeFile(fileName: URL) -> Void{

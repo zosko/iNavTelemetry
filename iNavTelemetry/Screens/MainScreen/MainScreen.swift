@@ -60,13 +60,25 @@ class MainScreen: UIViewController {
             peripherals.removeAll()
         }
         else{
-            peripherals.removeAll()
-            centralManager.scanForPeripherals(withServices: [getServiceUUID()], options: nil)
-            MBProgressHUD.showAdded(to: self.view, animated: true)
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                MBProgressHUD.hide(for: self.view, animated: true)
-                self.stopSearchReader()
+            let alert = UIAlertController.init(title: "Bluetooth", message: "Choose connection type", preferredStyle: .actionSheet)
+            
+            
+            alert.addAction(UIAlertAction.init(title: "FRSKY BUILT IN", style: .default) { (action) in
+                self.connectionType = .FRSKY_BUILT_IN
+                self.resetConnection()
+            })
+            alert.addAction(UIAlertAction.init(title: "HM-10", style: .default) { (action) in
+                self.connectionType = .HM_10
+                self.resetConnection()
+            })
+            
+            alert.addAction(UIAlertAction.init(title: "Cancel", style: .destructive) { (action) in })
+            
+            if let presenter = alert.popoverPresentationController {
+                presenter.sourceView = btnConnect;
+                presenter.sourceRect = btnConnect.bounds;
             }
+            self.present(alert, animated: true, completion: nil)
         }
     }
     @IBAction func onBtnSetHomePosition(_ sender: Any){
@@ -109,6 +121,15 @@ class MainScreen: UIViewController {
     }
     
     //MARK: - CustomFunctions
+    func resetConnection(){
+        peripherals.removeAll()
+        centralManager.scanForPeripherals(withServices: [getServiceUUID()], options: nil)
+        MBProgressHUD.showAdded(to: self.view, animated: true)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            MBProgressHUD.hide(for: self.view, animated: true)
+            self.stopSearchReader()
+        }
+    }
     func addSocketListeners(){
         SocketComunicator.shared.planesLocation { (planes) in
             let annotations = self.mapPlane.annotations as! [LocationPointAnnotation]
@@ -154,7 +175,7 @@ class MainScreen: UIViewController {
         refreshCompass(degree: packet.heading)
         refreshHorizon(pitch: -packet.pitch, roll: packet.roll)
         
-        if Date().timeIntervalSince1970 - currentTime > 1 { // send/save data every second
+        if Date().timeIntervalSince1970 - currentTime > 1 && Database.shared.active { // send/save data every second
             seconds += 1
             
             if switchLive.isOn {
