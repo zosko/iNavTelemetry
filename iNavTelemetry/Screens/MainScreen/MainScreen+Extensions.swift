@@ -179,9 +179,9 @@ extension MainScreen {
         self.present(controller, animated: true, completion: nil)
     }
     func getServiceUUID() -> CBUUID {
-        return CBUUID(string: connectionType == .FRSKY_BUILT_IN ? "FFF0" : "FFE0")
+        return CBUUID(string: connectionType == .FRSKY_BUILT_IN ? BluetoothUUID.FRSKY_SERVICE.rawValue : BluetoothUUID.HM10_SERVICE.rawValue)
     }
     func getCharUUID() -> CBUUID {
-        return CBUUID(string: connectionType == .FRSKY_BUILT_IN ? "FFF6" : "FFE1")
+        return CBUUID(string: connectionType == .FRSKY_BUILT_IN ? BluetoothUUID.FRSKY_CHAR.rawValue : BluetoothUUID.HM10_CHAR.rawValue)
     }
 }

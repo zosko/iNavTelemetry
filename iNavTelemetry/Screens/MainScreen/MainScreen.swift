@@ -16,6 +16,13 @@ enum BluetoothType : Int {
     case FRSKY_BUILT_IN = 1
 }
 
+enum BluetoothUUID : String {
+    case HM10_SERVICE = "FFE0"
+    case HM10_CHAR = "FFE1"
+    case FRSKY_SERVICE = "FFF0"
+    case FRSKY_CHAR = "FFF6"
+}
+
 class MainScreen: UIViewController {
 
     // MARK: IBOutlets
