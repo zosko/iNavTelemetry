@@ -27,7 +27,7 @@ iNav telemetry for iOS (iPhone / iPad / MacOS / Safari Viewer)
 # Browser Viewer - watch online pilots on browser
 ![Browser](browser.jpg)
 
-# How to use
+# How to use if you dont have build in Bluetooth Module
 In order this to work you need additional hardware: inverter and bluetooth module (HC-05 or HC-06 or something else, also you don't need module and inverter if your transmitter has internal one) One important thing: Module should be configured to work on 57600 baud rate, otherwise it won't work. Connect inverter to your Smart Port and then connect bluetooth module to the inverter. You now can connect your phone to your bluetooth module and view data
 
 # Signal Inverter used
@@ -35,4 +35,4 @@ In order this to work you need additional hardware: inverter and bluetooth modul
 
 # Support Protocol
 - FrSky Smart Port 
-- Custom Telemetry - check example of [Tracker](https://github.com/zosko/R9M_Inav_antenna_tracker/blob/master/bt_r9m_accst/bt_r9m_accst.ino)
+
