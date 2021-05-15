@@ -11,18 +11,6 @@ import MBProgressHUD
 import MapKit
 import CoreBluetooth
 
-enum BluetoothType : Int {
-    case HM_10 = 0
-    case FRSKY_BUILT_IN = 1
-}
-
-enum BluetoothUUID : String {
-    case HM10_SERVICE = "FFE0"
-    case HM10_CHAR = "FFE1"
-    case FRSKY_SERVICE = "FFF0"
-    case FRSKY_CHAR = "FFF6"
-}
-
 class MainScreen: UIViewController {
 
     // MARK: IBOutlets
@@ -45,19 +33,18 @@ class MainScreen: UIViewController {
     @IBOutlet var imgHorizontLine: UIImageView!
     @IBOutlet var switchLive: UISwitch!
     @IBOutlet var lblFlyTime: UILabel!
+    @IBOutlet var lblOnlineUsers: UILabel!
     
     //MARK: - Variables
     var planeAnnotation : LocationPointAnnotation!
     var gsAnnotation : LocationPointAnnotation!
     var telemetry = SmartPort()
-    var locationManager:CLLocationManager?
     var centralManager: CBCentralManager!
     var connectedPeripheral: CBPeripheral!
     var peripherals : [CBPeripheral] = []
     var oldLocation : CLLocationCoordinate2D!
     var currentTime = 0.0
     var seconds = 0
-    var connectionType : BluetoothType = .FRSKY_BUILT_IN
     
     //MARK: - IBActions
     @IBAction func onBtnConnect(_ sender: Any) {
@@ -67,25 +54,13 @@ class MainScreen: UIViewController {
             peripherals.removeAll()
         }
         else{
-            let alert = UIAlertController.init(title: "Bluetooth", message: "Choose connection type", preferredStyle: .actionSheet)
-            
-            
-            alert.addAction(UIAlertAction.init(title: "FRSKY BUILT IN", style: .default) { (action) in
-                self.connectionType = .FRSKY_BUILT_IN
-                self.resetConnection()
-            })
-            alert.addAction(UIAlertAction.init(title: "HM-10", style: .default) { (action) in
-                self.connectionType = .HM_10
-                self.resetConnection()
-            })
-            
-            alert.addAction(UIAlertAction.init(title: "Cancel", style: .destructive) { (action) in })
-            
-            if let presenter = alert.popoverPresentationController {
-                presenter.sourceView = btnConnect;
-                presenter.sourceRect = btnConnect.bounds;
+            peripherals.removeAll()
+            centralManager.scanForPeripherals(withServices: nil, options: nil)
+            MBProgressHUD.showAdded(to: self.view, animated: true)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                MBProgressHUD.hide(for: self.view, animated: true)
+                self.stopSearchReader()
             }
-            self.present(alert, animated: true, completion: nil)
         }
     }
     @IBAction func onBtnSetHomePosition(_ sender: Any){
@@ -128,15 +103,6 @@ class MainScreen: UIViewController {
     }
     
     //MARK: - CustomFunctions
-    func resetConnection(){
-        peripherals.removeAll()
-        centralManager.scanForPeripherals(withServices: [getServiceUUID()], options: nil)
-        MBProgressHUD.showAdded(to: self.view, animated: true)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-            MBProgressHUD.hide(for: self.view, animated: true)
-            self.stopSearchReader()
-        }
-    }
     func addSocketListeners(){
         SocketComunicator.shared.planesLocation { (planes) in
             let annotations = self.mapPlane.annotations as! [LocationPointAnnotation]
@@ -151,6 +117,9 @@ class MainScreen: UIViewController {
                 otherPlane.coordinate = location.coordinate
                 self.mapPlane.addAnnotation(otherPlane)
             }
+            
+            let onlineUsers = planes.filter{ $0.type == .plane }.count
+            self.lblOnlineUsers.text = "Online\n \(onlineUsers)"
         }
     }
     func addAnnotations(){
@@ -215,7 +184,7 @@ class MainScreen: UIViewController {
         let alert = UIAlertController.init(title: "Search device", message: "Choose Tracker device", preferredStyle: .actionSheet)
         
         for periperal in peripherals{
-            let action = UIAlertAction.init(title: periperal.name ?? "no_name", style: .default) { (action) in
+            let action = UIAlertAction.init(title: periperal.name ?? "missing name", style: .default) { (action) in
                 self.centralManager.connect(periperal, options: nil)
             }
             alert.addAction(action)
@@ -238,12 +207,6 @@ class MainScreen: UIViewController {
         centralManager = CBCentralManager.init(delegate: self, queue: nil)
         addAnnotations()
         addSocketListeners()
-        
-        
-//        let urlTeplate = "http://tile.openstreetmap.org/{z}/{x}/{y}.png"
-//        let overlay = MKTileOverlay(urlTemplate: urlTeplate)
-//        overlay.canReplaceMapContent = true
-//        mapPlane.addOverlay(overlay, level: .aboveLabels)
     }
 }
 

@@ -289,6 +289,19 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6ij-Q2-HxL">
+                                <rect key="frame" x="398" y="0.0" width="100" height="40"/>
+                                <color key="backgroundColor" white="1" alpha="0.5" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="DOM-dw-Hs2"/>
+                                    <constraint firstAttribute="width" constant="100" id="MbM-1v-3dl"/>
+                                </constraints>
+                                <string key="text">Online
+~</string>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="RgM-JB-72g"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -311,6 +324,7 @@
                             <constraint firstAttribute="trailing" secondItem="kQb-Wg-2R9" secondAttribute="trailing" id="LoD-aJ-Miq"/>
                             <constraint firstItem="xIH-LM-d0m" firstAttribute="top" secondItem="RgM-JB-72g" secondAttribute="top" id="MRp-Vy-wZT"/>
                             <constraint firstAttribute="bottom" secondItem="vCf-ni-GYP" secondAttribute="bottom" id="MhF-ZX-TPr"/>
+                            <constraint firstItem="6ij-Q2-HxL" firstAttribute="centerX" secondItem="xbz-KI-NPc" secondAttribute="centerX" id="Ojn-aO-Gl2"/>
                             <constraint firstItem="MeL-qK-nEV" firstAttribute="leading" secondItem="itk-xC-YTO" secondAttribute="trailing" constant="1" id="Qkk-kD-rXg"/>
                             <constraint firstItem="Nb4-uz-vz3" firstAttribute="top" secondItem="tgA-ED-kcO" secondAttribute="bottom" constant="1" id="TC0-nU-ZHs"/>
                             <constraint firstAttribute="trailing" secondItem="fTG-Gw-DBt" secondAttribute="trailing" id="V6M-Uj-iXq"/>
@@ -320,6 +334,7 @@
                             <constraint firstAttribute="bottom" secondItem="9yf-ZG-nXx" secondAttribute="bottom" id="WqR-oY-IYq"/>
                             <constraint firstItem="rd9-7t-SxI" firstAttribute="top" secondItem="Y1t-M8-mVs" secondAttribute="bottom" constant="1" id="Xn1-4J-DPf"/>
                             <constraint firstItem="tgA-ED-kcO" firstAttribute="top" secondItem="0NW-Yc-fsA" secondAttribute="bottom" constant="1" id="ZvC-U6-MeU"/>
+                            <constraint firstItem="6ij-Q2-HxL" firstAttribute="top" secondItem="RgM-JB-72g" secondAttribute="top" id="daY-1D-dcr"/>
                             <constraint firstAttribute="bottom" secondItem="wHc-RW-Dol" secondAttribute="bottom" id="djm-mE-kW1"/>
                             <constraint firstItem="9yf-ZG-nXx" firstAttribute="top" secondItem="RgM-JB-72g" secondAttribute="top" id="exu-ty-lde"/>
                             <constraint firstItem="Hp4-hl-p9W" firstAttribute="leading" secondItem="RgM-JB-72g" secondAttribute="leading" id="fHs-EG-oLp"/>
@@ -352,6 +367,7 @@
                         <outlet property="lblFuel" destination="rd9-7t-SxI" id="f7Y-xh-ddb"/>
                         <outlet property="lblLatitude" destination="xIH-LM-d0m" id="quh-xC-7kF"/>
                         <outlet property="lblLongitude" destination="Hp4-hl-p9W" id="jHV-Ce-taH"/>
+                        <outlet property="lblOnlineUsers" destination="6ij-Q2-HxL" id="itP-X6-dJr"/>
                         <outlet property="lblSatellites" destination="0NW-Yc-fsA" id="tS7-yd-241"/>
                         <outlet property="lblSignalStrength" destination="Y1t-M8-mVs" id="rUT-Im-cec"/>
                         <outlet property="lblSpeed" destination="uxY-Ld-Ugb" id="qxW-6Q-gof"/>

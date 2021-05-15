@@ -11,7 +11,8 @@ import CoreBluetooth
 import MapKit
 import Toast
 
-extension MainScreen : CBCentralManagerDelegate,CBPeripheralDelegate{
+extension MainScreen: CBCentralManagerDelegate, CBPeripheralDelegate {
+    
     //MARK: CentralManagerDelegates
     func centralManagerDidUpdateState(_ central: CBCentralManager) {
         var message = "Bluetooth"
@@ -33,7 +34,7 @@ extension MainScreen : CBCentralManagerDelegate,CBPeripheralDelegate{
     func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
         connectedPeripheral = peripheral
         connectedPeripheral.delegate = self
-        connectedPeripheral.discoverServices([getServiceUUID()])
+        connectedPeripheral.discoverServices(nil)
         self.view.makeToast("Connected to tracker")
         btnConnect.setImage(UIImage(named: "power_on"), for: .normal)
     }
@@ -92,9 +93,6 @@ extension MainScreen : CBCentralManagerDelegate,CBPeripheralDelegate{
             return
         }
     }
-    func peripheralIsReady(toSendWriteWithoutResponse peripheral: CBPeripheral) {
-        
-    }
     func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
         if error != nil {
             print("Error receiving notification for characteristic \(characteristic) : " + error!.localizedDescription)
@@ -106,7 +104,7 @@ extension MainScreen : CBCentralManagerDelegate,CBPeripheralDelegate{
     }
     func peripheral(_ peripheral: CBPeripheral, didDiscoverServices error: Error?) {
         for service in peripheral.services!{
-            peripheral.discoverCharacteristics([getCharUUID()], for: service)
+            peripheral.discoverCharacteristics(nil, for: service)
         }
     }
     func peripheral(_ peripheral: CBPeripheral, didUpdateNotificationStateFor characteristic: CBCharacteristic, error: Error?) {
@@ -117,14 +115,13 @@ extension MainScreen : CBCentralManagerDelegate,CBPeripheralDelegate{
     }
     func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?) {
         for characteristic in service.characteristics! {
-            if characteristic.uuid == getCharUUID(){
-                peripheral.setNotifyValue(true, for: characteristic)
-            }
+            peripheral.setNotifyValue(true, for: characteristic)
         }
     }
 }
 
-extension MainScreen : MKMapViewDelegate{
+extension MainScreen: MKMapViewDelegate {
+    
     // MARK: - MKMAPViewDelegate
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         if overlay is MKTileOverlay {
@@ -163,6 +160,7 @@ extension MainScreen : MKMapViewDelegate{
 }
 
 extension MainScreen {
+    
     // MARK: - Helpers
     func toDate(timestamp : Double) -> String{
         let dateFormatter = DateFormatter()
@@ -177,11 +175,5 @@ extension MainScreen {
         let controller : LogScreen = self.storyboard!.instantiateViewController(identifier: "LogScreen")
         controller.logData = logData
         self.present(controller, animated: true, completion: nil)
-    }
-    func getServiceUUID() -> CBUUID {
-        return CBUUID(string: connectionType == .FRSKY_BUILT_IN ? BluetoothUUID.FRSKY_SERVICE.rawValue : BluetoothUUID.HM10_SERVICE.rawValue)
-    }
-    func getCharUUID() -> CBUUID {
-        return CBUUID(string: connectionType == .FRSKY_BUILT_IN ? BluetoothUUID.FRSKY_CHAR.rawValue : BluetoothUUID.HM10_CHAR.rawValue)
     }
 }

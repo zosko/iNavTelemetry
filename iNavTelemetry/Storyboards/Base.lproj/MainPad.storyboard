@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="ipad9_7" orientation="landscape" layout="fullscreen" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17505"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -302,6 +302,19 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BKF-LF-5z0">
+                                <rect key="frame" x="864" y="479" width="160" height="47"/>
+                                <color key="backgroundColor" white="1" alpha="0.5" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="47" id="ddG-Qp-Fsl"/>
+                                    <constraint firstAttribute="width" constant="160" id="uuz-zD-qW4"/>
+                                </constraints>
+                                <string key="text">Online
+~</string>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -325,6 +338,7 @@
                             <constraint firstItem="mj9-Zj-6fe" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="R0n-pc-Ah8"/>
                             <constraint firstItem="Crr-Iu-bUj" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="ShE-o4-nIx"/>
                             <constraint firstItem="aFt-PY-13g" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="YEh-fy-Lbf"/>
+                            <constraint firstItem="fIB-kk-jha" firstAttribute="top" secondItem="BKF-LF-5z0" secondAttribute="bottom" constant="1" id="ZZP-E5-L9u"/>
                             <constraint firstItem="RWD-8h-6wN" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="bQz-an-hug"/>
                             <constraint firstItem="iRb-GP-WSt" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="djL-5r-Odc"/>
                             <constraint firstItem="hOL-3R-YkL" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="fEH-v3-h0X"/>
@@ -340,6 +354,7 @@
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="wph-qX-xrq" secondAttribute="bottom" id="o6H-eW-sTw"/>
                             <constraint firstItem="a34-Se-597" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="oIk-ai-xzg"/>
                             <constraint firstItem="uFq-yg-t5U" firstAttribute="top" secondItem="1PJ-iE-sEQ" secondAttribute="bottom" constant="1" id="oq1-Vu-5yp"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="BKF-LF-5z0" secondAttribute="trailing" id="p0S-dA-pzk"/>
                             <constraint firstItem="Gcd-B3-8py" firstAttribute="leading" secondItem="wph-qX-xrq" secondAttribute="trailing" id="pSr-fs-FCr"/>
                             <constraint firstItem="Gcd-B3-8py" firstAttribute="top" secondItem="qAK-mh-PyC" secondAttribute="bottom" constant="1" id="qsC-Ll-yyy"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="fIB-kk-jha" secondAttribute="trailing" constant="10" id="sjC-Jy-S1R"/>
@@ -361,6 +376,7 @@
                         <outlet property="lblFuel" destination="a34-Se-597" id="rQB-xL-GBD"/>
                         <outlet property="lblLatitude" destination="RWD-8h-6wN" id="Uej-uk-WES"/>
                         <outlet property="lblLongitude" destination="npN-YZ-ILV" id="Xpj-bd-1lL"/>
+                        <outlet property="lblOnlineUsers" destination="BKF-LF-5z0" id="qvx-h4-c7D"/>
                         <outlet property="lblSatellites" destination="hOL-3R-YkL" id="qyq-EP-JJp"/>
                         <outlet property="lblSignalStrength" destination="g9K-8d-NlM" id="vey-dJ-oiN"/>
                         <outlet property="lblSpeed" destination="iRb-GP-WSt" id="5uy-Zh-0Wm"/>
