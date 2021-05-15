@@ -1,3 +1,6 @@
+# Support me here
+https://www.buymeacoffee.com/bosko
+
 # Available on AppStore 
 https://apps.apple.com/us/app/inav-telemetry/id1543244904
 
