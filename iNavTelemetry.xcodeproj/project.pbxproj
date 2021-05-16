@@ -139,6 +139,47 @@
 			path = LogScreen;
 			sourceTree = "<group>";
 		};
+		6D4696EC26510D5A007ED441 /* Telemetry */ = {
+			isa = PBXGroup;
+			children = (
+				6DF9826624844D4A005C9BB2 /* CustomTelemetry.swift */,
+				6D163DBC24FFCB6A000D2EA1 /* SmartPort.swift */,
+			);
+			path = Telemetry;
+			sourceTree = "<group>";
+		};
+		6D4696ED26510D71007ED441 /* Socket */ = {
+			isa = PBXGroup;
+			children = (
+				6DD2294C252E618A0081E089 /* SocketComunicator.swift */,
+			);
+			path = Socket;
+			sourceTree = "<group>";
+		};
+		6D4696EE26510D81007ED441 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				6D0610DD25461F170020BCA0 /* PlaneData.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		6D4696EF26510D90007ED441 /* Database */ = {
+			isa = PBXGroup;
+			children = (
+				6D633A71254DE40800C17125 /* Database.swift */,
+			);
+			path = Database;
+			sourceTree = "<group>";
+		};
+		6D4696F026510D99007ED441 /* Other */ = {
+			isa = PBXGroup;
+			children = (
+				6DFDD0EB24800003009F382A /* LocationPointAnnotation.swift */,
+			);
+			path = Other;
+			sourceTree = "<group>";
+		};
 		6D7DAD612530BF9500352704 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -161,12 +202,11 @@
 		6DF9826424844D1C005C9BB2 /* Framework */ = {
 			isa = PBXGroup;
 			children = (
-				6DFDD0EB24800003009F382A /* LocationPointAnnotation.swift */,
-				6DF9826624844D4A005C9BB2 /* CustomTelemetry.swift */,
-				6D163DBC24FFCB6A000D2EA1 /* SmartPort.swift */,
-				6DD2294C252E618A0081E089 /* SocketComunicator.swift */,
-				6D0610DD25461F170020BCA0 /* PlaneData.swift */,
-				6D633A71254DE40800C17125 /* Database.swift */,
+				6D4696F026510D99007ED441 /* Other */,
+				6D4696EF26510D90007ED441 /* Database */,
+				6D4696EE26510D81007ED441 /* Models */,
+				6D4696ED26510D71007ED441 /* Socket */,
+				6D4696EC26510D5A007ED441 /* Telemetry */,
 			);
 			path = Framework;
 			sourceTree = "<group>";
