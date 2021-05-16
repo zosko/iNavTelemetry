@@ -17,7 +17,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" mapType="hybrid" pitchEnabled="NO" showsUserLocation="YES" showsBuildings="NO" showsCompass="NO" showsPointsOfInterest="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oyX-yd-agg">
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" mapType="hybridFlyover" pitchEnabled="NO" showsBuildings="NO" showsCompass="NO" showsPointsOfInterest="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oyX-yd-agg">
                                 <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <connections>
@@ -257,38 +257,6 @@
                                     <action selector="onBtnLogs:" destination="BYZ-38-t0r" eventType="touchUpInside" id="aPh-CQ-7uj"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qAK-mh-PyC">
-                                <rect key="frame" x="522" y="567" width="100" height="100"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="100" id="Kpy-i8-Blr"/>
-                                    <constraint firstAttribute="height" constant="100" id="ZCq-rb-NmW"/>
-                                </constraints>
-                                <state key="normal" title="Set home position" image="home_pos">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                </state>
-                                <connections>
-                                    <action selector="onBtnSetHomePosition:" destination="BYZ-38-t0r" eventType="touchUpInside" id="ec6-yJ-UYg"/>
-                                </connections>
-                            </button>
-                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" title="LIVE" translatesAutoresizingMaskIntoConstraints="NO" id="fIB-kk-jha">
-                                <rect key="frame" x="967" y="527" width="49" height="31"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="31" id="LSa-iI-ROV"/>
-                                    <constraint firstAttribute="width" constant="47" id="fMq-Ue-MHq"/>
-                                </constraints>
-                            </switch>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="LIVE" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tEF-Uw-JeY">
-                                <rect key="frame" x="917" y="527.5" width="50" height="30"/>
-                                <color key="backgroundColor" white="1" alpha="0.5" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="50" id="4a1-mY-Bw8"/>
-                                    <constraint firstAttribute="height" constant="30" id="ZBM-yW-jbu"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DUJ-XM-Irk">
                                 <rect key="frame" x="864" y="192" width="160" height="47"/>
                                 <color key="backgroundColor" white="1" alpha="0.5" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -303,7 +271,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BKF-LF-5z0">
-                                <rect key="frame" x="864" y="479" width="160" height="47"/>
+                                <rect key="frame" x="864" y="240" width="160" height="47"/>
                                 <color key="backgroundColor" white="1" alpha="0.5" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="47" id="ddG-Qp-Fsl"/>
@@ -331,14 +299,11 @@
                             <constraint firstItem="g9K-8d-NlM" firstAttribute="top" secondItem="pmP-dK-GRa" secondAttribute="bottom" constant="1" id="FeP-cW-Iaf"/>
                             <constraint firstItem="aFt-PY-13g" firstAttribute="leading" secondItem="Gcd-B3-8py" secondAttribute="trailing" constant="1" id="HMo-f9-H5d"/>
                             <constraint firstItem="92G-06-Btk" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="Hkw-qE-Bcp"/>
-                            <constraint firstItem="aFt-PY-13g" firstAttribute="leading" secondItem="qAK-mh-PyC" secondAttribute="trailing" constant="1" id="IIt-gL-Zti"/>
-                            <constraint firstItem="fIB-kk-jha" firstAttribute="leading" secondItem="tEF-Uw-JeY" secondAttribute="trailing" id="OqB-Pv-WAF"/>
-                            <constraint firstItem="tEF-Uw-JeY" firstAttribute="centerY" secondItem="fIB-kk-jha" secondAttribute="centerY" id="PrF-Md-Crj"/>
                             <constraint firstItem="vig-Md-PfB" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="QeU-sx-xWX"/>
                             <constraint firstItem="mj9-Zj-6fe" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="R0n-pc-Ah8"/>
                             <constraint firstItem="Crr-Iu-bUj" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="ShE-o4-nIx"/>
+                            <constraint firstItem="BKF-LF-5z0" firstAttribute="top" secondItem="DUJ-XM-Irk" secondAttribute="bottom" constant="1" id="UyO-ax-UtW"/>
                             <constraint firstItem="aFt-PY-13g" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="YEh-fy-Lbf"/>
-                            <constraint firstItem="fIB-kk-jha" firstAttribute="top" secondItem="BKF-LF-5z0" secondAttribute="bottom" constant="1" id="ZZP-E5-L9u"/>
                             <constraint firstItem="RWD-8h-6wN" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="bQz-an-hug"/>
                             <constraint firstItem="iRb-GP-WSt" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="djL-5r-Odc"/>
                             <constraint firstItem="hOL-3R-YkL" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="fEH-v3-h0X"/>
@@ -356,11 +321,8 @@
                             <constraint firstItem="uFq-yg-t5U" firstAttribute="top" secondItem="1PJ-iE-sEQ" secondAttribute="bottom" constant="1" id="oq1-Vu-5yp"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="BKF-LF-5z0" secondAttribute="trailing" id="p0S-dA-pzk"/>
                             <constraint firstItem="Gcd-B3-8py" firstAttribute="leading" secondItem="wph-qX-xrq" secondAttribute="trailing" id="pSr-fs-FCr"/>
-                            <constraint firstItem="Gcd-B3-8py" firstAttribute="top" secondItem="qAK-mh-PyC" secondAttribute="bottom" constant="1" id="qsC-Ll-yyy"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="fIB-kk-jha" secondAttribute="trailing" constant="10" id="sjC-Jy-S1R"/>
                             <constraint firstItem="vig-Md-PfB" firstAttribute="leading" secondItem="aFt-PY-13g" secondAttribute="trailing" constant="1" id="tzo-Ft-vqR"/>
                             <constraint firstItem="92G-06-Btk" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="wBX-ji-ONU"/>
-                            <constraint firstItem="vig-Md-PfB" firstAttribute="top" secondItem="fIB-kk-jha" secondAttribute="bottom" constant="10" id="wXa-RP-Ayi"/>
                         </constraints>
                     </view>
                     <connections>
@@ -383,7 +345,6 @@
                         <outlet property="lblStabilization" destination="Crr-Iu-bUj" id="tK4-QK-4IJ"/>
                         <outlet property="lblVoltage" destination="1PJ-iE-sEQ" id="8FO-EP-qok"/>
                         <outlet property="mapPlane" destination="oyX-yd-agg" id="udd-7u-Ewl"/>
-                        <outlet property="switchLive" destination="fIB-kk-jha" id="FWx-vG-RDI"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -398,7 +359,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="satellite" pitchEnabled="NO" showsUserLocation="YES" showsBuildings="NO" showsCompass="NO" showsPointsOfInterest="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Evd-1j-KZ2">
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="hybridFlyover" pitchEnabled="NO" showsBuildings="NO" showsCompass="NO" showsPointsOfInterest="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Evd-1j-KZ2">
                                 <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
                                 <connections>
                                     <outlet property="delegate" destination="nVT-ed-b70" id="EMc-Ty-5Fz"/>
@@ -440,7 +401,6 @@
         <image name="back" width="512" height="512"/>
         <image name="compass" width="420" height="420"/>
         <image name="compass_plane" width="420" height="420"/>
-        <image name="home_pos" width="504" height="501"/>
         <image name="horizon" width="420" height="420"/>
         <image name="horizon_line" width="420" height="420"/>
         <image name="horizon_plane" width="420" height="420"/>

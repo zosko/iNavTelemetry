@@ -17,7 +17,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="896" height="414"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="hybrid" pitchEnabled="NO" showsUserLocation="YES" showsBuildings="NO" showsCompass="NO" showsPointsOfInterest="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9yf-ZG-nXx">
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="hybridFlyover" pitchEnabled="NO" showsBuildings="NO" showsCompass="NO" showsPointsOfInterest="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9yf-ZG-nXx">
                                 <rect key="frame" x="0.0" y="0.0" width="896" height="414"/>
                                 <connections>
                                     <outlet property="delegate" destination="MXy-Zy-8AG" id="9T3-Wm-2le"/>
@@ -220,20 +220,6 @@
                                     <action selector="onBtnConnect:" destination="MXy-Zy-8AG" eventType="touchUpInside" id="5U6-q8-ft2"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="itk-xC-YTO">
-                                <rect key="frame" x="594" y="294" width="60" height="60"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="60" id="WV3-Uk-I3V"/>
-                                    <constraint firstAttribute="width" constant="60" id="rsh-QM-1Wz"/>
-                                </constraints>
-                                <state key="normal" title="Set home position" image="home_pos">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                </state>
-                                <connections>
-                                    <action selector="onBtnSetHomePosition:" destination="MXy-Zy-8AG" eventType="touchUpInside" id="xLc-Rv-p3d"/>
-                                </connections>
-                            </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vCf-ni-GYP">
                                 <rect key="frame" x="145" y="374" width="100" height="40"/>
                                 <color key="backgroundColor" white="1" alpha="0.5" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -243,24 +229,6 @@
                                 </constraints>
                                 <string key="text">Voltage
 ~</string>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" title="LIVE" translatesAutoresizingMaskIntoConstraints="NO" id="jq7-6N-jUW">
-                                <rect key="frame" x="839" y="258" width="49" height="31"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="47" id="xwM-oX-Vd9"/>
-                                    <constraint firstAttribute="height" constant="31" id="yfd-1N-GlF"/>
-                                </constraints>
-                            </switch>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="LIVE" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KtZ-Ac-dTx">
-                                <rect key="frame" x="789" y="258.5" width="50" height="30"/>
-                                <color key="backgroundColor" white="1" alpha="0.5" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="50" id="Gj5-GD-RiX"/>
-                                    <constraint firstAttribute="height" constant="30" id="OR5-W6-EPt"/>
-                                </constraints>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -306,10 +274,8 @@
                         <viewLayoutGuide key="safeArea" id="RgM-JB-72g"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="jq7-6N-jUW" firstAttribute="leading" secondItem="KtZ-Ac-dTx" secondAttribute="trailing" id="0iH-mo-Wqb"/>
                             <constraint firstItem="0NW-Yc-fsA" firstAttribute="leading" secondItem="RgM-JB-72g" secondAttribute="leading" id="1Vo-Ok-a12"/>
                             <constraint firstAttribute="trailing" secondItem="CqW-pj-MUO" secondAttribute="trailing" id="1fc-3i-Ptf"/>
-                            <constraint firstItem="wHc-RW-Dol" firstAttribute="top" secondItem="jq7-6N-jUW" secondAttribute="bottom" constant="5" id="36d-MB-eYe"/>
                             <constraint firstAttribute="trailing" secondItem="9yf-ZG-nXx" secondAttribute="trailing" id="43H-xA-A13"/>
                             <constraint firstItem="9yf-ZG-nXx" firstAttribute="leading" secondItem="xbz-KI-NPc" secondAttribute="leading" id="5Fa-7a-hJA"/>
                             <constraint firstAttribute="trailing" secondItem="Y1t-M8-mVs" secondAttribute="trailing" id="6nI-Ld-55h"/>
@@ -325,12 +291,9 @@
                             <constraint firstItem="xIH-LM-d0m" firstAttribute="top" secondItem="RgM-JB-72g" secondAttribute="top" id="MRp-Vy-wZT"/>
                             <constraint firstAttribute="bottom" secondItem="vCf-ni-GYP" secondAttribute="bottom" id="MhF-ZX-TPr"/>
                             <constraint firstItem="6ij-Q2-HxL" firstAttribute="centerX" secondItem="xbz-KI-NPc" secondAttribute="centerX" id="Ojn-aO-Gl2"/>
-                            <constraint firstItem="MeL-qK-nEV" firstAttribute="leading" secondItem="itk-xC-YTO" secondAttribute="trailing" constant="1" id="Qkk-kD-rXg"/>
                             <constraint firstItem="Nb4-uz-vz3" firstAttribute="top" secondItem="tgA-ED-kcO" secondAttribute="bottom" constant="1" id="TC0-nU-ZHs"/>
                             <constraint firstAttribute="trailing" secondItem="fTG-Gw-DBt" secondAttribute="trailing" id="V6M-Uj-iXq"/>
                             <constraint firstItem="0NW-Yc-fsA" firstAttribute="top" secondItem="Hp4-hl-p9W" secondAttribute="bottom" constant="1" id="VEs-4J-KiX"/>
-                            <constraint firstItem="KtZ-Ac-dTx" firstAttribute="centerY" secondItem="jq7-6N-jUW" secondAttribute="centerY" id="Vxt-B7-g59"/>
-                            <constraint firstAttribute="trailing" secondItem="jq7-6N-jUW" secondAttribute="trailing" constant="10" id="Wp2-zE-ULZ"/>
                             <constraint firstAttribute="bottom" secondItem="9yf-ZG-nXx" secondAttribute="bottom" id="WqR-oY-IYq"/>
                             <constraint firstItem="rd9-7t-SxI" firstAttribute="top" secondItem="Y1t-M8-mVs" secondAttribute="bottom" constant="1" id="Xn1-4J-DPf"/>
                             <constraint firstItem="tgA-ED-kcO" firstAttribute="top" secondItem="0NW-Yc-fsA" secondAttribute="bottom" constant="1" id="ZvC-U6-MeU"/>
@@ -349,7 +312,6 @@
                             <constraint firstAttribute="trailing" secondItem="rd9-7t-SxI" secondAttribute="trailing" id="sbI-yv-Z7X"/>
                             <constraint firstItem="Nb4-uz-vz3" firstAttribute="leading" secondItem="RgM-JB-72g" secondAttribute="leading" id="ss6-Ao-61c"/>
                             <constraint firstItem="wHc-RW-Dol" firstAttribute="leading" secondItem="MeL-qK-nEV" secondAttribute="trailing" constant="1" id="tef-5i-EP8"/>
-                            <constraint firstItem="scZ-LK-3Vh" firstAttribute="top" secondItem="itk-xC-YTO" secondAttribute="bottom" id="vO5-4N-pcP"/>
                             <constraint firstItem="scZ-LK-3Vh" firstAttribute="leading" secondItem="BDU-5X-kGI" secondAttribute="trailing" id="yaF-FQ-mnc"/>
                             <constraint firstItem="uxY-Ld-Ugb" firstAttribute="leading" secondItem="RgM-JB-72g" secondAttribute="leading" id="z6q-kH-JSE"/>
                         </constraints>
@@ -374,7 +336,6 @@
                         <outlet property="lblStabilization" destination="kQb-Wg-2R9" id="Fe7-5L-bWy"/>
                         <outlet property="lblVoltage" destination="vCf-ni-GYP" id="QJv-0C-6tJ"/>
                         <outlet property="mapPlane" destination="9yf-ZG-nXx" id="QoZ-Ny-dpl"/>
-                        <outlet property="switchLive" destination="jq7-6N-jUW" id="6s4-Rk-ZjB"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wmj-wI-fAj" sceneMemberID="firstResponder"/>
@@ -389,7 +350,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="896" height="414"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="satellite" pitchEnabled="NO" showsUserLocation="YES" showsBuildings="NO" showsCompass="NO" showsPointsOfInterest="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zz3-oz-tqW">
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="hybridFlyover" pitchEnabled="NO" showsBuildings="NO" showsCompass="NO" showsPointsOfInterest="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zz3-oz-tqW">
                                 <rect key="frame" x="0.0" y="0.0" width="896" height="414"/>
                                 <connections>
                                     <outlet property="delegate" destination="WAs-89-g7T" id="Bcg-dR-j0h"/>
@@ -431,7 +392,6 @@
         <image name="back" width="512" height="512"/>
         <image name="compass" width="420" height="420"/>
         <image name="compass_plane" width="420" height="420"/>
-        <image name="home_pos" width="504" height="501"/>
         <image name="horizon" width="420" height="420"/>
         <image name="horizon_line" width="420" height="420"/>
         <image name="horizon_plane" width="420" height="420"/>

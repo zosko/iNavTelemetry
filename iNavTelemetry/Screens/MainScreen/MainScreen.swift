@@ -31,7 +31,6 @@ class MainScreen: UIViewController {
     @IBOutlet var imgCompass: UIImageView!
     @IBOutlet var imgHorizontPlane: UIImageView!
     @IBOutlet var imgHorizontLine: UIImageView!
-    @IBOutlet var switchLive: UISwitch!
     @IBOutlet var lblFlyTime: UILabel!
     @IBOutlet var lblOnlineUsers: UILabel!
     
@@ -45,9 +44,12 @@ class MainScreen: UIViewController {
     var oldLocation : CLLocationCoordinate2D!
     var currentTime = 0.0
     var seconds = 0
+    var fixHomePosition = false
     
     //MARK: - IBActions
     @IBAction func onBtnConnect(_ sender: Any) {
+        fixHomePosition = false
+        
         if connectedPeripheral != nil {
             centralManager.cancelPeripheralConnection(connectedPeripheral)
             connectedPeripheral = nil;
@@ -61,17 +63,6 @@ class MainScreen: UIViewController {
                 MBProgressHUD.hide(for: self.view, animated: true)
                 self.stopSearchReader()
             }
-        }
-    }
-    @IBAction func onBtnSetHomePosition(_ sender: Any){
-        if planeAnnotation.coordinate.latitude != CLLocationCoordinate2D(latitude: 0, longitude: 0).latitude {
-            Database.shared.startLogging()
-            
-            gsAnnotation.coordinate = planeAnnotation.coordinate
-            let region = MKCoordinateRegion(center: gsAnnotation.coordinate, latitudinalMeters: 1000, longitudinalMeters: 1000)
-            mapPlane.setRegion(region, animated: true)
-            
-            oldLocation = gsAnnotation.coordinate
         }
     }
     @IBAction func onBtnLogs(_ sender : Any){
@@ -103,6 +94,19 @@ class MainScreen: UIViewController {
     }
     
     //MARK: - CustomFunctions
+    func addHomePosition(){
+        if planeAnnotation.coordinate.latitude != CLLocationCoordinate2D(latitude: 0, longitude: 0).latitude {
+            fixHomePosition = true
+            
+            Database.shared.startLogging()
+            
+            gsAnnotation.coordinate = planeAnnotation.coordinate
+            let region = MKCoordinateRegion(center: gsAnnotation.coordinate, latitudinalMeters: 1000, longitudinalMeters: 1000)
+            mapPlane.setRegion(region, animated: true)
+            
+            oldLocation = gsAnnotation.coordinate
+        }
+    }
     func addSocketListeners(){
         SocketComunicator.shared.planesLocation { (planes) in
             let annotations = self.mapPlane.annotations as! [LocationPointAnnotation]
@@ -151,12 +155,15 @@ class MainScreen: UIViewController {
         refreshCompass(degree: packet.heading)
         refreshHorizon(pitch: -packet.pitch, roll: packet.roll)
         
+        if packet.gps_sats > 5 && !fixHomePosition{
+            addHomePosition()
+        }
+        
         if Date().timeIntervalSince1970 - currentTime > 1 && Database.shared.active { // send/save data every second
             seconds += 1
             
-            if switchLive.isOn {
-                SocketComunicator.shared.sendPlaneData(packet: packet)
-            }
+            SocketComunicator.shared.sendPlaneData(packet: packet)
+            
             Database.shared.saveTelemetryData(packet: packet)
             currentTime = Date().timeIntervalSince1970
         }
