@@ -8,6 +8,11 @@
 
 import Foundation
 
+let MSP_MAX_SUPPORTED_SERVOS: Int = 8
+let MSP_MAX_SERVO_RULES: Int = (2 * MSP_MAX_SUPPORTED_SERVOS)
+let MSP_MAX_SUPPORTED_MOTORS: Int = 8
+let MSP_MAX_SUPPORTED_CHANNELS: Int = 16
+
 enum MSP_Request_Replies: Int {
     case MSP_API_VERSION            = 1
     case MSP_FC_VARIANT             = 2
@@ -100,14 +105,14 @@ struct msp_api_version_t {
 //struct msp_fc_variant_t {
 //  char flightControlIdentifier[4];
 //}
-//
-//
-//// MSP_FC_VERSION reply
-//struct msp_fc_version_t {
-//  uint8_t versionMajor;
-//  uint8_t versionMinor;
-//  uint8_t versionPatchLevel;
-//} __attribute__ ((packed));
+
+
+// MSP_FC_VERSION reply
+struct msp_fc_version_t {
+    let versionMajor: Int8
+    let versionMinor: Int8
+    let versionPatchLevel: Int8
+}
 
 
 //// MSP_BOARD_INFO reply
@@ -123,70 +128,71 @@ struct msp_api_version_t {
 //  char buildTime[8];
 //  char shortGitRevision[7];
 //} __attribute__ ((packed));
-//
-//
-//// MSP_RAW_IMU reply
-//struct msp_raw_imu_t {
-//  int16_t acc[3];  // x, y, z
-//  int16_t gyro[3]; // x, y, z
-//  int16_t mag[3];  // x, y, z
-//} __attribute__ ((packed));
-//
-//
-//// flags for msp_status_ex_t.sensor and msp_status_t.sensor
-//#define MSP_STATUS_SENSOR_ACC    1
-//#define MSP_STATUS_SENSOR_BARO   2
-//#define MSP_STATUS_SENSOR_MAG    4
-//#define MSP_STATUS_SENSOR_GPS    8
-//#define MSP_STATUS_SENSOR_SONAR 16
-//
-//
-//// MSP_STATUS_EX reply
-//struct msp_status_ex_t {
-//  uint16_t cycleTime;
-//  uint16_t i2cErrorCounter;
-//  uint16_t sensor;                    // MSP_STATUS_SENSOR_...
-//  uint32_t flightModeFlags;           // see getActiveModes()
-//  uint8_t  configProfileIndex;
-//  uint16_t averageSystemLoadPercent;  // 0...100
-//  uint16_t armingFlags;
-//  uint8_t  accCalibrationAxisFlags;
-//} __attribute__ ((packed));
-//
-//
-//// MSP_STATUS
-//struct msp_status_t {
-//  uint16_t cycleTime;
-//  uint16_t i2cErrorCounter;
-//  uint16_t sensor;                    // MSP_STATUS_SENSOR_...
-//  uint32_t flightModeFlags;           // see getActiveModes()
-//  uint8_t  configProfileIndex;
-//} __attribute__ ((packed));
-//
-//
-//// MSP_SENSOR_STATUS reply
-//struct msp_sensor_status_t {
-//  uint8_t isHardwareHealthy;  // 0...1
-//  uint8_t hwGyroStatus;
-//  uint8_t hwAccelerometerStatus;
-//  uint8_t hwCompassStatus;
-//  uint8_t hwBarometerStatus;
-//  uint8_t hwGPSStatus;
-//  uint8_t hwRangefinderStatus;
-//  uint8_t hwPitotmeterStatus;
-//  uint8_t hwOpticalFlowStatus;
-//} __attribute__ ((packed));
-//
-//
-//#define MSP_MAX_SUPPORTED_SERVOS 8
-//
-//// MSP_SERVO reply
-//struct msp_servo_t {
-//  uint16_t servo[MSP_MAX_SUPPORTED_SERVOS];
-//} __attribute__ ((packed));
-//
-//
-//// MSP_SERVO_CONFIGURATIONS reply
+
+
+// MSP_RAW_IMU reply
+struct msp_raw_imu_t {
+    let acc: [Int16] = [Int16](repeating: 0, count: 3) // x, y, z
+    let gyro: [Int16] = [Int16](repeating: 0, count: 3) // x, y, z
+    let mag: [Int16] = [Int16](repeating: 0, count: 3)  // x, y, z
+}
+
+
+enum MSP_Status_Sensor: Int {
+    // flags for msp_status_ex_t.sensor and msp_status_t.sensor
+    case MSP_STATUS_SENSOR_ACC    = 1
+    case MSP_STATUS_SENSOR_BARO   = 2
+    case MSP_STATUS_SENSOR_MAG    = 4
+    case MSP_STATUS_SENSOR_GPS    = 8
+    case MSP_STATUS_SENSOR_SONAR  = 16
+}
+
+
+// MSP_STATUS_EX reply
+struct msp_status_ex_t {
+    let cycleTime: UInt16
+    let i2cErrorCounter: UInt16
+    let sensor: UInt16                    // MSP_STATUS_SENSOR_...
+    let flightModeFlags: UInt32           // see getActiveModes()
+    let  configProfileIndex: UInt8
+    let averageSystemLoadPercent: UInt16  // 0...100
+    let armingFlags: UInt16
+    let  accCalibrationAxisFlags: UInt8
+}
+
+
+// MSP_STATUS
+struct msp_status_t {
+    let cycleTime: UInt16
+    let i2cErrorCounter: UInt16
+    let sensor: UInt16                    // MSP_STATUS_SENSOR_...
+    let flightModeFlags: UInt32           // see getActiveModes()
+    let configProfileIndex: UInt8
+}
+
+
+// MSP_SENSOR_STATUS reply
+struct msp_sensor_status_t {
+    let isHardwareHealthy: UInt8  // 0...1
+    let hwGyroStatus: UInt8
+    let hwAccelerometerStatus: UInt8
+    let hwCompassStatus: UInt8
+    let hwBarometerStatus: UInt8
+    let hwGPSStatus: UInt8
+    let hwRangefinderStatus: UInt8
+    let hwPitotmeterStatus: UInt8
+    let hwOpticalFlowStatus: UInt8
+}
+
+
+
+// MSP_SERVO reply
+struct msp_servo_t {
+    let servo: [UInt16] = [UInt16](repeating: 0, count: MSP_MAX_SUPPORTED_SERVOS)
+}
+
+
+// MSP_SERVO_CONFIGURATIONS reply
 //struct msp_servo_configurations_t {
 //  __attribute__ ((packed)) struct {
 //    uint16_t min;
@@ -199,10 +205,8 @@ struct msp_api_version_t {
 //    uint32_t reversedSources;
 //  } conf[MSP_MAX_SUPPORTED_SERVOS];
 //} __attribute__ ((packed));
-//
-//
-//#define MSP_MAX_SERVO_RULES (2 * MSP_MAX_SUPPORTED_SERVOS)
-//
+
+
 //// MSP_SERVO_MIX_RULES reply
 //struct msp_servo_mix_rules_t {
 //  __attribute__ ((packed)) struct {
@@ -214,144 +218,142 @@ struct msp_api_version_t {
 //    uint8_t max;
 //  } mixRule[MSP_MAX_SERVO_RULES];
 //} __attribute__ ((packed));
-//
-//
-//#define MSP_MAX_SUPPORTED_MOTORS 8
-//
-//// MSP_MOTOR reply
-//struct msp_motor_t {
-//  uint16_t motor[MSP_MAX_SUPPORTED_MOTORS];
-//} __attribute__ ((packed));
-//
-//
-//#define MSP_MAX_SUPPORTED_CHANNELS 16
-//
-//// MSP_RC reply
-//struct msp_rc_t {
-//  uint16_t channelValue[MSP_MAX_SUPPORTED_CHANNELS];
-//} __attribute__ ((packed));
-//
-//
-//// MSP_ATTITUDE reply
-//struct msp_attitude_t {
-//  int16_t roll;
-//  int16_t pitch;
-//  int16_t yaw;
-//} __attribute__ ((packed));
-//
-//
-//// MSP_ALTITUDE reply
-//struct msp_altitude_t {
-//  int32_t estimatedActualPosition;  // cm
-//  int16_t estimatedActualVelocity;  // cm/s
-//  int32_t baroLatestAltitude;
-//} __attribute__ ((packed));
-//
-//
-//// MSP_SONAR_ALTITUDE reply
-//struct msp_sonar_altitude_t {
-//  int32_t altitude;
-//} __attribute__ ((packed));
-//
-//
-//// MSP_ANALOG reply
-//struct msp_analog_t {
-//  uint8_t  vbat;     // 0...255
-//  uint16_t mAhDrawn; // milliamp hours drawn from battery
-//  uint16_t rssi;     // 0..1023
-//  int16_t  amperage; // send amperage in 0.01 A steps, range is -320A to 320A
-//} __attribute__ ((packed));
-//
-//
-//// MSP_ARMING_CONFIG reply
-//struct msp_arming_config_t {
-//  uint8_t auto_disarm_delay;
-//  uint8_t disarm_kill_switch;
-//} __attribute__ ((packed));
-//
-//
-//// MSP_LOOP_TIME reply
-//struct msp_loop_time_t {
-//  uint16_t looptime;
-//} __attribute__ ((packed));
-//
-//
-//// MSP_RC_TUNING reply
-//struct msp_rc_tuning_t {
-//  uint8_t  rcRate8;  // no longer used
-//  uint8_t  rcExpo8;
-//  uint8_t  rates[3]; // R,P,Y
-//  uint8_t  dynThrPID;
-//  uint8_t  thrMid8;
-//  uint8_t  thrExpo8;
-//  uint16_t tpa_breakpoint;
-//  uint8_t  rcYawExpo8;
-//} __attribute__ ((packed));
-//
-//
-//// MSP_PID reply
-//struct msp_pid_t {
-//  uint8_t roll[3];     // 0=P, 1=I, 2=D
-//  uint8_t pitch[3];    // 0=P, 1=I, 2=D
-//  uint8_t yaw[3];      // 0=P, 1=I, 2=D
-//  uint8_t pos_z[3];    // 0=P, 1=I, 2=D
-//  uint8_t pos_xy[3];   // 0=P, 1=I, 2=D
-//  uint8_t vel_xy[3];   // 0=P, 1=I, 2=D
-//  uint8_t surface[3];  // 0=P, 1=I, 2=D
-//  uint8_t level[3];    // 0=P, 1=I, 2=D
-//  uint8_t heading[3];  // 0=P, 1=I, 2=D
-//  uint8_t vel_z[3];    // 0=P, 1=I, 2=D
-//} __attribute__ ((packed));
-//
-//
-//// MSP_MISC reply
-//struct msp_misc_t {
-//  uint16_t midrc;
-//  uint16_t minthrottle;
-//  uint16_t maxthrottle;
-//  uint16_t mincommand;
-//  uint16_t failsafe_throttle;
-//  uint8_t  gps_provider;
-//  uint8_t  gps_baudrate;
-//  uint8_t  gps_ubx_sbas;
-//  uint8_t  multiwiiCurrentMeterOutput;
-//  uint8_t  rssi_channel;
-//  uint8_t  dummy;
-//  uint16_t mag_declination;
-//  uint8_t  vbatscale;
-//  uint8_t  vbatmincellvoltage;
-//  uint8_t  vbatmaxcellvoltage;
-//  uint8_t  vbatwarningcellvoltage;
-//} __attribute__ ((packed));
-//
-//
-//// values for msp_raw_gps_t.fixType
-//#define MSP_GPS_NO_FIX 0
-//#define MSP_GPS_FIX_2D 1
-//#define MSP_GPS_FIX_3D 2
-//
-//
-//// MSP_RAW_GPS reply
-//struct msp_raw_gps_t {
-//  uint8_t  fixType;       // MSP_GPS_NO_FIX, MSP_GPS_FIX_2D, MSP_GPS_FIX_3D
-//  uint8_t  numSat;
-//  int32_t  lat;           // 1 / 10000000 deg
-//  int32_t  lon;           // 1 / 10000000 deg
-//  int16_t  alt;           // meters
-//  int16_t  groundSpeed;   // cm/s
-//  int16_t  groundCourse;  // unit: degree x 10
-//  uint16_t hdop;
-//} __attribute__ ((packed));
-//
-//
-//// MSP_COMP_GPS reply
-//struct msp_comp_gps_t {
-//  int16_t  distanceToHome;  // distance to home in meters
-//  int16_t  directionToHome; // direction to home in degrees
-//  uint8_t  heartbeat;       // toggles 0 and 1 for each change
-//} __attribute__ ((packed));
-//
-//
+
+
+
+// MSP_MOTOR reply
+struct msp_motor_t {
+    let motor: [UInt16] = [UInt16](repeating: 0, count: MSP_MAX_SUPPORTED_MOTORS)
+}
+
+// MSP_RC reply
+struct msp_rc_t {
+    let channelValue: [UInt16] = [UInt16](repeating: 0, count: MSP_MAX_SUPPORTED_CHANNELS)
+}
+
+
+// MSP_ATTITUDE reply
+struct msp_attitude_t {
+    let roll: Int16
+    let pitch: Int16
+    let yaw: Int16
+}
+
+
+// MSP_ALTITUDE reply
+struct msp_altitude_t {
+    let estimatedActualPosition: Int32  // cm
+    let estimatedActualVelocity: Int16  // cm/s
+    let baroLatestAltitude: Int32
+}
+
+
+// MSP_SONAR_ALTITUDE reply
+struct msp_sonar_altitude_t {
+    let altitude: Int32
+}
+
+
+// MSP_ANALOG reply
+struct msp_analog_t {
+    let  vbat: UInt8     // 0...255
+    let mAhDrawn: UInt16 // milliamp hours drawn from battery
+    let rssi: UInt16     // 0..1023
+    let  amperage: Int16 // send amperage in 0.01 A steps, range is -320A to 320A
+}
+
+
+// MSP_ARMING_CONFIG reply
+struct msp_arming_config_t {
+  let auto_disarm_delay: UInt8
+  let disarm_kill_switch: UInt8
+}
+
+
+// MSP_LOOP_TIME reply
+struct msp_loop_time_t {
+  let looptime: UInt16
+}
+
+
+// MSP_RC_TUNING reply
+struct msp_rc_tuning_t {
+    let  rcRate8: UInt8  // no longer used
+    let  rcExpo8: UInt8
+    let  rates: [UInt8] = [UInt8](repeating: 0, count: 3) // R,P,Y
+    let  dynThrPID: UInt8
+    let  thrMid8: UInt8
+    let  thrExpo8: UInt8
+    let tpa_breakpoint: UInt16
+    let  rcYawExpo8: UInt8
+}
+
+
+// MSP_PID reply
+struct msp_pid_t {
+    let roll: [UInt8] = [UInt8](repeating: 0, count: 3)     // 0=P, 1=I, 2=D
+    let pitch: [UInt8] = [UInt8](repeating: 0, count: 3)    // 0=P, 1=I, 2=D
+    let yaw: [UInt8] = [UInt8](repeating: 0, count: 3)      // 0=P, 1=I, 2=D
+    let pos_z: [UInt8] = [UInt8](repeating: 0, count: 3)    // 0=P, 1=I, 2=D
+    let pos_xy: [UInt8] = [UInt8](repeating: 0, count: 3)   // 0=P, 1=I, 2=D
+    let vel_xy: [UInt8] = [UInt8](repeating: 0, count: 3)   // 0=P, 1=I, 2=D
+    let surface: [UInt8] = [UInt8](repeating: 0, count: 3)  // 0=P, 1=I, 2=D
+    let level: [UInt8] = [UInt8](repeating: 0, count: 3)    // 0=P, 1=I, 2=D
+    let heading: [UInt8] = [UInt8](repeating: 0, count: 3)  // 0=P, 1=I, 2=D
+    let vel_z: [UInt8] = [UInt8](repeating: 0, count: 3)    // 0=P, 1=I, 2=D
+}
+
+
+// MSP_MISC reply
+struct msp_misc_t {
+    let midrc: UInt16
+    let minthrottle: UInt16
+    let maxthrottle: UInt16
+    let mincommand: UInt16
+    let failsafe_throttle: UInt16
+    let  gps_provider: UInt8
+    let  gps_baudrate: UInt8
+    let  gps_ubx_sbas: UInt8
+    let  multiwiiCurrentMeterOutput: UInt8
+    let  rssi_channel: UInt8
+    let  dummy: UInt8
+    let mag_declination: UInt16
+    let  vbatscale: UInt8
+    let  vbatmincellvoltage: UInt8
+    let  vbatmaxcellvoltage: UInt8
+    let  vbatwarningcellvoltage: UInt8
+}
+
+
+enum MSP_GPS: Int {
+    // values for msp_raw_gps_t.fixType
+    case MSP_GPS_NO_FIX = 0
+    case MSP_GPS_FIX_2D = 1
+    case MSP_GPS_FIX_3D = 2
+}
+
+
+// MSP_RAW_GPS reply
+struct msp_raw_gps_t {
+    let  fixType: UInt8       // MSP_GPS_NO_FIX, MSP_GPS_FIX_2D, MSP_GPS_FIX_3D
+    let  numSat: UInt8
+    let  lat: Int32           // 1 / 10000000 deg
+    let  lon: Int32           // 1 / 10000000 deg
+    let  alt: Int16           // meters
+    let  groundSpeed: Int16   // cm/s
+    let  groundCourse: Int16  // unit: degree x 10
+    let hdop: UInt16
+}
+
+
+// MSP_COMP_GPS reply
+struct msp_comp_gps_t {
+    let  distanceToHome: Int16  // distance to home in meters
+    let  directionToHome: Int16 // direction to home in degrees
+    let  heartbeat: UInt8       // toggles 0 and 1 for each change
+}
+
+
 
 enum MSP_Nav_Status_Mode: Int {
     // values for msp_nav_status_t.mode
@@ -478,18 +480,18 @@ struct MSP_Feature: OptionSet {
     static let MSP_FEATURE_OSD                 = (1 << 29)
 }
 
-//// MSP_FEATURE reply
-//struct msp_feature_t {
-//  uint32_t featureMask; // combination of MSP_FEATURE_XXX
-//} __attribute__ ((packed));
-//
-//
-//// MSP_BOARD_ALIGNMENT reply
-//struct msp_board_alignment_t {
-//  int16_t rollDeciDegrees;
-//  int16_t pitchDeciDegrees;
-//  int16_t yawDeciDegrees;
-//} __attribute__ ((packed));
+// MSP_FEATURE reply
+struct msp_feature_t {
+    let featureMask: UInt32 // combination of MSP_FEATURE_XXX
+}
+
+
+// MSP_BOARD_ALIGNMENT reply
+struct msp_board_alignment_t {
+    let rollDeciDegrees: Int16
+    let pitchDeciDegrees: Int16
+    let yawDeciDegrees: Int16
+}
 
 
 enum MSP_Current_Sensor: Int {
@@ -500,13 +502,13 @@ enum MSP_Current_Sensor: Int {
 }
 
 
-//// MSP_CURRENT_METER_CONFIG reply
-//struct msp_current_meter_config_t {
-//  int16_t currentMeterScale;
-//  int16_t currentMeterOffset;
-//  uint8_t currentMeterType; // MSP_CURRENT_SENSOR_XXX
-//  uint16_t batteryCapacity;
-//} __attribute__ ((packed));
+// MSP_CURRENT_METER_CONFIG reply
+struct msp_current_meter_config_t {
+    let currentMeterScale: Int16
+    let currentMeterOffset: Int16
+    let currentMeterType: Int16 // MSP_CURRENT_SENSOR_XXX
+    let batteryCapacity: Int16
+}
 
 
 enum MSP_SerialRx: Int {
@@ -580,28 +582,26 @@ enum MSP_Sensor_Align: Int {
 //  uint8_t acc_align;    // one of MSP_SENSOR_ALIGN_XXX
 //  uint8_t mag_align;    // one of MSP_SENSOR_ALIGN_XXX
 //} __attribute__ ((packed));
-//
-//
-//// MSP_CALIBRATION_DATA reply
-//struct msp_calibration_data_t {
-//  int16_t accZeroX;
-//  int16_t accZeroY;
-//  int16_t accZeroZ;
-//  int16_t accGainX;
-//  int16_t accGainY;
-//  int16_t accGainZ;
-//  int16_t magZeroX;
-//  int16_t magZeroY;
-//  int16_t magZeroZ;
-//} __attribute__ ((packed));
-//
-//
-//// MSP_SET_HEAD command
-//struct msp_set_head_t {
-//  int16_t magHoldHeading; // degrees
-//} __attribute__ ((packed));
-//
-//
+
+
+// MSP_CALIBRATION_DATA reply
+struct msp_calibration_data_t {
+    let accZeroX: Int16
+    let accZeroY: Int16
+    let accZeroZ: Int16
+    let accGainX: Int16
+    let accGainY: Int16
+    let accGainZ: Int16
+    let magZeroX: Int16
+    let magZeroY: Int16
+    let magZeroZ: Int16
+}
+
+// MSP_SET_HEAD command
+struct msp_set_head_t {
+    let magHoldHeading: Int16 // degrees
+}
+
 //// MSP_SET_RAW_RC command
 //struct msp_set_raw_rc_t {
 //  uint16_t channel[MSP_MAX_SUPPORTED_CHANNELS];
