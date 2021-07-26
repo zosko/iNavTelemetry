@@ -12,6 +12,7 @@ let MSP_MAX_SUPPORTED_SERVOS: Int = 8
 let MSP_MAX_SERVO_RULES: Int = (2 * MSP_MAX_SUPPORTED_SERVOS)
 let MSP_MAX_SUPPORTED_MOTORS: Int = 8
 let MSP_MAX_SUPPORTED_CHANNELS: Int = 16
+let MSP_MAX_MAPPABLE_RX_INPUTS: Int = 8
 
 enum MSP_Request_Replies: Int {
     case MSP_API_VERSION            = 1
@@ -95,16 +96,16 @@ enum MSP_Get_Active_Modes: Int {
 
 // MSP_API_VERSION reply
 struct msp_api_version_t {
-    var protocolVersion: UInt8
-    var APIMajor: UInt8
-    var APIMinor: UInt8
+    let protocolVersion: UInt8
+    let APIMajor: UInt8
+    let APIMinor: UInt8
 }
 
 
-//// MSP_FC_VARIANT reply
-//struct msp_fc_variant_t {
-//  char flightControlIdentifier[4];
-//}
+// MSP_FC_VARIANT reply
+struct msp_fc_variant_t {
+    let flightControlIdentifier: [CChar] = [CChar](repeating: 0, count: 4)
+}
 
 
 // MSP_FC_VERSION reply
@@ -115,19 +116,19 @@ struct msp_fc_version_t {
 }
 
 
-//// MSP_BOARD_INFO reply
-//struct msp_board_info_t {
-//  char     boardIdentifier[4];
-//  uint16_t hardwareRevision;
-//} __attribute__ ((packed));
-//
-//
-//// MSP_BUILD_INFO reply
-//struct msp_build_info_t {
-//  char buildDate[11];
-//  char buildTime[8];
-//  char shortGitRevision[7];
-//} __attribute__ ((packed));
+// MSP_BOARD_INFO reply
+struct msp_board_info_t {
+    let boardIdentifier: [CChar] = [CChar](repeating: 0, count: 4)
+    let hardwareRevision: UInt16
+}
+
+
+// MSP_BUILD_INFO reply
+struct msp_build_info_t {
+    let buildDate: [CChar] = [CChar](repeating: 0, count: 11)
+    let buildTime: [CChar] = [CChar](repeating: 0, count: 8)
+    let shortGitRevision: [CChar] = [CChar](repeating: 0, count: 7)
+}
 
 
 // MSP_RAW_IMU reply
@@ -193,31 +194,36 @@ struct msp_servo_t {
 
 
 // MSP_SERVO_CONFIGURATIONS reply
-//struct msp_servo_configurations_t {
-//  __attribute__ ((packed)) struct {
-//    uint16_t min;
-//    uint16_t max;
-//    uint16_t middle;
-//    uint8_t rate;
-//    uint8_t angleAtMin;
-//    uint8_t angleAtMax;
-//    uint8_t forwardFromChannel;
-//    uint32_t reversedSources;
-//  } conf[MSP_MAX_SUPPORTED_SERVOS];
-//} __attribute__ ((packed));
+struct msp_servo_configurations_t {
+    
+    struct config{
+        let min: UInt16
+        let max: UInt16
+        let middle: UInt16
+        let rate: UInt8
+        let angleAtMin: UInt8
+        let angleAtMax: UInt8
+        let forwardFromChannel: UInt8
+        let reversedSources: UInt32
+    }
+    
+    let conf: [config] = [config](repeating: config(min: 0, max: 0, middle: 0, rate: 0, angleAtMin: 0, angleAtMax: 0, forwardFromChannel: 0, reversedSources: 0), count: MSP_MAX_SUPPORTED_SERVOS)
+}
 
 
-//// MSP_SERVO_MIX_RULES reply
-//struct msp_servo_mix_rules_t {
-//  __attribute__ ((packed)) struct {
-//    uint8_t targetChannel;
-//    uint8_t inputSource;
-//    uint8_t rate;
-//    uint8_t speed;
-//    uint8_t min;
-//    uint8_t max;
-//  } mixRule[MSP_MAX_SERVO_RULES];
-//} __attribute__ ((packed));
+// MSP_SERVO_MIX_RULES reply
+struct msp_servo_mix_rules_t {
+    struct rules{
+        let targetChannel: UInt8
+        let inputSource: UInt8
+        let rate: UInt8
+        let speed: UInt8
+        let min: UInt8
+        let max: UInt8
+    }
+    
+    let mixRule: [rules] = [rules](repeating: rules(targetChannel: 0, inputSource: 0, rate: 0, speed: 0, min: 0, max: 0), count: MSP_MAX_SERVO_RULES)
+}
 
 
 
@@ -265,14 +271,14 @@ struct msp_analog_t {
 
 // MSP_ARMING_CONFIG reply
 struct msp_arming_config_t {
-  let auto_disarm_delay: UInt8
-  let disarm_kill_switch: UInt8
+    let auto_disarm_delay: UInt8
+    let disarm_kill_switch: UInt8
 }
 
 
 // MSP_LOOP_TIME reply
 struct msp_loop_time_t {
-  let looptime: UInt16
+    let looptime: UInt16
 }
 
 
@@ -335,22 +341,22 @@ enum MSP_GPS: Int {
 
 // MSP_RAW_GPS reply
 struct msp_raw_gps_t {
-    let  fixType: UInt8       // MSP_GPS_NO_FIX, MSP_GPS_FIX_2D, MSP_GPS_FIX_3D
-    let  numSat: UInt8
-    let  lat: Int32           // 1 / 10000000 deg
-    let  lon: Int32           // 1 / 10000000 deg
-    let  alt: Int16           // meters
-    let  groundSpeed: Int16   // cm/s
-    let  groundCourse: Int16  // unit: degree x 10
+    let fixType: UInt8       // MSP_GPS_NO_FIX, MSP_GPS_FIX_2D, MSP_GPS_FIX_3D
+    let numSat: UInt8
+    let lat: Int32           // 1 / 10000000 deg
+    let lon: Int32           // 1 / 10000000 deg
+    let alt: Int16           // meters
+    let groundSpeed: Int16   // cm/s
+    let groundCourse: Int16  // unit: degree x 10
     let hdop: UInt16
 }
 
 
 // MSP_COMP_GPS reply
 struct msp_comp_gps_t {
-    let  distanceToHome: Int16  // distance to home in meters
-    let  directionToHome: Int16 // direction to home in degrees
-    let  heartbeat: UInt8       // toggles 0 and 1 for each change
+    let distanceToHome: Int16  // distance to home in meters
+    let directionToHome: Int16 // direction to home in degrees
+    let heartbeat: UInt8       // toggles 0 and 1 for each change
 }
 
 
@@ -404,45 +410,45 @@ enum MSP_Nav_Status_Error: Int {
 }
 
 
-//// MSP_NAV_STATUS reply
-//struct msp_nav_status_t {
-//  uint8_t mode;           // one of MSP_NAV_STATUS_MODE_XXX
-//  uint8_t state;          // one of MSP_NAV_STATUS_STATE_XXX
-//  uint8_t activeWpAction; // combination of MSP_NAV_STATUS_WAYPOINT_ACTION_XXX
-//  uint8_t activeWpNumber;
-//  uint8_t error;          // one of MSP_NAV_STATUS_ERROR_XXX
-//  int16_t magHoldHeading;
-//} __attribute__ ((packed));
-//
-//
-//// MSP_GPSSVINFO reply
-//struct msp_gpssvinfo_t {
-//  uint8_t dummy1;
-//  uint8_t dummy2;
-//  uint8_t dummy3;
-//  uint8_t dummy4;
-//  uint8_t HDOP;
-//} __attribute__ ((packed));
-//
-//
-//// MSP_GPSSTATISTICS reply
-//struct msp_gpsstatistics_t {
-//  uint16_t lastMessageDt;
-//  uint32_t errors;
-//  uint32_t timeouts;
-//  uint32_t packetCount;
-//  uint16_t hdop;
-//  uint16_t eph;
-//  uint16_t epv;
-//} __attribute__ ((packed));
-//
-//
-//// MSP_UID reply
-//struct msp_uid_t {
-//  uint32_t uid0;
-//  uint32_t uid1;
-//  uint32_t uid2;
-//} __attribute__ ((packed));
+// MSP_NAV_STATUS reply
+struct msp_nav_status_t {
+    let mode: UInt8           // one of MSP_NAV_STATUS_MODE_XXX
+    let state: UInt8          // one of MSP_NAV_STATUS_STATE_XXX
+    let activeWpAction: UInt8 // combination of MSP_NAV_STATUS_WAYPOINT_ACTION_XXX
+    let activeWpNumber: UInt8
+    let error: UInt8          // one of MSP_NAV_STATUS_ERROR_XXX
+    let magHoldHeading: UInt16
+}
+
+
+// MSP_GPSSVINFO reply
+struct msp_gpssvinfo_t {
+    let dummy1: UInt8
+    let dummy2: UInt8
+    let dummy3: UInt8
+    let dummy4: UInt8
+    let HDOP: UInt8
+}
+
+
+// MSP_GPSSTATISTICS reply
+struct msp_gpsstatistics_t {
+    let lastMessageDt: UInt16
+    let errors: UInt32
+    let timeouts: UInt32
+    let packetCount: UInt32
+    let hdop: UInt16
+    let eph: UInt16
+    let epv: UInt16
+}
+
+
+// MSP_UID reply
+struct msp_uid_t {
+    let uid0: UInt32
+    let uid1: UInt32
+    let uid2: UInt32
+}
 
 struct MSP_Feature: OptionSet {
     let rawValue: UInt8
@@ -538,31 +544,27 @@ enum MSP_SPI_PROT_NRF24RX: Int {
 }
 
 
+// MSP_RX_CONFIG reply
+struct msp_rx_config_t {
+    let   serialrx_provider: UInt8  // one of MSP_SERIALRX_XXX values
+    let  maxcheck: UInt16
+    let  midrc: UInt16
+    let  mincheck: UInt16
+    let   spektrum_sat_bind: UInt8
+    let  rx_min_usec: UInt16
+    let  rx_max_usec: UInt16
+    let   dummy1: UInt8
+    let   dummy2: UInt8
+    let  dummy3: UInt16
+    let   rx_spi_protocol: UInt8  // one of MSP_SPI_PROT_XXX values
+    let  rx_spi_id: UInt32
+    let   rx_spi_rf_channel_count: UInt8
+}
 
-//// MSP_RX_CONFIG reply
-//struct msp_rx_config_t {
-//  uint8_t   serialrx_provider;  // one of MSP_SERIALRX_XXX values
-//  uint16_t  maxcheck;
-//  uint16_t  midrc;
-//  uint16_t  mincheck;
-//  uint8_t   spektrum_sat_bind;
-//  uint16_t  rx_min_usec;
-//  uint16_t  rx_max_usec;
-//  uint8_t   dummy1;
-//  uint8_t   dummy2;
-//  uint16_t  dummy3;
-//  uint8_t   rx_spi_protocol;  // one of MSP_SPI_PROT_XXX values
-//  uint32_t  rx_spi_id;
-//  uint8_t   rx_spi_rf_channel_count;
-//} __attribute__ ((packed));
-//
-//
-//#define MSP_MAX_MAPPABLE_RX_INPUTS 8
-//
-//// MSP_RX_MAP reply
-//struct msp_rx_map_t {
-//  uint8_t rxmap[MSP_MAX_MAPPABLE_RX_INPUTS];  // [0]=roll channel, [1]=pitch channel, [2]=yaw channel, [3]=throttle channel, [3+n]=aux n channel, etc...
-//} __attribute__ ((packed));
+// MSP_RX_MAP reply
+struct msp_rx_map_t {
+    let rxmap: [UInt8] = [UInt8](repeating: 0, count: MSP_MAX_MAPPABLE_RX_INPUTS)  // [0]=roll channel, [1]=pitch channel, [2]=yaw channel, [3]=throttle channel, [3+n]=aux n channel, etc...
+}
 
 enum MSP_Sensor_Align: Int {
     // values for msp_sensor_alignment_t.gyro_align, acc_align, mag_align
@@ -576,12 +578,12 @@ enum MSP_Sensor_Align: Int {
     case MSP_SENSOR_ALIGN_CW270_DEG_FLIP = 8
 }
 
-//// MSP_SENSOR_ALIGNMENT reply
-//struct msp_sensor_alignment_t {
-//  uint8_t gyro_align;   // one of MSP_SENSOR_ALIGN_XXX
-//  uint8_t acc_align;    // one of MSP_SENSOR_ALIGN_XXX
-//  uint8_t mag_align;    // one of MSP_SENSOR_ALIGN_XXX
-//} __attribute__ ((packed));
+// MSP_SENSOR_ALIGNMENT reply
+struct msp_sensor_alignment_t {
+    let gyro_align: UInt8   // one of MSP_SENSOR_ALIGN_XXX
+    let acc_align: UInt8    // one of MSP_SENSOR_ALIGN_XXX
+    let mag_align: UInt8    // one of MSP_SENSOR_ALIGN_XXX
+}
 
 
 // MSP_CALIBRATION_DATA reply
@@ -602,273 +604,225 @@ struct msp_set_head_t {
     let magHoldHeading: Int16 // degrees
 }
 
-//// MSP_SET_RAW_RC command
-//struct msp_set_raw_rc_t {
-//  uint16_t channel[MSP_MAX_SUPPORTED_CHANNELS];
-//} __attribute__ ((packed));
-//
-//
-//// MSP_SET_PID command
-//typedef msp_pid_t msp_set_pid_t;
-//
-//
-//// MSP_SET_RAW_GPS command
-//struct msp_set_raw_gps_t {
-//  uint8_t  fixType;       // MSP_GPS_NO_FIX, MSP_GPS_FIX_2D, MSP_GPS_FIX_3D
-//  uint8_t  numSat;
-//  int32_t  lat;           // 1 / 10000000 deg
-//  int32_t  lon;           // 1 / 10000000 deg
-//  int16_t  alt;           // meters
-//  int16_t  groundSpeed;   // cm/s
-//} __attribute__ ((packed));
-//
-//
-//// MSP_SET_WP command
-//// Special waypoints are 0 and 255. 0 is the RTH position, 255 is the POSHOLD position (lat, lon, alt).
-//struct msp_set_wp_t {
-//  uint8_t waypointNumber;
-//  uint8_t action;   // one of MSP_NAV_STATUS_WAYPOINT_ACTION_XXX
-//  int32_t lat;      // decimal degrees latitude * 10000000
-//  int32_t lon;      // decimal degrees longitude * 10000000
-//  int32_t alt;      // altitude (cm)
-//  int16_t p1;       // speed (cm/s) when action is MSP_NAV_STATUS_WAYPOINT_ACTION_WAYPOINT, or "land" (value 1) when action is MSP_NAV_STATUS_WAYPOINT_ACTION_RTH
-//  int16_t p2;       // not used
-//  int16_t p3;       // not used
-//  uint8_t flag;     // 0xa5 = last, otherwise set to 0
-//} __attribute__ ((packed));
-//
-//
-//
-//
-///////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////
-//
-//class MSP {
-//
-//  public:
-//
-//    void begin(Stream & stream, uint32_t timeout = 500);
-//
-//    // low level functions
-//
-//    void send(uint8_t messageID, void * payload, uint8_t size);
-//    bool recv(uint8_t * messageID, void * payload, uint8_t maxSize, uint8_t * recvSize);
-//
-//    bool waitFor(uint8_t messageID, void * payload, uint8_t maxSize, uint8_t * recvSize = NULL);
-//
-//    bool request(uint8_t messageID, void * payload, uint8_t maxSize, uint8_t * recvSize = NULL);
-//
-//    bool command(uint8_t messageID, void * payload, uint8_t size, bool waitACK = true);
-//
-//    void reset();
-//
-//    // high level functions
-//
-//    bool getActiveModes(uint32_t * activeModes);
-//
-//
-//  private:
-//
-//    Stream * _stream;
-//    uint32_t _timeout;
-//
-//};
+// MSP_SET_RAW_RC command
+struct msp_set_raw_rc_t {
+    let channel: [UInt16] = [UInt16](repeating: 0, count: MSP_MAX_SUPPORTED_CHANNELS)
+}
+
+// MSP_SET_RAW_GPS command
+struct msp_set_raw_gps_t {
+    let  fixType: UInt8       // MSP_GPS_NO_FIX, MSP_GPS_FIX_2D, MSP_GPS_FIX_3D
+    let  numSat: UInt8
+    let  lat: Int32           // 1 / 10000000 deg
+    let  lon: Int32           // 1 / 10000000 deg
+    let  alt: Int16           // meters
+    let  groundSpeed: Int16   // cm/s
+}
 
 
-//-------
+// MSP_SET_WP command
+// Special waypoints are 0 and 255. 0 is the RTH position, 255 is the POSHOLD position (lat, lon, alt).
+struct msp_set_wp_t {
+    let waypointNumber: UInt8
+    let action: UInt8   // one of MSP_NAV_STATUS_WAYPOINT_ACTION_XXX
+    let lat: Int32      // decimal degrees latitude * 10000000
+    let lon: Int32      // decimal degrees longitude * 10000000
+    let alt: Int32      // altitude (cm)
+    let p1: Int16       // speed (cm/s) when action is MSP_NAV_STATUS_WAYPOINT_ACTION_WAYPOINT, or "land" (value 1) when action is MSP_NAV_STATUS_WAYPOINT_ACTION_RTH
+    let p2: Int16       // not used
+    let p3: Int16       // not used
+    let flag: UInt8     // 0xa5 = last, otherwise set to 0
+}
 
-//void MSP::begin(Stream & stream, uint32_t timeout)
-//{
-//  _stream   = &stream;
-//  _timeout  = timeout;
-//}
-//
-//
-//void MSP::reset()
-//{
-//  _stream->flush();
-//  while (_stream->available() > 0)
-//    _stream->read();
-//}
-//
-//void MSP::send(uint8_t messageID, void * payload, uint8_t size)
-//{
-//  _stream->write('$');
-//  _stream->write('M');
-//  _stream->write('<');
-//  _stream->write(size);
-//  _stream->write(messageID);
-//  uint8_t checksum = size ^ messageID;
-//  uint8_t * payloadPtr = (uint8_t*)payload;
-//  for (uint8_t i = 0; i < size; ++i) {
-//    uint8_t b = *(payloadPtr++);
-//    checksum ^= b;
-//    _stream->write(b);
-//  }
-//  _stream->write(checksum);
-//}
-//
-//
-//// timeout in milliseconds
-//bool MSP::recv(uint8_t * messageID, void * payload, uint8_t maxSize, uint8_t * recvSize)
-//{
-//  uint32_t t0 = millis();
-//
-//  while (1) {
-//
-//    // read header
-//    while (_stream->available() < 6)
-//      if (millis() - t0 >= _timeout)
-//        return false;
-//    char header[3];
-//    _stream->readBytes((char*)header, 3);
-//
-//    // check header
-//    if (header[0] == '$' && header[1] == 'M' && header[2] == '>') {
-//      // header ok, read payload size
-//      *recvSize = _stream->read();
-//
-//      // read message ID (type)
-//      *messageID = _stream->read();
-//
-//      uint8_t checksumCalc = *recvSize ^ *messageID;
-//
-//      // read payload
-//      uint8_t * payloadPtr = (uint8_t*)payload;
-//      uint8_t idx = 0;
-//      while (idx < *recvSize) {
-//        if (millis() - t0 >= _timeout)
-//          return false;
-//        if (_stream->available() > 0) {
-//          uint8_t b = _stream->read();
-//          checksumCalc ^= b;
-//          if (idx < maxSize)
-//            *(payloadPtr++) = b;
-//          ++idx;
-//        }
-//      }
-//      // zero remaining bytes if *size < maxSize
-//      for (; idx < maxSize; ++idx)
-//        *(payloadPtr++) = 0;
-//
-//      // read and check checksum
-//      while (_stream->available() == 0)
-//        if (millis() - t0 >= _timeout)
-//          return false;
-//      uint8_t checksum = _stream->read();
-//      if (checksumCalc == checksum) {
-//        return true;
-//      }
-//
-//    }
-//  }
-//
-//}
-//
-//
-//// wait for messageID
-//// recvSize can be NULL
-//bool MSP::waitFor(uint8_t messageID, void * payload, uint8_t maxSize, uint8_t * recvSize)
-//{
-//  uint8_t recvMessageID;
-//  uint8_t recvSizeValue;
-//  uint32_t t0 = millis();
-//  while (millis() - t0 < _timeout)
-//    if (recv(&recvMessageID, payload, maxSize, (recvSize ? recvSize : &recvSizeValue)) && messageID == recvMessageID)
-//      return true;
-//
-//  // timeout
-//  return false;
-//}
-//
-//
-//// send a message and wait for the reply
-//// recvSize can be NULL
-//bool MSP::request(uint8_t messageID, void * payload, uint8_t maxSize, uint8_t * recvSize)
-//{
-//  send(messageID, NULL, 0);
-//  return waitFor(messageID, payload, maxSize, recvSize);
-//}
-//
-//
-//// send message and wait for ack
-//bool MSP::command(uint8_t messageID, void * payload, uint8_t size, bool waitACK)
-//{
-//  send(messageID, payload, size);
-//
-//  // ack required
-//  if (waitACK)
-//    return waitFor(messageID, NULL, 0);
-//
-//  return true;
-//}
-//
-//
-//// map MSP_MODE_xxx to box ids
-//// mixed values from cleanflight and inav
-//static const uint8_t BOXIDS[30] PROGMEM = {
-//  0,  //  0: MSP_MODE_ARM
-//  1,  //  1: MSP_MODE_ANGLE
-//  2,  //  2: MSP_MODE_HORIZON
-//  3,  //  3: MSP_MODE_NAVALTHOLD (cleanflight BARO)
-//  5,  //  4: MSP_MODE_MAG
-//  6,  //  5: MSP_MODE_HEADFREE
-//  7,  //  6: MSP_MODE_HEADADJ
-//  8,  //  7: MSP_MODE_CAMSTAB
-//  10, //  8: MSP_MODE_NAVRTH (cleanflight GPSHOME)
-//  11, //  9: MSP_MODE_NAVPOSHOLD (cleanflight GPSHOLD)
-//  12, // 10: MSP_MODE_PASSTHRU
-//  13, // 11: MSP_MODE_BEEPERON
-//  15, // 12: MSP_MODE_LEDLOW
-//  16, // 13: MSP_MODE_LLIGHTS
-//  19, // 14: MSP_MODE_OSD
-//  20, // 15: MSP_MODE_TELEMETRY
-//  21, // 16: MSP_MODE_GTUNE
-//  22, // 17: MSP_MODE_SONAR
-//  26, // 18: MSP_MODE_BLACKBOX
-//  27, // 19: MSP_MODE_FAILSAFE
-//  28, // 20: MSP_MODE_NAVWP (cleanflight AIRMODE)
-//  29, // 21: MSP_MODE_AIRMODE (cleanflight DISABLE3DSWITCH)
-//  30, // 22: MSP_MODE_HOMERESET (cleanflight FPVANGLEMIX)
-//  31, // 23: MSP_MODE_GCSNAV (cleanflight BLACKBOXERASE)
-//  32, // 24: MSP_MODE_HEADINGLOCK
-//  33, // 25: MSP_MODE_SURFACE
-//  34, // 26: MSP_MODE_FLAPERON
-//  35, // 27: MSP_MODE_TURNASSIST
-//  36, // 28: MSP_MODE_NAVLAUNCH
-//  37, // 29: MSP_MODE_AUTOTRIM
-//};
-//
-//
-//// returns active mode (using MSP_STATUS and MSP_BOXIDS messages)
-//// see MSP_MODE_... for bits inside activeModes
-//bool MSP::getActiveModes(uint32_t * activeModes)
-//{
-//  // request status ex
-//  msp_status_t status;
-//  if (request(MSP_STATUS, &status, sizeof(status))) {
-//    // request permanent ids associated to boxes
-//    uint8_t ids[sizeof(BOXIDS)];
-//    uint8_t recvSize;
-//    if (request(MSP_BOXIDS, ids, sizeof(ids), &recvSize)) {
-//      // compose activeModes, converting BOXIDS to bit map (setting 1 if related flag in flightModeFlags is set)
-//      *activeModes = 0;
-//      for (uint8_t i = 0; i < recvSize; ++i) {
-//        if (status.flightModeFlags & (1 << i)) {
-//          for (uint8_t j = 0; j < sizeof(BOXIDS); ++j) {
-//            if (pgm_read_byte(BOXIDS + j) == ids[i]) {
-//              *activeModes |= 1 << j;
-//              break;
-//            }
-//          }
-//        }
-//      }
-//      return true;
-//    }
-//  }
-//
-//  return false;
-//}
+
+class MSP: NSObject {
+    
+    
+    func send(messageID: UInt8, payload: [UInt8], size: UInt8){
+        var buffCount = 0
+        var buffer : [UInt8] = [UInt8](repeating: 0, count: 200)
+        buffer[0] = UInt8("$") ?? 0
+        buffer[1] = UInt8("M") ?? 0
+        buffer[2] = UInt8("<") ?? 0
+        buffer[3] = size
+        buffer[4] = messageID
+        
+        var checksum = size ^ messageID
+        
+        buffCount = 5
+        payload.forEach { b in
+            checksum ^= b
+            buffer[buffCount] = b
+            buffCount += 1
+        }
+        buffer[buffCount] = checksum
+        
+        print(buffer)
+    }
+    
+    
+    //// timeout in milliseconds
+    //bool MSP::recv(uint8_t * messageID, void * payload, uint8_t maxSize, uint8_t * recvSize)
+    //{
+    //  uint32_t t0 = millis();
+    //
+    //  while (1) {
+    //
+    //    // read header
+    //    while (_stream->available() < 6)
+    //      if (millis() - t0 >= _timeout)
+    //        return false;
+    //    char header[3];
+    //    _stream->readBytes((char*)header, 3);
+    //
+    //    // check header
+    //    if (header[0] == '$' && header[1] == 'M' && header[2] == '>') {
+    //      // header ok, read payload size
+    //      *recvSize = _stream->read();
+    //
+    //      // read message ID (type)
+    //      *messageID = _stream->read();
+    //
+    //      uint8_t checksumCalc = *recvSize ^ *messageID;
+    //
+    //      // read payload
+    //      uint8_t * payloadPtr = (uint8_t*)payload;
+    //      uint8_t idx = 0;
+    //      while (idx < *recvSize) {
+    //        if (millis() - t0 >= _timeout)
+    //          return false;
+    //        if (_stream->available() > 0) {
+    //          uint8_t b = _stream->read();
+    //          checksumCalc ^= b;
+    //          if (idx < maxSize)
+    //            *(payloadPtr++) = b;
+    //          ++idx;
+    //        }
+    //      }
+    //      // zero remaining bytes if *size < maxSize
+    //      for (; idx < maxSize; ++idx)
+    //        *(payloadPtr++) = 0;
+    //
+    //      // read and check checksum
+    //      while (_stream->available() == 0)
+    //        if (millis() - t0 >= _timeout)
+    //          return false;
+    //      uint8_t checksum = _stream->read();
+    //      if (checksumCalc == checksum) {
+    //        return true;
+    //      }
+    //
+    //    }
+    //  }
+    //
+    //}
+    
+    
+    // wait for messageID
+    // recvSize can be NULL
+    func waitFor(messageID: UInt8, payload: [UInt8], maxSize: UInt8, recvSize: UInt8 = 0) -> Bool{
+        let recvMessageID: UInt8
+        let recvSizeValue: UInt8
+        let t0 = Date.timeIntervalBetween1970AndReferenceDate
+        let timeout = 500.0
+        while (Double(Date.timeIntervalBetween1970AndReferenceDate) - t0 < timeout){
+            //            if (recv(&recvMessageID, payload, maxSize, (recvSize ? recvSize : &recvSizeValue)) && messageID == recvMessageID)
+            return true;
+        }
+        
+        // timeout
+        return false;
+    }
+    
+    
+    // send a message and wait for the reply
+    // recvSize can be NULL
+    func request(messageID: UInt8, payload: [UInt8], maxSize: UInt8, recvSize: UInt8 = 0) -> Bool{
+        send(messageID: messageID, payload: [], size: 0)
+        return waitFor(messageID: messageID, payload: payload, maxSize: maxSize, recvSize: recvSize)
+    }
+    
+    
+    // send message and wait for ack
+    func command(messageID: UInt8, payload: [UInt8], size: UInt8, waitACK: Bool) -> Bool{
+        send(messageID: messageID, payload: payload, size: size)
+        
+        // ack required
+        if (waitACK){
+            return waitFor(messageID: messageID, payload: [], maxSize: 0)
+        }
+        
+        return true
+    }
+    
+    
+    //// map MSP_MODE_xxx to box ids
+    //// mixed values from cleanflight and inav
+    //static const uint8_t BOXIDS[30] PROGMEM = {
+    //  0,  //  0: MSP_MODE_ARM
+    //  1,  //  1: MSP_MODE_ANGLE
+    //  2,  //  2: MSP_MODE_HORIZON
+    //  3,  //  3: MSP_MODE_NAVALTHOLD (cleanflight BARO)
+    //  5,  //  4: MSP_MODE_MAG
+    //  6,  //  5: MSP_MODE_HEADFREE
+    //  7,  //  6: MSP_MODE_HEADADJ
+    //  8,  //  7: MSP_MODE_CAMSTAB
+    //  10, //  8: MSP_MODE_NAVRTH (cleanflight GPSHOME)
+    //  11, //  9: MSP_MODE_NAVPOSHOLD (cleanflight GPSHOLD)
+    //  12, // 10: MSP_MODE_PASSTHRU
+    //  13, // 11: MSP_MODE_BEEPERON
+    //  15, // 12: MSP_MODE_LEDLOW
+    //  16, // 13: MSP_MODE_LLIGHTS
+    //  19, // 14: MSP_MODE_OSD
+    //  20, // 15: MSP_MODE_TELEMETRY
+    //  21, // 16: MSP_MODE_GTUNE
+    //  22, // 17: MSP_MODE_SONAR
+    //  26, // 18: MSP_MODE_BLACKBOX
+    //  27, // 19: MSP_MODE_FAILSAFE
+    //  28, // 20: MSP_MODE_NAVWP (cleanflight AIRMODE)
+    //  29, // 21: MSP_MODE_AIRMODE (cleanflight DISABLE3DSWITCH)
+    //  30, // 22: MSP_MODE_HOMERESET (cleanflight FPVANGLEMIX)
+    //  31, // 23: MSP_MODE_GCSNAV (cleanflight BLACKBOXERASE)
+    //  32, // 24: MSP_MODE_HEADINGLOCK
+    //  33, // 25: MSP_MODE_SURFACE
+    //  34, // 26: MSP_MODE_FLAPERON
+    //  35, // 27: MSP_MODE_TURNASSIST
+    //  36, // 28: MSP_MODE_NAVLAUNCH
+    //  37, // 29: MSP_MODE_AUTOTRIM
+    //};
+    //
+    //
+    //// returns active mode (using MSP_STATUS and MSP_BOXIDS messages)
+    //// see MSP_MODE_... for bits inside activeModes
+    //bool MSP::getActiveModes(uint32_t * activeModes)
+    //{
+    //  // request status ex
+    //  msp_status_t status;
+    //  if (request(MSP_STATUS, &status, sizeof(status))) {
+    //    // request permanent ids associated to boxes
+    //    uint8_t ids[sizeof(BOXIDS)];
+    //    uint8_t recvSize;
+    //    if (request(MSP_BOXIDS, ids, sizeof(ids), &recvSize)) {
+    //      // compose activeModes, converting BOXIDS to bit map (setting 1 if related flag in flightModeFlags is set)
+    //      *activeModes = 0;
+    //      for (uint8_t i = 0; i < recvSize; ++i) {
+    //        if (status.flightModeFlags & (1 << i)) {
+    //          for (uint8_t j = 0; j < sizeof(BOXIDS); ++j) {
+    //            if (pgm_read_byte(BOXIDS + j) == ids[i]) {
+    //              *activeModes |= 1 << j;
+    //              break;
+    //            }
+    //          }
+    //        }
+    //      }
+    //      return true;
+    //    }
+    //  }
+    //
+    //  return false;
+    //}
+}
+
 
 
 //void loop() {
