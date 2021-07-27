@@ -3,6 +3,8 @@
 <a href="https://www.buymeacoffee.com/bosko" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Beer" style="height: auto !important;width: auto !important;" ></a>
 </p>
 
+**Thanks for supporters:** gdanas87, Jeremy
+
 # Available on AppStore 
 https://apps.apple.com/us/app/inav-telemetry/id1543244904
 
