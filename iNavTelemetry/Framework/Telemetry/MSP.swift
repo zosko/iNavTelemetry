@@ -14,7 +14,7 @@ let MSP_MAX_SUPPORTED_MOTORS: Int = 8
 let MSP_MAX_SUPPORTED_CHANNELS: Int = 16
 let MSP_MAX_MAPPABLE_RX_INPUTS: Int = 8
 
-enum MSP_Request_Replies: Int {
+enum MSP_Request_Replies: UInt8 {
     case MSP_API_VERSION            = 1
     case MSP_FC_VARIANT             = 2
     case MSP_FC_VERSION             = 3
@@ -155,10 +155,10 @@ struct msp_status_ex_t {
     let i2cErrorCounter: UInt16
     let sensor: UInt16                    // MSP_STATUS_SENSOR_...
     let flightModeFlags: UInt32           // see getActiveModes()
-    let  configProfileIndex: UInt8
+    let configProfileIndex: UInt8
     let averageSystemLoadPercent: UInt16  // 0...100
     let armingFlags: UInt16
-    let  accCalibrationAxisFlags: UInt8
+    let accCalibrationAxisFlags: UInt8
 }
 
 
@@ -184,7 +184,6 @@ struct msp_sensor_status_t {
     let hwPitotmeterStatus: UInt8
     let hwOpticalFlowStatus: UInt8
 }
-
 
 
 // MSP_SERVO reply
@@ -262,10 +261,10 @@ struct msp_sonar_altitude_t {
 
 // MSP_ANALOG reply
 struct msp_analog_t {
-    let  vbat: UInt8     // 0...255
+    let vbat: UInt8     // 0...255
     let mAhDrawn: UInt16 // milliamp hours drawn from battery
     let rssi: UInt16     // 0..1023
-    let  amperage: Int16 // send amperage in 0.01 A steps, range is -320A to 320A
+    let amperage: Int16 // send amperage in 0.01 A steps, range is -320A to 320A
 }
 
 
@@ -284,14 +283,14 @@ struct msp_loop_time_t {
 
 // MSP_RC_TUNING reply
 struct msp_rc_tuning_t {
-    let  rcRate8: UInt8  // no longer used
-    let  rcExpo8: UInt8
-    let  rates: [UInt8] = [UInt8](repeating: 0, count: 3) // R,P,Y
-    let  dynThrPID: UInt8
-    let  thrMid8: UInt8
-    let  thrExpo8: UInt8
+    let rcRate8: UInt8  // no longer used
+    let rcExpo8: UInt8
+    let rates: [UInt8] = [UInt8](repeating: 0, count: 3) // R,P,Y
+    let dynThrPID: UInt8
+    let thrMid8: UInt8
+    let thrExpo8: UInt8
     let tpa_breakpoint: UInt16
-    let  rcYawExpo8: UInt8
+    let rcYawExpo8: UInt8
 }
 
 
@@ -358,7 +357,6 @@ struct msp_comp_gps_t {
     let directionToHome: Int16 // direction to home in degrees
     let heartbeat: UInt8       // toggles 0 and 1 for each change
 }
-
 
 
 enum MSP_Nav_Status_Mode: Int {
@@ -486,6 +484,7 @@ struct MSP_Feature: OptionSet {
     static let MSP_FEATURE_OSD                 = (1 << 29)
 }
 
+
 // MSP_FEATURE reply
 struct msp_feature_t {
     let featureMask: UInt32 // combination of MSP_FEATURE_XXX
@@ -546,19 +545,19 @@ enum MSP_SPI_PROT_NRF24RX: Int {
 
 // MSP_RX_CONFIG reply
 struct msp_rx_config_t {
-    let   serialrx_provider: UInt8  // one of MSP_SERIALRX_XXX values
-    let  maxcheck: UInt16
-    let  midrc: UInt16
-    let  mincheck: UInt16
-    let   spektrum_sat_bind: UInt8
-    let  rx_min_usec: UInt16
-    let  rx_max_usec: UInt16
-    let   dummy1: UInt8
-    let   dummy2: UInt8
-    let  dummy3: UInt16
-    let   rx_spi_protocol: UInt8  // one of MSP_SPI_PROT_XXX values
-    let  rx_spi_id: UInt32
-    let   rx_spi_rf_channel_count: UInt8
+    let serialrx_provider: UInt8  // one of MSP_SERIALRX_XXX values
+    let maxcheck: UInt16
+    let midrc: UInt16
+    let mincheck: UInt16
+    let spektrum_sat_bind: UInt8
+    let rx_min_usec: UInt16
+    let rx_max_usec: UInt16
+    let dummy1: UInt8
+    let dummy2: UInt8
+    let dummy3: UInt16
+    let rx_spi_protocol: UInt8  // one of MSP_SPI_PROT_XXX values
+    let rx_spi_id: UInt32
+    let rx_spi_rf_channel_count: UInt8
 }
 
 // MSP_RX_MAP reply
@@ -637,17 +636,16 @@ struct msp_set_wp_t {
 
 class MSP: NSObject {
     
-    
-    func send(messageID: UInt8, payload: [UInt8], size: UInt8){
+    func send(messageID: MSP_Request_Replies, payload: [UInt8] = [], size: UInt8 = 0){
         var buffCount = 0
-        var buffer : [UInt8] = [UInt8](repeating: 0, count: 200)
-        buffer[0] = UInt8("$") ?? 0
-        buffer[1] = UInt8("M") ?? 0
-        buffer[2] = UInt8("<") ?? 0
+        var buffer : [UInt8] = [UInt8](repeating: 0, count: payload.count + 6)
+        buffer[0] = 36 // "$"
+        buffer[1] = 77 // "M"
+        buffer[2] = 60 // "<"
         buffer[3] = size
-        buffer[4] = messageID
+        buffer[4] = messageID.rawValue
         
-        var checksum = size ^ messageID
+        var checksum = size ^ messageID.rawValue
         
         buffCount = 5
         payload.forEach { b in
@@ -660,169 +658,94 @@ class MSP: NSObject {
         print(buffer)
     }
     
-    
-    //// timeout in milliseconds
-    //bool MSP::recv(uint8_t * messageID, void * payload, uint8_t maxSize, uint8_t * recvSize)
-    //{
-    //  uint32_t t0 = millis();
-    //
-    //  while (1) {
-    //
-    //    // read header
-    //    while (_stream->available() < 6)
-    //      if (millis() - t0 >= _timeout)
-    //        return false;
-    //    char header[3];
-    //    _stream->readBytes((char*)header, 3);
-    //
-    //    // check header
-    //    if (header[0] == '$' && header[1] == 'M' && header[2] == '>') {
-    //      // header ok, read payload size
-    //      *recvSize = _stream->read();
-    //
-    //      // read message ID (type)
-    //      *messageID = _stream->read();
-    //
-    //      uint8_t checksumCalc = *recvSize ^ *messageID;
-    //
-    //      // read payload
-    //      uint8_t * payloadPtr = (uint8_t*)payload;
-    //      uint8_t idx = 0;
-    //      while (idx < *recvSize) {
-    //        if (millis() - t0 >= _timeout)
-    //          return false;
-    //        if (_stream->available() > 0) {
-    //          uint8_t b = _stream->read();
-    //          checksumCalc ^= b;
-    //          if (idx < maxSize)
-    //            *(payloadPtr++) = b;
-    //          ++idx;
-    //        }
-    //      }
-    //      // zero remaining bytes if *size < maxSize
-    //      for (; idx < maxSize; ++idx)
-    //        *(payloadPtr++) = 0;
-    //
-    //      // read and check checksum
-    //      while (_stream->available() == 0)
-    //        if (millis() - t0 >= _timeout)
-    //          return false;
-    //      uint8_t checksum = _stream->read();
-    //      if (checksumCalc == checksum) {
-    //        return true;
-    //      }
-    //
-    //    }
-    //  }
-    //
-    //}
-    
-    
-    // wait for messageID
-    // recvSize can be NULL
-    func waitFor(messageID: UInt8, payload: [UInt8], maxSize: UInt8, recvSize: UInt8 = 0) -> Bool{
-        let recvMessageID: UInt8
-        let recvSizeValue: UInt8
-        let t0 = Date.timeIntervalBetween1970AndReferenceDate
-        let timeout = 500.0
-        while (Double(Date.timeIntervalBetween1970AndReferenceDate) - t0 < timeout){
-            //            if (recv(&recvMessageID, payload, maxSize, (recvSize ? recvSize : &recvSizeValue)) && messageID == recvMessageID)
-            return true;
+    func process_incoming_bytes(incomingData: Data) -> Bool {
+        if incomingData.count < 6 {
+            return false
         }
         
-        // timeout
-        return false;
-    }
-    
-    
-    // send a message and wait for the reply
-    // recvSize can be NULL
-    func request(messageID: UInt8, payload: [UInt8], maxSize: UInt8, recvSize: UInt8 = 0) -> Bool{
-        send(messageID: messageID, payload: [], size: 0)
-        return waitFor(messageID: messageID, payload: payload, maxSize: maxSize, recvSize: recvSize)
-    }
-    
-    
-    // send message and wait for ack
-    func command(messageID: UInt8, payload: [UInt8], size: UInt8, waitACK: Bool) -> Bool{
-        send(messageID: messageID, payload: payload, size: size)
+        let bytes: [UInt8] = incomingData.map{ $0 }
         
-        // ack required
-        if (waitACK){
-            return waitFor(messageID: messageID, payload: [], maxSize: 0)
+        print("bytes recv: \(bytes)")
+        
+        let h1 = 36 // "$"
+        let h2 = 77 // "M"
+        let h3 = 62 // ">"
+        
+        // check header
+        if bytes[0] == h1 && bytes[1] == h2 && bytes[2] == h3 {
+            // header ok, read payload size
+            
+            let recvSize = bytes[3]
+            let messageID = bytes[4]
+            print("Recived size: \(recvSize)")
+            print("Message ID: \(messageID)")
+            
+            var payload: [UInt8] = [UInt8](repeating: 0, count: Int(recvSize))
+            
+            var checksumCalc: UInt8 = recvSize ^ messageID
+            
+            // read payload
+            var idx = 5 // start from byte 5
+            while (idx < recvSize) {
+                let b: UInt8 = bytes[idx]
+                checksumCalc ^= b;
+                payload[idx] = b
+                idx += 1;
+            }
+            
+            // read and check checksum
+            let checksum: UInt8 = bytes[idx]
+            print("checksumCalc: \(checksumCalc)  ==  checksum: \(checksum)")
+            if checksumCalc == checksum {
+                return true
+            }
+            else {
+                return false
+            }
         }
-        
-        return true
+        return false
+    }
+    
+    func request(messageID: MSP_Request_Replies) {
+        send(messageID: messageID)
     }
     
     
-    //// map MSP_MODE_xxx to box ids
-    //// mixed values from cleanflight and inav
-    //static const uint8_t BOXIDS[30] PROGMEM = {
-    //  0,  //  0: MSP_MODE_ARM
-    //  1,  //  1: MSP_MODE_ANGLE
-    //  2,  //  2: MSP_MODE_HORIZON
-    //  3,  //  3: MSP_MODE_NAVALTHOLD (cleanflight BARO)
-    //  5,  //  4: MSP_MODE_MAG
-    //  6,  //  5: MSP_MODE_HEADFREE
-    //  7,  //  6: MSP_MODE_HEADADJ
-    //  8,  //  7: MSP_MODE_CAMSTAB
-    //  10, //  8: MSP_MODE_NAVRTH (cleanflight GPSHOME)
-    //  11, //  9: MSP_MODE_NAVPOSHOLD (cleanflight GPSHOLD)
-    //  12, // 10: MSP_MODE_PASSTHRU
-    //  13, // 11: MSP_MODE_BEEPERON
-    //  15, // 12: MSP_MODE_LEDLOW
-    //  16, // 13: MSP_MODE_LLIGHTS
-    //  19, // 14: MSP_MODE_OSD
-    //  20, // 15: MSP_MODE_TELEMETRY
-    //  21, // 16: MSP_MODE_GTUNE
-    //  22, // 17: MSP_MODE_SONAR
-    //  26, // 18: MSP_MODE_BLACKBOX
-    //  27, // 19: MSP_MODE_FAILSAFE
-    //  28, // 20: MSP_MODE_NAVWP (cleanflight AIRMODE)
-    //  29, // 21: MSP_MODE_AIRMODE (cleanflight DISABLE3DSWITCH)
-    //  30, // 22: MSP_MODE_HOMERESET (cleanflight FPVANGLEMIX)
-    //  31, // 23: MSP_MODE_GCSNAV (cleanflight BLACKBOXERASE)
-    //  32, // 24: MSP_MODE_HEADINGLOCK
-    //  33, // 25: MSP_MODE_SURFACE
-    //  34, // 26: MSP_MODE_FLAPERON
-    //  35, // 27: MSP_MODE_TURNASSIST
-    //  36, // 28: MSP_MODE_NAVLAUNCH
-    //  37, // 29: MSP_MODE_AUTOTRIM
-    //};
-    //
-    //
-    //// returns active mode (using MSP_STATUS and MSP_BOXIDS messages)
-    //// see MSP_MODE_... for bits inside activeModes
-    //bool MSP::getActiveModes(uint32_t * activeModes)
-    //{
-    //  // request status ex
-    //  msp_status_t status;
-    //  if (request(MSP_STATUS, &status, sizeof(status))) {
-    //    // request permanent ids associated to boxes
-    //    uint8_t ids[sizeof(BOXIDS)];
-    //    uint8_t recvSize;
-    //    if (request(MSP_BOXIDS, ids, sizeof(ids), &recvSize)) {
-    //      // compose activeModes, converting BOXIDS to bit map (setting 1 if related flag in flightModeFlags is set)
-    //      *activeModes = 0;
-    //      for (uint8_t i = 0; i < recvSize; ++i) {
-    //        if (status.flightModeFlags & (1 << i)) {
-    //          for (uint8_t j = 0; j < sizeof(BOXIDS); ++j) {
-    //            if (pgm_read_byte(BOXIDS + j) == ids[i]) {
-    //              *activeModes |= 1 << j;
-    //              break;
-    //            }
-    //          }
-    //        }
-    //      }
-    //      return true;
-    //    }
-    //  }
-    //
-    //  return false;
-    //}
+    // map MSP_MODE_xxx to box ids
+    // mixed values from cleanflight and inav
+    let BOXIDS: [UInt8] = [
+        0,  //  0: MSP_MODE_ARM
+        1,  //  1: MSP_MODE_ANGLE
+        2,  //  2: MSP_MODE_HORIZON
+        3,  //  3: MSP_MODE_NAVALTHOLD (cleanflight BARO)
+        5,  //  4: MSP_MODE_MAG
+        6,  //  5: MSP_MODE_HEADFREE
+        7,  //  6: MSP_MODE_HEADADJ
+        8,  //  7: MSP_MODE_CAMSTAB
+        10, //  8: MSP_MODE_NAVRTH (cleanflight GPSHOME)
+        11, //  9: MSP_MODE_NAVPOSHOLD (cleanflight GPSHOLD)
+        12, // 10: MSP_MODE_PASSTHRU
+        13, // 11: MSP_MODE_BEEPERON
+        15, // 12: MSP_MODE_LEDLOW
+        16, // 13: MSP_MODE_LLIGHTS
+        19, // 14: MSP_MODE_OSD
+        20, // 15: MSP_MODE_TELEMETRY
+        21, // 16: MSP_MODE_GTUNE
+        22, // 17: MSP_MODE_SONAR
+        26, // 18: MSP_MODE_BLACKBOX
+        27, // 19: MSP_MODE_FAILSAFE
+        28, // 20: MSP_MODE_NAVWP (cleanflight AIRMODE)
+        29, // 21: MSP_MODE_AIRMODE (cleanflight DISABLE3DSWITCH)
+        30, // 22: MSP_MODE_HOMERESET (cleanflight FPVANGLEMIX)
+        31, // 23: MSP_MODE_GCSNAV (cleanflight BLACKBOXERASE)
+        32, // 24: MSP_MODE_HEADINGLOCK
+        33, // 25: MSP_MODE_SURFACE
+        34, // 26: MSP_MODE_FLAPERON
+        35, // 27: MSP_MODE_TURNASSIST
+        36, // 28: MSP_MODE_NAVLAUNCH
+        37, // 29: MSP_MODE_AUTOTRIM
+    ]
 }
-
 
 
 //void loop() {
