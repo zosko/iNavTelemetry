@@ -53,6 +53,7 @@ enum MSP_Request_Replies: UInt8 {
     case MSP_GPSSTATISTICS        = 166 // get GPS debugging data
     case MSP_SET_PID              = 202 // set P I D coeff
 }
+
 enum MSP_Commands: Int {
     case MSP_SET_HEAD             = 211 // define a new heading hold direction
     case MSP_SET_RAW_RC           = 200 // 8 rc chan
@@ -316,17 +317,17 @@ struct msp_misc_t {
     let maxthrottle: UInt16
     let mincommand: UInt16
     let failsafe_throttle: UInt16
-    let  gps_provider: UInt8
-    let  gps_baudrate: UInt8
-    let  gps_ubx_sbas: UInt8
-    let  multiwiiCurrentMeterOutput: UInt8
-    let  rssi_channel: UInt8
-    let  dummy: UInt8
+    let gps_provider: UInt8
+    let gps_baudrate: UInt8
+    let gps_ubx_sbas: UInt8
+    let multiwiiCurrentMeterOutput: UInt8
+    let rssi_channel: UInt8
+    let dummy: UInt8
     let mag_declination: UInt16
-    let  vbatscale: UInt8
-    let  vbatmincellvoltage: UInt8
-    let  vbatmaxcellvoltage: UInt8
-    let  vbatwarningcellvoltage: UInt8
+    let vbatscale: UInt8
+    let vbatmincellvoltage: UInt8
+    let vbatmaxcellvoltage: UInt8
+    let vbatwarningcellvoltage: UInt8
 }
 
 
@@ -633,8 +634,30 @@ struct msp_set_wp_t {
     let flag: UInt8     // 0xa5 = last, otherwise set to 0
 }
 
+struct MSPStruct : Codable {
+    var lat = 0.0 //
+    var lng = 0.0 //
+    var alt = 0 //
+    var gps_sats = 0 //
+    var distance = 0 //
+    var speed = 0 //
+    var voltage = 0.0 //
+    var rssi = 0 //
+    var current = 0 //
+    var heading = 0 //
+    var flight_mode = 0
+    var fuel = 0
+    var roll = 0 //
+    var pitch = 0 //
+    
+    init(){
+        
+    }
+}
 
 class MSP: NSObject {
+    
+    var packet = MSPStruct()
     
     func send(messageID: MSP_Request_Replies, payload: [UInt8] = [], size: UInt8 = 0){
         var buffCount = 0
@@ -656,6 +679,33 @@ class MSP: NSObject {
         buffer[buffCount] = checksum
         
         print(buffer)
+    }
+    
+    func dataToStruct<T>(data: [UInt8], struct: T.Type) -> T {
+        let converted:T = data.withUnsafeBytes { $0.load(as: T.self) }
+        return converted
+    }
+    
+    func buffer_get_int16(buffer: [UInt8], index : Int) -> UInt16{
+        return UInt16(buffer[index]) << 8 | UInt16(buffer[index - 1])
+    }
+    func buffer_get_int32(buffer: [UInt8], index : Int) -> Int32 {
+        return Int32(buffer[index]) << 24 | Int32(buffer[index - 1]) << 16 | Int32(buffer[index - 2]) << 8 | Int32(buffer[index - 3])
+    }
+    
+    func crc8_dvb_s2(crc: UInt8, a: UInt8) -> UInt8 {
+        var newCRC = crc
+        newCRC ^= a
+        
+        for _ in 0 ..< 8 {
+            if ((newCRC & 0x80) != 0) {
+                newCRC = (newCRC << 1) ^ 0xD5;
+            } else {
+                newCRC = newCRC << 1;
+            }
+        }
+        
+        return newCRC
     }
     
     func process_incoming_bytes(incomingData: Data) -> Bool {
@@ -693,6 +743,40 @@ class MSP: NSObject {
                 idx += 1;
             }
             
+            switch messageID {
+            case 108:
+                let dat = dataToStruct(data: payload, struct: msp_attitude_t.self)
+                print(dat)
+                packet.roll = Int(buffer_get_int16(buffer: payload, index: 0) / 10)
+                packet.pitch = Int(buffer_get_int16(buffer: payload, index: 2) / 10)
+                packet.heading = Int(buffer_get_int16(buffer: payload, index: 4))
+            case 106:
+                let dat = dataToStruct(data: payload, struct: msp_raw_gps_t.self)
+                print(dat)
+                packet.gps_sats = Int(payload[1])
+                packet.lat = Double(buffer_get_int32(buffer: payload, index: 2) / 10000000)
+                packet.lng = Double(buffer_get_int32(buffer: payload, index: 6) / 10000000)
+                packet.alt = Int(buffer_get_int16(buffer: payload, index: 10))
+                packet.speed = Int(buffer_get_int16(buffer: payload, index: 12))
+            case 110:
+                let dat = dataToStruct(data: payload, struct: msp_analog_t.self)
+                print(dat)
+                packet.voltage = Double(payload[0])
+                packet.rssi = Int(buffer_get_int16(buffer: payload, index: 3))
+                packet.current = Int(buffer_get_int16(buffer: payload, index: 5))
+            case 107:
+                let dat = dataToStruct(data: payload, struct: msp_comp_gps_t.self)
+                print(dat)
+                packet.distance = Int(buffer_get_int16(buffer: payload, index: 0))
+            case 150:
+                let dat = dataToStruct(data: payload, struct: msp_status_ex_t.self)
+                print(dat)
+                packet.flight_mode = Int(buffer_get_int16(buffer: payload, index: 2))
+            default:
+                print("cant decode")
+                break
+            }
+            
             // read and check checksum
             let checksum: UInt8 = bytes[idx]
             print("checksumCalc: \(checksumCalc)  ==  checksum: \(checksum)")
@@ -709,97 +793,4 @@ class MSP: NSObject {
     func request(messageID: MSP_Request_Replies) {
         send(messageID: messageID)
     }
-    
-    
-    // map MSP_MODE_xxx to box ids
-    // mixed values from cleanflight and inav
-    let BOXIDS: [UInt8] = [
-        0,  //  0: MSP_MODE_ARM
-        1,  //  1: MSP_MODE_ANGLE
-        2,  //  2: MSP_MODE_HORIZON
-        3,  //  3: MSP_MODE_NAVALTHOLD (cleanflight BARO)
-        5,  //  4: MSP_MODE_MAG
-        6,  //  5: MSP_MODE_HEADFREE
-        7,  //  6: MSP_MODE_HEADADJ
-        8,  //  7: MSP_MODE_CAMSTAB
-        10, //  8: MSP_MODE_NAVRTH (cleanflight GPSHOME)
-        11, //  9: MSP_MODE_NAVPOSHOLD (cleanflight GPSHOLD)
-        12, // 10: MSP_MODE_PASSTHRU
-        13, // 11: MSP_MODE_BEEPERON
-        15, // 12: MSP_MODE_LEDLOW
-        16, // 13: MSP_MODE_LLIGHTS
-        19, // 14: MSP_MODE_OSD
-        20, // 15: MSP_MODE_TELEMETRY
-        21, // 16: MSP_MODE_GTUNE
-        22, // 17: MSP_MODE_SONAR
-        26, // 18: MSP_MODE_BLACKBOX
-        27, // 19: MSP_MODE_FAILSAFE
-        28, // 20: MSP_MODE_NAVWP (cleanflight AIRMODE)
-        29, // 21: MSP_MODE_AIRMODE (cleanflight DISABLE3DSWITCH)
-        30, // 22: MSP_MODE_HOMERESET (cleanflight FPVANGLEMIX)
-        31, // 23: MSP_MODE_GCSNAV (cleanflight BLACKBOXERASE)
-        32, // 24: MSP_MODE_HEADINGLOCK
-        33, // 25: MSP_MODE_SURFACE
-        34, // 26: MSP_MODE_FLAPERON
-        35, // 27: MSP_MODE_TURNASSIST
-        36, // 28: MSP_MODE_NAVLAUNCH
-        37, // 29: MSP_MODE_AUTOTRIM
-    ]
 }
-
-
-//void loop() {
-//  msp_status_ex_t status_ex;
-//  if (msp.request(MSP_STATUS_EX, &status_ex, sizeof(status_ex))) {
-//
-//    uint32_t activeModes = status_ex.flightModeFlags;
-//    if (activeModes>>MSP_MODE_ARM & 1)
-//      Serial.println("ARMED");
-//    else {
-//      Serial.println("NOT ARMED");
-//    }
-//  }
-//}
-
-
-//void loop()
-//{
-//  msp_rc_t rc;
-//  msp_attitude_t attitude;
-//  msp_analog_t analog;
-//  _delay_ms(500);
-//  uint32_t * activeModes;
-//  if (msp.request(MSP_ANALOG, &analog, sizeof(analog))) {
-//    uint8_t  vbat     = analog.vbat;     // 0...255
-//    uint16_t mAhDrawn = analog.mAhDrawn; // milliamp hours drawn from battery
-//    uint16_t rssi     = analog.rssi;     // 0..1023
-//    int16_t  amperage = analog.amperage; // send amperage in 0.01 A steps, range is -320A to 320A
-//    mySerial.print("Batteria: " + String(vbat/10.0));
-//    mySerial.print(" mAh: " + String(mAhDrawn));
-//    //mySerial.print(" RSSI: " + String(rssi));
-//    mySerial.println(" A: " + String(amperage/100.0));
-//  }
-//
-//  if (msp.request(MSP_RC, &rc, sizeof(rc))) {
-//    uint16_t roll     = rc.channelValue[0];
-//    uint16_t pitch    = rc.channelValue[1];
-//    uint16_t yaw      = rc.channelValue[2];
-//    uint16_t throttle = rc.channelValue[3];
-//    mySerial.print("RC-Roll: " + String(roll));
-//    mySerial.print(" RC-Pitch: " + String(pitch));
-//    mySerial.print(" RC-Throttle: " + String(throttle));
-//    mySerial.println(" RC-Yaw: " + String(yaw));
-//  }
-//  
-//  if (msp.request(MSP_ATTITUDE, &attitude, sizeof(attitude))) {
-//    int16_t roll     = attitude.roll;
-//    int16_t pitch    = attitude.pitch;
-//    uint16_t yaw      = attitude.yaw;
-//    mySerial.print("Att-Roll: " + String(roll/10.0));
-//    mySerial.print(" Att-Pitch: " + String(pitch/10.0));
-//    mySerial.println(" Att-Yaw: " + String(yaw));
-//  }
-//  
-//    msp.getActiveModes(*activeModes);         //
-//    mySerial.println(String(*activeModes));   //This line does not work!!
-//}
