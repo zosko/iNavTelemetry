@@ -26,27 +26,6 @@ extension Array where Element == UInt8 {
         return hexString
     }
 }
-    
-struct SmartPortStruct : Codable {
-    var lat = 0.0
-    var lng = 0.0
-    var alt = 0
-    var gps_sats = 0
-    var distance = 0
-    var speed = 0
-    var voltage = 0.0
-    var rssi = 0
-    var current = 0
-    var heading = 0
-    var flight_mode = 0
-    var fuel = 0
-    var roll = 0
-    var pitch = 0
-    
-    init(){
-        
-    }
-}
 
 enum State : Int {
     case IDLE = 0
@@ -88,7 +67,7 @@ class SmartPort: NSObject {
     var newLongitude = false
     var latitude : Double = 0.0
     var longitude : Double = 0.0
-    var packet = SmartPortStruct()
+    var packet = TelemetryStruct()
     
     //MARK: Functions
     func getStabilization() -> String{

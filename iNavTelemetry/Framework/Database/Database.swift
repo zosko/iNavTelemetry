@@ -13,7 +13,7 @@
 #endif
 
 class Database: NSObject {
-    var jsonDatabase : [SmartPortStruct] = []
+    var jsonDatabase : [TelemetryStruct] = []
     var nameFile : String!
     var active = false
     
@@ -31,7 +31,7 @@ class Database: NSObject {
         let fileURL = documentsURL?.appendingPathComponent(fileName)
         return fileURL!
     }
-    func saveTelemetryData(packet : SmartPortStruct){
+    func saveTelemetryData(packet : TelemetryStruct){
         jsonDatabase.append(packet)
     }
     func removeFile(fileName: URL) -> Void{

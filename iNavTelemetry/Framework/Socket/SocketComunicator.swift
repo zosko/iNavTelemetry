@@ -56,7 +56,7 @@ class SocketComunicator: NSObject {
             }
         }
     }
-    func sendPlaneData(packet: SmartPortStruct, photo : String = ""){
+    func sendPlaneData(packet: TelemetryStruct, photo : String = ""){
         socket.emit("planeLocation", with: [["lat":packet.lat,
                                              "lng":packet.lng,
                                              "alt":packet.alt,

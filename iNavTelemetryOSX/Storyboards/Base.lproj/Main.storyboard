@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="17156" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="17156"/>
-        <plugIn identifier="com.apple.MapKitIBPlugin" version="17156"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="17701"/>
+        <plugIn identifier="com.apple.MapKitIBPlugin" version="17701"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -717,6 +717,18 @@
                                     <outlet property="delegate" destination="yZ5-PP-dWB" id="7Np-bY-Ma2"/>
                                 </connections>
                             </mapView>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="6h8-P8-oJj">
+                                <rect key="frame" x="0.0" y="91" width="100" height="17"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="100" id="jkR-KM-zTH"/>
+                                    <constraint firstAttribute="height" constant="17" id="rrX-nf-88f"/>
+                                </constraints>
+                                <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="Protocol" drawsBackground="YES" id="pB8-qp-l71">
+                                    <font key="font" metaFont="systemBold"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.50385123239999996" colorSpace="custom" customColorSpace="sRGB"/>
+                                </textFieldCell>
+                            </textField>
                             <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hwd-Qr-naa">
                                 <rect key="frame" x="672" y="0.0" width="140" height="140"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
@@ -953,25 +965,6 @@
                                     </popUpButton>
                                 </subviews>
                             </customView>
-                            <switch horizontalHuggingPriority="750" verticalHuggingPriority="750" baseWritingDirection="leftToRight" alignment="left" translatesAutoresizingMaskIntoConstraints="NO" id="Z36-qe-YjG">
-                                <rect key="frame" x="8" y="79" width="42" height="24"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="21" id="9Fi-io-sJ6"/>
-                                    <constraint firstAttribute="width" constant="38" id="I5u-pt-OHy"/>
-                                </constraints>
-                            </switch>
-                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="GYU-de-ESB">
-                                <rect key="frame" x="52" y="83" width="60" height="17"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="60" id="iaf-nw-yJe"/>
-                                    <constraint firstAttribute="height" constant="17" id="vL8-Kz-mFf"/>
-                                </constraints>
-                                <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="LIVE" drawsBackground="YES" id="8ZX-RZ-Ltd">
-                                    <font key="font" metaFont="systemBold"/>
-                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.50385123239999996" colorSpace="custom" customColorSpace="sRGB"/>
-                                </textFieldCell>
-                            </textField>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="E8Z-dA-0LE">
                                 <rect key="frame" x="260" y="0.0" width="80" height="71"/>
                                 <constraints>
@@ -1000,6 +993,19 @@
                                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.50385123239999996" colorSpace="custom" customColorSpace="sRGB"/>
                                 </textFieldCell>
                             </textField>
+                            <segmentedControl verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="lNh-S4-2oo">
+                                <rect key="frame" x="108" y="87" width="140" height="24"/>
+                                <segmentedCell key="cell" borderStyle="border" alignment="left" style="rounded" trackingMode="selectOne" id="tCp-8z-WSZ">
+                                    <font key="font" metaFont="system"/>
+                                    <segments>
+                                        <segment label="S.Port" width="67" selected="YES"/>
+                                        <segment label="MSP" width="66" tag="1"/>
+                                    </segments>
+                                </segmentedCell>
+                                <connections>
+                                    <action selector="onSegmentSelect:" target="yZ5-PP-dWB" id="UkB-Wb-Q6Q"/>
+                                </connections>
+                            </segmentedControl>
                         </subviews>
                         <constraints>
                             <constraint firstAttribute="bottom" secondItem="E8Z-dA-0LE" secondAttribute="bottom" id="07f-it-O5P"/>
@@ -1007,7 +1013,6 @@
                             <constraint firstItem="sYW-SW-Dhi" firstAttribute="leading" secondItem="ea5-23-3Mv" secondAttribute="trailing" id="2dd-WJ-Lkb"/>
                             <constraint firstAttribute="trailing" secondItem="FOF-eJ-Y5V" secondAttribute="trailing" id="6f8-Tc-3nn"/>
                             <constraint firstItem="6Ps-Ak-v5b" firstAttribute="top" secondItem="T9l-7J-Uqm" secondAttribute="bottom" constant="1" id="765-mR-Bn3"/>
-                            <constraint firstItem="ea5-23-3Mv" firstAttribute="top" secondItem="Z36-qe-YjG" secondAttribute="bottom" constant="10" id="CdO-L7-vZ3"/>
                             <constraint firstAttribute="trailing" secondItem="Zlt-qs-YlW" secondAttribute="trailing" id="L9p-jA-WVo"/>
                             <constraint firstItem="Q0f-K6-NDk" firstAttribute="leading" secondItem="FPQ-hh-e5m" secondAttribute="leading" id="NgL-ln-h31"/>
                             <constraint firstItem="GNI-J1-HX9" firstAttribute="leading" secondItem="FPQ-hh-e5m" secondAttribute="leading" id="NiT-Ei-OyA"/>
@@ -1015,17 +1020,17 @@
                             <constraint firstItem="6Ps-Ak-v5b" firstAttribute="centerY" secondItem="FPQ-hh-e5m" secondAttribute="centerY" id="T5q-Tg-3qi"/>
                             <constraint firstItem="FOF-eJ-Y5V" firstAttribute="top" secondItem="eRO-5m-VUg" secondAttribute="bottom" constant="1" id="WHQ-iv-yye"/>
                             <constraint firstItem="TM2-Bn-NiG" firstAttribute="leading" secondItem="FPQ-hh-e5m" secondAttribute="leading" id="XzB-zl-G0p"/>
+                            <constraint firstItem="lNh-S4-2oo" firstAttribute="centerY" secondItem="6h8-P8-oJj" secondAttribute="centerY" id="ao4-fe-6Nc"/>
                             <constraint firstItem="E8Z-dA-0LE" firstAttribute="leading" secondItem="saS-o7-peS" secondAttribute="trailing" id="b2v-kb-1Tu"/>
-                            <constraint firstItem="Z36-qe-YjG" firstAttribute="leading" secondItem="FPQ-hh-e5m" secondAttribute="leading" constant="10" id="b8D-Mt-YLz"/>
+                            <constraint firstItem="lNh-S4-2oo" firstAttribute="leading" secondItem="6h8-P8-oJj" secondAttribute="trailing" constant="10" id="bG2-uw-Gat"/>
                             <constraint firstAttribute="bottom" secondItem="sYW-SW-Dhi" secondAttribute="bottom" id="bp5-w3-pSN"/>
-                            <constraint firstItem="GYU-de-ESB" firstAttribute="leading" secondItem="Z36-qe-YjG" secondAttribute="trailing" constant="4" id="cLB-OY-hEa"/>
                             <constraint firstItem="OG1-b0-Sed" firstAttribute="top" secondItem="FPQ-hh-e5m" secondAttribute="top" id="e4H-tP-BjY"/>
                             <constraint firstItem="TpD-U8-Wa9" firstAttribute="leading" secondItem="FPQ-hh-e5m" secondAttribute="leading" id="eSc-hF-OsZ"/>
                             <constraint firstAttribute="bottom" secondItem="LHa-5i-hc3" secondAttribute="bottom" id="f1X-GH-p9f"/>
                             <constraint firstItem="TM2-Bn-NiG" firstAttribute="top" secondItem="OG1-b0-Sed" secondAttribute="bottom" constant="1" id="fXZ-Sn-X6B"/>
                             <constraint firstItem="TpD-U8-Wa9" firstAttribute="top" secondItem="6Ps-Ak-v5b" secondAttribute="bottom" constant="1" id="gjD-XJ-rTh"/>
-                            <constraint firstItem="GYU-de-ESB" firstAttribute="centerY" secondItem="Z36-qe-YjG" secondAttribute="centerY" id="hon-KC-8qD"/>
                             <constraint firstItem="6Ps-Ak-v5b" firstAttribute="leading" secondItem="FPQ-hh-e5m" secondAttribute="leading" id="iO4-9U-eaW"/>
+                            <constraint firstItem="ea5-23-3Mv" firstAttribute="top" secondItem="6h8-P8-oJj" secondAttribute="bottom" constant="20" id="kEh-LF-y6e"/>
                             <constraint firstItem="GNI-J1-HX9" firstAttribute="top" secondItem="TM2-Bn-NiG" secondAttribute="bottom" constant="1" id="kLs-0T-w0H"/>
                             <constraint firstAttribute="trailing" secondItem="eyd-6k-WRP" secondAttribute="trailing" id="mA8-UZ-xpz"/>
                             <constraint firstItem="eRO-5m-VUg" firstAttribute="top" secondItem="Zlt-qs-YlW" secondAttribute="bottom" constant="1" id="mC6-Nw-2Tt"/>
@@ -1033,6 +1038,7 @@
                             <constraint firstItem="LHa-5i-hc3" firstAttribute="top" secondItem="ea5-23-3Mv" secondAttribute="bottom" constant="1" id="oNQ-Z3-2sL"/>
                             <constraint firstItem="LHa-5i-hc3" firstAttribute="leading" secondItem="FPQ-hh-e5m" secondAttribute="leading" id="p0u-Lq-tbJ"/>
                             <constraint firstItem="p2Z-vf-zez" firstAttribute="top" secondItem="eyd-6k-WRP" secondAttribute="bottom" constant="1" id="qDe-2V-fKE"/>
+                            <constraint firstItem="6h8-P8-oJj" firstAttribute="leading" secondItem="FPQ-hh-e5m" secondAttribute="leading" id="qQz-dm-4iB"/>
                             <constraint firstAttribute="bottom" secondItem="Q0f-K6-NDk" secondAttribute="bottom" id="rFX-vf-C8g"/>
                             <constraint firstAttribute="trailing" secondItem="p2Z-vf-zez" secondAttribute="trailing" id="t1B-Nc-hlO"/>
                             <constraint firstAttribute="trailing" secondItem="Q0f-K6-NDk" secondAttribute="trailing" id="t7c-iv-Cqz"/>
@@ -1063,7 +1069,7 @@
                         <outlet property="lblVoltage" destination="ea5-23-3Mv" id="Wcj-R0-Dt3"/>
                         <outlet property="mapPlane" destination="Q0f-K6-NDk" id="XBS-Tw-c7h"/>
                         <outlet property="popupVideoInput" destination="f75-fG-QUw" id="e7N-LX-Y3g"/>
-                        <outlet property="switchLive" destination="Z36-qe-YjG" id="V3C-Bn-4Np"/>
+                        <outlet property="segmentTelemetryType" destination="lNh-S4-2oo" id="gRb-7H-Ho8"/>
                         <outlet property="viewCockpit" destination="Gsy-9Z-mX6" id="p4r-z6-tJz"/>
                     </connections>
                 </viewController>

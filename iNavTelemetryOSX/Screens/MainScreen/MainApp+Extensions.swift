@@ -10,9 +10,10 @@ import Cocoa
 import CoreBluetooth
 import MapKit
 import AVFoundation
+import ORSSerial
 
+// MARK: - CapturePhoto
 extension MainApp : AVCapturePhotoCaptureDelegate {
-    // MARK: - CapturePhoto
     func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
         let imageData = photo.fileDataRepresentation()
         if let data = imageData {
@@ -21,8 +22,8 @@ extension MainApp : AVCapturePhotoCaptureDelegate {
     }
 }
 
+// MARK: - MAPViewDelegate
 extension MainApp : MKMapViewDelegate{
-    // MARK: - MAPViewDelegate
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         if overlay is MKTileOverlay {
             let renderer = MKTileOverlayRenderer(overlay: overlay)
@@ -58,8 +59,9 @@ extension MainApp : MKMapViewDelegate{
         return anView
     }
 }
-extension MainApp : CBCentralManagerDelegate, CBPeripheralDelegate {
-    //MARK: CentralManagerDelegates
+
+//MARK: CentralManagerDelegates
+extension MainApp : CBCentralManagerDelegate {
     func centralManagerDidUpdateState(_ central: CBCentralManager) {
         var message = "Bluetooth"
         switch (central.state) {
@@ -80,7 +82,7 @@ extension MainApp : CBCentralManagerDelegate, CBPeripheralDelegate {
     func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
         connectedPeripheral = peripheral
         connectedPeripheral.delegate = self
-        connectedPeripheral.discoverServices([getServiceUUID()])
+        connectedPeripheral.discoverServices(nil)
         btnConnect.image = NSImage(named: "power_on")
     }
     func centralManager(_ central: CBCentralManager, didFailToConnect peripheral: CBPeripheral, error: Error?) {
@@ -127,8 +129,10 @@ extension MainApp : CBCentralManagerDelegate, CBPeripheralDelegate {
         Database.shared.stopLogging()
         btnConnect.image = NSImage(named: "power_off")
     }
-    
-    //MARK: PeripheralDelegates
+}
+
+//MARK: PeripheralDelegates
+extension MainApp: CBPeripheralDelegate {
     func peripheral(_ peripheral: CBPeripheral, didWriteValueFor characteristic: CBCharacteristic, error: Error?) {
         if error != nil {
             print("Error receiving didWriteValueFor \(characteristic) : " + error!.localizedDescription)
@@ -143,13 +147,13 @@ extension MainApp : CBCentralManagerDelegate, CBPeripheralDelegate {
             print("Error receiving notification for characteristic \(characteristic) : " + error!.localizedDescription)
             return
         }
-        if telemetry.process_incoming_bytes(incomingData: characteristic.value!) {
-            refreshTelemetry(packet: telemetry.packet)
+        if telemetry.parse(incomingData: characteristic.value!) {
+            refreshTelemetry(packet: telemetry.getTelemetry())
         }
     }
     func peripheral(_ peripheral: CBPeripheral, didDiscoverServices error: Error?) {
         for service in peripheral.services!{
-            peripheral.discoverCharacteristics([getCharUUID()], for: service)
+            peripheral.discoverCharacteristics(nil, for: service)
         }
     }
     func peripheral(_ peripheral: CBPeripheral, didUpdateNotificationStateFor characteristic: CBCharacteristic, error: Error?) {
@@ -160,10 +164,26 @@ extension MainApp : CBCentralManagerDelegate, CBPeripheralDelegate {
     }
     func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?) {
         for characteristic in service.characteristics! {
-            if characteristic.uuid == getCharUUID(){
-                peripheral.setNotifyValue(true, for: characteristic)
-            }
+            peripheral.setNotifyValue(true, for: characteristic)
         }
+    }
+}
+
+//MARK: ORSSerialPortDelegate
+extension MainApp: ORSSerialPortDelegate {
+    func serialPortWasRemovedFromSystem(_ serialPort: ORSSerialPort) {
+        print("serialPortWasRemovedFromSystem")
+    }
+    func serialPort(_ serialPort: ORSSerialPort, didReceive data: Data) {
+        if telemetry.parse(incomingData: data) {
+            refreshTelemetry(packet: telemetry.getTelemetry())
+        }
+    }
+    func serialPortWasOpened(_ serialPort: ORSSerialPort) {
+        btnConnect.image = NSImage(named: "power_on")
+    }
+    func serialPortWasClosed(_ serialPort: ORSSerialPort) {
+        btnConnect.image = NSImage(named: "power_off")
     }
 }
 extension MainApp {
@@ -176,16 +196,10 @@ extension MainApp {
     }
     func openLog(urlLog : URL){
         let jsonData = try! Data(contentsOf: urlLog)
-        let logData = try! JSONDecoder().decode([SmartPortStruct].self, from: jsonData)
+        let logData = try! JSONDecoder().decode([TelemetryStruct].self, from: jsonData)
         
         let controller : LogScreen = self.storyboard!.instantiateController(identifier: "LogScreen")
         controller.logData = logData
         self.presentAsSheet(controller)
-    }
-    func getServiceUUID() -> CBUUID {
-        return CBUUID(string: connectionType == .FRSKY_BUILT_IN ? "FFF0" : "FFE0")
-    }
-    func getCharUUID() -> CBUUID {
-        return CBUUID(string: connectionType == .FRSKY_BUILT_IN ? "FFF6" : "FFE1")
     }
 }

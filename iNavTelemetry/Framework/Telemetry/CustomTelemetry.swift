@@ -12,27 +12,6 @@
     import UIKit
 #endif
 
-struct TelemetryStruct {
-    var lat = 0.0
-    var lng = 0.0
-    var alt = 0
-    var gps_sats = 0
-    var distance = 0
-    var speed = 0
-    var voltage = 0.0
-    var rssi = 0
-    var current = 0
-    var heading = 0
-    var flight_mode = 0
-    var fuel = 0
-    var roll = 0
-    var pitch = 0
-    
-    init(){
-        
-    }
-}
-
 class CustomTelemetry : NSObject{
     var rcv_buffer : [UInt8] = [UInt8](repeating: 0, count: 200)
     var buffer_index : Int = 0

@@ -10,10 +10,12 @@ import Cocoa
 import MapKit
 import AVFoundation
 import CoreBluetooth
+import ORSSerial
 
-enum BluetoothType : Int {
-    case HM_10 = 0
-    case FRSKY_BUILT_IN = 1
+enum ConnectionType : Int {
+    case unknown = 0
+    case bluetooth = 1
+    case serial = 2
 }
 
 class MainApp: NSViewController {
@@ -37,8 +39,8 @@ class MainApp: NSViewController {
     @IBOutlet var imgCompass: NSImageView!
     @IBOutlet var imgHorizont: NSImageView!
     @IBOutlet var viewCockpit: NSView?
-    @IBOutlet var switchLive : NSSwitch!
     @IBOutlet var lblFlyTime: NSTextField!
+    @IBOutlet var segmentTelemetryType: NSSegmentedControl!
     
     //MARK: - Variables
     let videoDevices = AVCaptureDevice.DiscoverySession(deviceTypes: [.externalUnknown], mediaType: .video, position: .unspecified).devices
@@ -46,7 +48,7 @@ class MainApp: NSViewController {
     let photoOutput = AVCapturePhotoOutput()
     var planeAnnotation : LocationPointAnnotation!
     var gsAnnotation : LocationPointAnnotation!
-    var telemetry = SmartPort()
+    var telemetry = Telemetry()
     var oldLocation : CLLocationCoordinate2D!
     var centralManager: CBCentralManager!
     var connectedPeripheral: CBPeripheral!
@@ -54,23 +56,45 @@ class MainApp: NSViewController {
     var tempCapturePhotoCamera : String = ""
     var currentTime = 0.0
     var seconds = 0
-    var connectionType : BluetoothType = .FRSKY_BUILT_IN
+    var connectionType : ConnectionType = .unknown
+    var timer: Timer? = nil
+    var serialPort: ORSSerialPort!
     
     //MARK: - IBActions
     @IBAction func onBtnConnect(_ sender: Any) {
-        if connectedPeripheral != nil {
-            centralManager.cancelPeripheralConnection(connectedPeripheral)
-            connectedPeripheral = nil;
-            peripherals.removeAll()
-        }
-        else{
-            peripherals.removeAll()
-            centralManager.scanForPeripherals(withServices: [getServiceUUID()], options: nil)
-            
-            showProgress()
-            DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
-                self.stopSearchReader()
+        if connectionType == .bluetooth {
+            if connectedPeripheral != nil {
+                centralManager.cancelPeripheralConnection(connectedPeripheral)
+                connectedPeripheral = nil;
+                peripherals.removeAll()
+                connectionType = .unknown
             }
+            else{
+                peripherals.removeAll()
+                centralManager.scanForPeripherals(withServices: nil, options: nil)
+                
+                showProgress()
+                DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+                    self.stopSearchReader()
+                }
+            }
+        }
+        else if connectionType == .serial {
+            if serialPort.isOpen {
+                serialPort.close()
+                timer?.invalidate()
+                timer = nil
+                connectionType = .unknown
+            }
+            else {
+                serialPort.open()
+                timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [self] _ in
+                    telemetry.requestTelemetry(serialPort: serialPort)
+                }
+            }
+        }
+        else {
+            selectConnection()
         }
     }
     @IBAction func onBtnSetHomePosition(_ sender: Any){
@@ -141,6 +165,9 @@ class MainApp: NSViewController {
             
         }
     }
+    @IBAction func onSegmentSelect(_ sender: NSSegmentedControl) {
+        telemetry.chooseTelemetry(type: TelemetryType(rawValue: sender.selectedSegment)!)
+    }
     
     //MARK: - CustomFunctions
     func capturePhoto(){
@@ -194,7 +221,7 @@ class MainApp: NSViewController {
         gsAnnotation.imageName = "gs"
         mapPlane.addAnnotations([gsAnnotation,planeAnnotation])
     }
-    func refreshTelemetry(packet: SmartPortStruct){
+    func refreshTelemetry(packet: TelemetryStruct){
         lblLatitude.stringValue = "Latitude\n \(packet.lat)"
         lblLongitude.stringValue = "Longitude\n \(packet.lng)"
         lblSatellites.stringValue = "Satellites\n \(packet.gps_sats)"
@@ -216,10 +243,9 @@ class MainApp: NSViewController {
         if Date().timeIntervalSince1970 - currentTime > 1 { // send/save data every second
             seconds += 1
             
-            if switchLive.state == .on {
-                capturePhoto()
-                SocketComunicator.shared.sendPlaneData(packet: packet, photo: tempCapturePhotoCamera)
-            }
+            capturePhoto()
+            SocketComunicator.shared.sendPlaneData(packet: packet, photo: tempCapturePhotoCamera)
+            
             Database.shared.saveTelemetryData(packet: packet)
             currentTime = Date().timeIntervalSince1970
         }
@@ -244,11 +270,87 @@ class MainApp: NSViewController {
         mapPlane.addOverlay(polyline)
         oldLocation = planeAnnotation.coordinate
     }
+    func selectConnection(){
+        let alert = NSAlert()
+        alert.messageText = "Select connection type"
+        alert.alertStyle = .informational
+        alert.addButton(withTitle: "Cancel")
+        alert.addButton(withTitle: "Bluetooth")
+        alert.addButton(withTitle: "USB / Serial")
+        
+        alert.beginSheetModal(for: self.view.window!) { (response) in
+            if response != .alertFirstButtonReturn {
+                let indexButton = response.rawValue - 1001 // to get index 0.1.2...
+                if indexButton == 0 { // Bluetooth
+                    print("bluetooth choosen")
+                    self.connectionType = .bluetooth
+                    
+                    self.peripherals.removeAll()
+                    self.centralManager.scanForPeripherals(withServices: nil, options: nil)
+                    
+                    self.showProgress()
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+                        self.stopSearchReader()
+                    }
+                }
+                else { // serial
+                    print("serial choosen")
+                    self.connectionType = .serial
+                    self.choosePort()
+                }
+            }
+        }
+    }
+    func choosePort(){
+        
+        let alert = NSAlert()
+        alert.messageText = "Select port"
+        alert.alertStyle = .informational
+        alert.addButton(withTitle: "Cancel")
+        
+        let ports = ORSSerialPortManager.shared().availablePorts
+        for port in ports {
+            alert.addButton(withTitle: "\(port.name)")
+        }
+        
+        alert.beginSheetModal(for: self.view.window!) { (response) in
+            if response != .alertFirstButtonReturn {
+                let index = response.rawValue - 1001 // to get index 0.1.2...
+                self.serialPort = ORSSerialPort(path: "/dev/tty.\(ports[index].name)")
+                self.chooseBaud()
+            }
+        }
+        
+    }
+    func chooseBaud(){
+        let alert = NSAlert()
+        alert.messageText = "Select baud"
+        alert.alertStyle = .informational
+        alert.addButton(withTitle: "Cancel")
+        
+        let bauds = [9600, 19200, 38400, 57600, 115200]
+        for baud in bauds {
+            alert.addButton(withTitle: "\(baud)")
+        }
+        
+        alert.beginSheetModal(for: self.view.window!) { (response) in
+            if response != .alertFirstButtonReturn {
+                let index = response.rawValue - 1001 // to get index 0.1.2...
+                self.serialPort.baudRate = NSNumber(value: bauds[index])
+                self.serialPort.delegate = self
+                self.serialPort.open()
+                
+                self.timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [self] _ in
+                    telemetry.requestTelemetry(serialPort: serialPort)
+                }
+            }
+        }
+    }
     func stopSearchReader(){
         centralManager.stopScan()
         
         let alert = NSAlert()
-        alert.messageText = "Select Smart Port device"
+        alert.messageText = "Select device"
         alert.alertStyle = .informational
         alert.addButton(withTitle: "Cancel")
         
@@ -268,6 +370,8 @@ class MainApp: NSViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         SocketComunicator.shared.socketConnectionSetup()
+        
+        telemetry.chooseTelemetry(type: .SMARTPORT)
         
 //        let urlTeplate = "http://tile.openstreetmap.org/{z}/{x}/{y}.png"
 //        let overlay = MKTileOverlay(urlTemplate: urlTeplate)

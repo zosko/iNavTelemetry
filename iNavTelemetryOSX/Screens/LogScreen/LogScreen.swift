@@ -12,7 +12,7 @@ import MapKit
 class LogScreen: NSViewController, MKMapViewDelegate {
     
     // MARK: Public Variable
-    public var logData : [SmartPortStruct] = []
+    public var logData : [TelemetryStruct] = []
     
     //MARK: - IBoutlets
     @IBOutlet var mapPlane : MKMapView!

@@ -50,7 +50,7 @@ struct msp_analog {
     let vbat: UInt8 /* 1/10 V */
     let power_meter_sum: UInt16
     let rssi: UInt16 /* [0:1023] */
-    let amperage: UInt16
+    let amperage: UInt16 // Current in 0.01A steps, range is -320A to 320A
 }
 
 struct msp_status {
@@ -61,30 +61,9 @@ struct msp_status {
   let current_set: UInt8
 }
 
-struct MSPStruct : Codable {
-    var lat = 0.0 //
-    var lng = 0.0 //
-    var alt = 0 //
-    var gps_sats = 0 //
-    var distance = 0 //
-    var speed = 0 //
-    var voltage = 0.0 //
-    var rssi = 0 //
-    var current = 0 //
-    var heading = 0 //
-    var flight_mode = 0
-    var fuel = 0
-    var roll = 0 //
-    var pitch = 0 //
-    
-    init(){
-        
-    }
-}
-
 class MSP: NSObject {
     
-    var packet = MSPStruct()
+    var packet = TelemetryStruct()
     
     func request(messageID: MSP_Request_Replies, payload: [UInt8] = [], size: UInt16 = 0) -> Data{
         let flag: UInt8 = 0
@@ -140,6 +119,7 @@ class MSP: NSObject {
     private func buffer_get_int16(buffer: [UInt8], index : Int) -> Int16{
         return Int16(buffer[index]) << 8 | Int16(buffer[index - 1])
     }
+    
     private func buffer_get_int32(buffer: [UInt8], index : Int) -> Int32 {
         return Int32(buffer[index]) << 24 | Int32(buffer[index - 1]) << 16 | Int32(buffer[index - 2]) << 8 | Int32(buffer[index - 3])
     }
@@ -228,8 +208,8 @@ class MSP: NSObject {
                 let analog = dataToStruct(buffer: payload, structType: msp_analog.self)
                 print(analog)
                 packet.voltage = Double(payload[0]) / 10
-                packet.rssi = Int(buffer_get_int16(buffer: payload, index: 4))
-                packet.current = Int(buffer_get_int16(buffer: payload, index: 6))
+                packet.rssi = Int(buffer_get_int16(buffer: payload, index: 4)) / 10
+                packet.current = Int(buffer_get_int16(buffer: payload, index: 6)) / 100
             case .MSP_MSG_COMP_GPS:
                 let compGPS = dataToStruct(buffer: payload, structType: msp_comp_gps.self)
                 print(compGPS)

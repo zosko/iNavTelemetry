@@ -98,8 +98,8 @@ extension MainScreen: CBCentralManagerDelegate, CBPeripheralDelegate {
             print("Error receiving notification for characteristic \(characteristic) : " + error!.localizedDescription)
             return
         }
-        if telemetry.process_incoming_bytes(incomingData: characteristic.value!) {
-            refreshTelemetry(packet: telemetry.packet)
+        if telemetry.parse(incomingData: characteristic.value!) {
+            refreshTelemetry(packet: telemetry.getTelemetry())
         }
     }
     func peripheral(_ peripheral: CBPeripheral, didDiscoverServices error: Error?) {
@@ -170,7 +170,7 @@ extension MainScreen {
     }
     func openLog(urlLog : URL){
         let jsonData = try! Data(contentsOf: urlLog)
-        let logData = try! JSONDecoder().decode([SmartPortStruct].self, from: jsonData)
+        let logData = try! JSONDecoder().decode([TelemetryStruct].self, from: jsonData)
         
         let controller : LogScreen = self.storyboard!.instantiateViewController(identifier: "LogScreen")
         controller.logData = logData

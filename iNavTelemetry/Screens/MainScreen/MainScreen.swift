@@ -37,7 +37,7 @@ class MainScreen: UIViewController {
     //MARK: - Variables
     var planeAnnotation : LocationPointAnnotation!
     var gsAnnotation : LocationPointAnnotation!
-    var telemetry = SmartPort()
+    var telemetry = Telemetry()
     var centralManager: CBCentralManager!
     var connectedPeripheral: CBPeripheral!
     var peripherals : [CBPeripheral] = []
@@ -136,7 +136,7 @@ class MainScreen: UIViewController {
         gsAnnotation.imageName = "gs"
         mapPlane.addAnnotations([gsAnnotation,planeAnnotation])
     }
-    func refreshTelemetry(packet: SmartPortStruct){
+    func refreshTelemetry(packet: TelemetryStruct){
         lblLatitude.text = "Latitude\n \(packet.lat)"
         lblLongitude.text = "Longitude\n \(packet.lng)"
         lblSatellites.text = "Satellites\n \(packet.gps_sats)"
