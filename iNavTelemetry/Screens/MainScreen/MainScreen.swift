@@ -40,13 +40,20 @@ class MainScreen: UIViewController {
     var telemetry = Telemetry()
     var centralManager: CBCentralManager!
     var connectedPeripheral: CBPeripheral!
+    var writeCharacteristic: CBCharacteristic!
+    var writeTypeCharacteristic: CBCharacteristicWriteType = .withoutResponse
     var peripherals : [CBPeripheral] = []
     var oldLocation : CLLocationCoordinate2D!
     var currentTime = 0.0
     var seconds = 0
     var fixHomePosition = false
+    var timerRequestMSP: Timer? = nil
     
     //MARK: - IBActions
+    @IBAction func onSegmentTelemetryType(_ sender: UISegmentedControl){
+        telemetry.chooseTelemetry(type: TelemetryType(rawValue: sender.selectedSegmentIndex)!)
+        
+    }
     @IBAction func onBtnConnect(_ sender: Any) {
         fixHomePosition = false
         
@@ -210,6 +217,8 @@ class MainScreen: UIViewController {
     // MARK: - UIViewDelegates
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        telemetry.chooseTelemetry(type: .SMARTPORT)
         
         centralManager = CBCentralManager.init(delegate: self, queue: nil)
         addAnnotations()

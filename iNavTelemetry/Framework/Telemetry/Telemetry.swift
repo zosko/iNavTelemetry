@@ -11,12 +11,25 @@
     import ORSSerial
 #else
     import UIKit
+    import CoreBluetooth
 #endif
 
 enum TelemetryType: Int {
     case SMARTPORT = 0
     case MSP = 1
     case CUSTOM = 2
+}
+
+enum BluetoothType : Int {
+    case HM_10 = 0
+    case FRSKY_BUILT_IN = 1
+}
+
+enum BluetoothUUID : String {
+    case HM10_SERVICE = "FFE0"
+    case HM10_CHAR = "FFE1" //write
+    case FRSKY_SERVICE = "FFF0"
+    case FRSKY_CHAR = "FFF6" //write
 }
 
 struct TelemetryStruct : Codable {
@@ -48,16 +61,21 @@ class Telemetry: NSObject {
     private var smartPort = SmartPort()
     private var custom = CustomTelemetry()
     private var msp = MSP()
+    private var bluetoothType: BluetoothType = .FRSKY_BUILT_IN
     
     func chooseTelemetry(type: TelemetryType){
         self.telemetryType = type
+    }
+    
+    func getTelemetryType() -> TelemetryType {
+        return self.telemetryType
     }
     
     func getTelemetry() -> TelemetryStruct {
         return telemetry
     }
     
-    @available(macOS 10.10, *)
+    #if os(OSX)
     func requestTelemetry(serialPort: ORSSerialPort) {
         switch telemetryType {
         case .CUSTOM:
@@ -72,6 +90,22 @@ class Telemetry: NSObject {
             serialPort.send(msp.request(messageID: .MSP_MSG_ANALOG))
         }
     }
+    #else
+    func requestTelemetry(peripheral: CBPeripheral, characteristic: CBCharacteristic, writeType: CBCharacteristicWriteType) {
+        switch telemetryType {
+        case .CUSTOM:
+            break
+        case .SMARTPORT:
+            break
+        case .MSP:
+            peripheral.writeValue(msp.request(messageID: .MSP_MSG_STATUS), for: characteristic, type: writeType)
+            peripheral.writeValue(msp.request(messageID: .MSP_MSG_RAW_GPS), for: characteristic, type: writeType)
+            peripheral.writeValue(msp.request(messageID: .MSP_MSG_COMP_GPS), for: characteristic, type: writeType)
+            peripheral.writeValue(msp.request(messageID: .MSP_MSG_ATTITUDE), for: characteristic, type: writeType)
+            peripheral.writeValue(msp.request(messageID: .MSP_MSG_ANALOG), for: characteristic, type: writeType)
+        }
+    }
+    #endif
     
     func parse(incomingData: Data) -> Bool{
         switch telemetryType {
