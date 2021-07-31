@@ -84,6 +84,12 @@ extension MainApp : CBCentralManagerDelegate {
         connectedPeripheral.delegate = self
         connectedPeripheral.discoverServices(nil)
         btnConnect.image = NSImage(named: "power_on")
+        
+        if telemetry.getTelemetryType() == .MSP {
+            timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [self] _ in
+                telemetry.requestTelemetry(peripheral: connectedPeripheral, characteristic: writeCharacteristic, writeType: writeTypeCharacteristic)
+            }
+        }
     }
     func centralManager(_ central: CBCentralManager, didFailToConnect peripheral: CBPeripheral, error: Error?) {
         if error != nil {
@@ -128,6 +134,11 @@ extension MainApp : CBCentralManagerDelegate {
         
         Database.shared.stopLogging()
         btnConnect.image = NSImage(named: "power_off")
+        
+        if telemetry.getTelemetryType() == .MSP {
+            timer?.invalidate()
+            timer = nil
+        }
     }
 }
 
@@ -165,6 +176,18 @@ extension MainApp: CBPeripheralDelegate {
     func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?) {
         for characteristic in service.characteristics! {
             peripheral.setNotifyValue(true, for: characteristic)
+            
+            if characteristic.uuid == CBUUID(string: BluetoothUUID.FRSKY_CHAR.rawValue){
+                print("FRSKY CONNECTED")
+                self.writeCharacteristic = characteristic
+                self.writeTypeCharacteristic = characteristic.properties == .write ? .withResponse : .withoutResponse
+            }
+            
+            if characteristic.uuid == CBUUID(string: BluetoothUUID.HM10_CHAR.rawValue){
+                print("HM10 CONNECTED")
+                self.writeCharacteristic = characteristic
+                self.writeTypeCharacteristic = characteristic.properties == .write ? .withResponse : .withoutResponse
+            }
         }
     }
 }

@@ -52,6 +52,8 @@ class MainApp: NSViewController {
     var oldLocation : CLLocationCoordinate2D!
     var centralManager: CBCentralManager!
     var connectedPeripheral: CBPeripheral!
+    var writeCharacteristic: CBCharacteristic!
+    var writeTypeCharacteristic: CBCharacteristicWriteType = .withoutResponse
     var peripherals : [CBPeripheral] = []
     var tempCapturePhotoCamera : String = ""
     var currentTime = 0.0

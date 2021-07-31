@@ -9,6 +9,7 @@
 #if os(OSX)
     import Cocoa
     import ORSSerial
+    import CoreBluetooth
 #else
     import UIKit
     import CoreBluetooth
@@ -90,7 +91,8 @@ class Telemetry: NSObject {
             serialPort.send(msp.request(messageID: .MSP_MSG_ANALOG))
         }
     }
-    #else
+    #endif
+    
     func requestTelemetry(peripheral: CBPeripheral, characteristic: CBCharacteristic, writeType: CBCharacteristicWriteType) {
         switch telemetryType {
         case .CUSTOM:
@@ -105,7 +107,6 @@ class Telemetry: NSObject {
             peripheral.writeValue(msp.request(messageID: .MSP_MSG_ANALOG), for: characteristic, type: writeType)
         }
     }
-    #endif
     
     func parse(incomingData: Data) -> Bool{
         switch telemetryType {
