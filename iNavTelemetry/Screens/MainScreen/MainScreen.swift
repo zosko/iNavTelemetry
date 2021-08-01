@@ -53,6 +53,17 @@ class MainScreen: UIViewController {
     @IBAction func onSegmentTelemetryType(_ sender: UISegmentedControl){
         telemetry.chooseTelemetry(type: TelemetryType(rawValue: sender.selectedSegmentIndex)!)
         
+        if telemetry.getTelemetryType() == .MSP {
+            timerRequestMSP = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [self] _ in
+                guard let _ = connectedPeripheral else { return }
+                telemetry.requestTelemetry(peripheral: connectedPeripheral, characteristic: writeCharacteristic, writeType: writeTypeCharacteristic)
+            }
+        }
+        else{
+            timerRequestMSP?.invalidate()
+            timerRequestMSP = nil
+        }
+        
     }
     @IBAction func onBtnConnect(_ sender: Any) {
         fixHomePosition = false

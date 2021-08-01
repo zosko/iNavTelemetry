@@ -37,12 +37,6 @@ extension MainScreen: CBCentralManagerDelegate, CBPeripheralDelegate {
         connectedPeripheral.discoverServices(nil)
         self.view.makeToast("Connected")
         btnConnect.setImage(UIImage(named: "power_on"), for: .normal)
-        
-        if telemetry.getTelemetryType() == .MSP {
-            timerRequestMSP = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [self] _ in
-                telemetry.requestTelemetry(peripheral: connectedPeripheral, characteristic: writeCharacteristic, writeType: writeTypeCharacteristic)
-            }
-        }
     }
     func centralManager(_ central: CBCentralManager, didFailToConnect peripheral: CBPeripheral, error: Error?) {
         if error != nil {

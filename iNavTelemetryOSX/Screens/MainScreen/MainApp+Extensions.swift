@@ -84,12 +84,6 @@ extension MainApp : CBCentralManagerDelegate {
         connectedPeripheral.delegate = self
         connectedPeripheral.discoverServices(nil)
         btnConnect.image = NSImage(named: "power_on")
-        
-        if telemetry.getTelemetryType() == .MSP {
-            timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [self] _ in
-                telemetry.requestTelemetry(peripheral: connectedPeripheral, characteristic: writeCharacteristic, writeType: writeTypeCharacteristic)
-            }
-        }
     }
     func centralManager(_ central: CBCentralManager, didFailToConnect peripheral: CBPeripheral, error: Error?) {
         if error != nil {

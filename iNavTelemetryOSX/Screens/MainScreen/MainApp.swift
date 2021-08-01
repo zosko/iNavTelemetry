@@ -169,6 +169,17 @@ class MainApp: NSViewController {
     }
     @IBAction func onSegmentSelect(_ sender: NSSegmentedControl) {
         telemetry.chooseTelemetry(type: TelemetryType(rawValue: sender.selectedSegment)!)
+        
+        if telemetry.getTelemetryType() == .MSP {
+            timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [self] _ in
+                guard let _ = connectedPeripheral else { return }
+                telemetry.requestTelemetry(peripheral: connectedPeripheral, characteristic: writeCharacteristic, writeType: writeTypeCharacteristic)
+            }
+        }
+        else{
+            timer?.invalidate()
+            timer = nil
+        }
     }
     
     //MARK: - CustomFunctions
