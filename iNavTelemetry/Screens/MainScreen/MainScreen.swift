@@ -234,6 +234,10 @@ class MainScreen: UIViewController {
         centralManager = CBCentralManager.init(delegate: self, queue: nil)
         addAnnotations()
         addSocketListeners()
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            CrashReport.anythingForReport(self)
+        }
     }
 }
 

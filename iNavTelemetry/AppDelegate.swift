@@ -18,6 +18,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         SocketComunicator.shared.socketConnectionSetup()
         
+        NSSetUncaughtExceptionHandler { exception in
+            let appVersion = CrashReport.appVersion() + " build " + CrashReport.buildVersion()
+            let versionDevice = UIDevice.current.systemVersion
+            let modelDevice = UIDevice.current.model
+            
+            var strLog = try! String(contentsOfFile: CrashReport.crashReportPath())
+            
+            var strItem = "<html><head><title>Report Crash bug</title></head><body>";
+            strItem.append("<b>Application Version:</b> \(appVersion)<br />")
+            strItem.append("<b>Device version:</b> \(versionDevice)<br />")
+            strItem.append("<b>Device model:</b> \(modelDevice)<br />")
+            strItem.append("<b>Crash Reason:</b><br /> <pre>\(exception)</pre><br />")
+            strItem.append("<b>Crash Description:</b><br /><pre>\(exception.debugDescription)</pre><br />")
+            strItem.append("</body></html>")
+            
+            strLog.append(strItem)
+            try! strLog.write(toFile: CrashReport.crashReportPath(), atomically: true, encoding: .utf8)
+        }
+        
         return true
     }
 

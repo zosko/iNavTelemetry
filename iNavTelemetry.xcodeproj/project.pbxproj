@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		6D0610DE25461F170020BCA0 /* PlaneData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D0610DD25461F170020BCA0 /* PlaneData.swift */; };
 		6D0610DF25461F170020BCA0 /* PlaneData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D0610DD25461F170020BCA0 /* PlaneData.swift */; };
+		6D130CD126CB0D6900CFD487 /* CrashReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D130CD026CB0D6900CFD487 /* CrashReport.swift */; };
 		6D163DBD24FFCB6A000D2EA1 /* SmartPort.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D163DBC24FFCB6A000D2EA1 /* SmartPort.swift */; };
 		6D2E85222550B74F00B51B80 /* LogScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D2E85212550B74F00B51B80 /* LogScreen.swift */; };
 		6D633A72254DE40800C17125 /* Database.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D633A71254DE40800C17125 /* Database.swift */; };
@@ -46,6 +47,7 @@
 
 /* Begin PBXFileReference section */
 		6D0610DD25461F170020BCA0 /* PlaneData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaneData.swift; sourceTree = "<group>"; };
+		6D130CD026CB0D6900CFD487 /* CrashReport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrashReport.swift; sourceTree = "<group>"; };
 		6D163DBC24FFCB6A000D2EA1 /* SmartPort.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmartPort.swift; sourceTree = "<group>"; };
 		6D2E85212550B74F00B51B80 /* LogScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogScreen.swift; sourceTree = "<group>"; };
 		6D633A71254DE40800C17125 /* Database.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Database.swift; sourceTree = "<group>"; };
@@ -186,6 +188,7 @@
 			isa = PBXGroup;
 			children = (
 				6DFDD0EB24800003009F382A /* LocationPointAnnotation.swift */,
+				6D130CD026CB0D6900CFD487 /* CrashReport.swift */,
 			);
 			path = Other;
 			sourceTree = "<group>";
@@ -416,6 +419,7 @@
 				6DFDD0D8247FFFB5009F382A /* AppDelegate.swift in Sources */,
 				6D0610DE25461F170020BCA0 /* PlaneData.swift in Sources */,
 				6DF9826B24845512005C9BB2 /* MainScreen+Extensions.swift in Sources */,
+				6D130CD126CB0D6900CFD487 /* CrashReport.swift in Sources */,
 				6D75DB5826AD987F00230623 /* MSP.swift in Sources */,
 				6D633A72254DE40800C17125 /* Database.swift in Sources */,
 				6DFDD0EC24800003009F382A /* LocationPointAnnotation.swift in Sources */,
@@ -623,7 +627,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1.0;
+				MARKETING_VERSION = 1.1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = us.g6.iNavTelemetry;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -643,7 +647,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1.0;
+				MARKETING_VERSION = 1.1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = us.g6.iNavTelemetry;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
