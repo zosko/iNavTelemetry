@@ -365,6 +365,7 @@
                         <outlet property="lblStabilization" destination="kQb-Wg-2R9" id="Fe7-5L-bWy"/>
                         <outlet property="lblVoltage" destination="vCf-ni-GYP" id="QJv-0C-6tJ"/>
                         <outlet property="mapPlane" destination="9yf-ZG-nXx" id="QoZ-Ny-dpl"/>
+                        <outlet property="segmentProtocol" destination="oqw-xD-8pq" id="LW9-dX-aXl"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wmj-wI-fAj" sceneMemberID="firstResponder"/>

@@ -33,6 +33,7 @@ class MainScreen: UIViewController {
     @IBOutlet var imgHorizontLine: UIImageView!
     @IBOutlet var lblFlyTime: UILabel!
     @IBOutlet var lblOnlineUsers: UILabel!
+    @IBOutlet var segmentProtocol: UISegmentedControl!
     
     //MARK: - Variables
     var planeAnnotation : LocationPointAnnotation!
@@ -52,18 +53,6 @@ class MainScreen: UIViewController {
     //MARK: - IBActions
     @IBAction func onSegmentTelemetryType(_ sender: UISegmentedControl){
         telemetry.chooseTelemetry(type: TelemetryType(rawValue: sender.selectedSegmentIndex)!)
-        
-        if telemetry.getTelemetryType() == .MSP {
-            timerRequestMSP = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [self] _ in
-                guard let _ = connectedPeripheral else { return }
-                telemetry.requestTelemetry(peripheral: connectedPeripheral, characteristic: writeCharacteristic, writeType: writeTypeCharacteristic)
-            }
-        }
-        else{
-            timerRequestMSP?.invalidate()
-            timerRequestMSP = nil
-        }
-        
     }
     @IBAction func onBtnConnect(_ sender: Any) {
         fixHomePosition = false
@@ -72,8 +61,10 @@ class MainScreen: UIViewController {
             centralManager.cancelPeripheralConnection(connectedPeripheral)
             connectedPeripheral = nil;
             peripherals.removeAll()
+            segmentProtocol.isEnabled = true
         }
         else{
+            segmentProtocol.isEnabled = false
             peripherals.removeAll()
             centralManager.scanForPeripherals(withServices: nil, options: nil)
             MBProgressHUD.showAdded(to: self.view, animated: true)
@@ -112,6 +103,17 @@ class MainScreen: UIViewController {
     }
     
     //MARK: - CustomFunctions
+    func MSPTelemetry(start: Bool){
+        timerRequestMSP?.invalidate()
+        timerRequestMSP = nil
+        
+        if start {
+            timerRequestMSP = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [self] _ in
+                if connectedPeripheral == nil || writeCharacteristic == nil { return }
+                telemetry.requestTelemetry(peripheral: connectedPeripheral, characteristic: writeCharacteristic, writeType: writeTypeCharacteristic)
+            }
+        }
+    }
     func addHomePosition(){
         if planeAnnotation.coordinate.latitude != CLLocationCoordinate2D(latitude: 0, longitude: 0).latitude {
             fixHomePosition = true
@@ -215,6 +217,7 @@ class MainScreen: UIViewController {
             alert.addAction(action)
         }
         let actionCancel = UIAlertAction.init(title: "Cancel", style: .destructive) { (action) in
+            self.segmentProtocol.isEnabled = true
         }
         alert.addAction(actionCancel)
         

@@ -100,6 +100,7 @@ class Telemetry: NSObject {
         case .SMARTPORT:
             break
         case .MSP:
+            print("MSP request: \(characteristic)  type:\(writeType)")
             peripheral.writeValue(msp.request(messageID: .MSP_MSG_STATUS), for: characteristic, type: writeType)
             peripheral.writeValue(msp.request(messageID: .MSP_MSG_RAW_GPS), for: characteristic, type: writeType)
             peripheral.writeValue(msp.request(messageID: .MSP_MSG_COMP_GPS), for: characteristic, type: writeType)

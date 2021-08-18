@@ -374,6 +374,7 @@
                         <outlet property="lblStabilization" destination="Crr-Iu-bUj" id="tK4-QK-4IJ"/>
                         <outlet property="lblVoltage" destination="1PJ-iE-sEQ" id="8FO-EP-qok"/>
                         <outlet property="mapPlane" destination="oyX-yd-agg" id="udd-7u-Ewl"/>
+                        <outlet property="segmentProtocol" destination="VuF-Wy-P6V" id="kAj-LS-g9Z"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
