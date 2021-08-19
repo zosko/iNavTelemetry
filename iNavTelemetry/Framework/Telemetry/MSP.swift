@@ -173,17 +173,15 @@ class MSP: NSObject {
             checksumCalc = crc8_dvb_s2(crc: checksumCalc, a: tmp_buf[0])
             checksumCalc = crc8_dvb_s2(crc: checksumCalc, a: tmp_buf[1])
             
-            var payload: [UInt8] = [UInt8](repeating: 0, count: Int(recvSize)) // needs 2 bytes to prevent crash on struct
+            var payload: [UInt8] = [] // needs 10 bytes to prevent crash on struct
                         
             // read payload
             var idx = 8 // start from byte 8
-            var idTmp = 0
             while (idx < bytes.count - 1) {
                 let b: UInt8 = bytes[idx]
                 checksumCalc = crc8_dvb_s2(crc: checksumCalc, a: b)
-                payload[idTmp] = b
+                payload.append(b)
                 idx += 1
-                idTmp += 1
             }
             
             switch MSP_Request_Replies(rawValue: messageID) {
