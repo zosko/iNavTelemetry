@@ -33,7 +33,7 @@ In order this to work you need additional hardware: inverter and bluetooth modul
 # Supported Protocol
 - Custom Telemetry - check example of [Tracker](https://github.com/zosko/R9M_Inav_antenna_tracker/blob/master/bt_r9m_accst/bt_r9m_accst.ino)
 - FrSky Smart Port 
-- MSPv2
+- Multiwii Serial Protocol (MSP)
 - MAVLink (by request if need)
 - LTM (by request if need)
 - Crossfire (by request if need)
