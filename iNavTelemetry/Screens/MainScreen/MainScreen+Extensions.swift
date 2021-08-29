@@ -51,16 +51,52 @@ extension MainScreen: CBCentralManagerDelegate, CBPeripheralDelegate {
     func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Error?) {
         if error != nil {
             print("FailToDisconnect" + error!.localizedDescription)
+            
+            var timeoutSeconds = 0;
+            Timer.scheduledTimer(withTimeInterval: 1, repeats: true, block: { (timer) in
+                timeoutSeconds += 1
+                
+                if self.connectedPeripheral.state == .connected {
+                    print("connected....")
+                    timer.invalidate();
+                }
+                else if self.connectedPeripheral.state == .connecting {
+                    print("connecting....")
+                }
+                else if self.connectedPeripheral.state == .disconnecting {
+                    print("disconnecting....")
+                }
+                else if self.connectedPeripheral.state == .disconnected {
+                    print("disconnected....")
+                    self.centralManager.connect(self.connectedPeripheral, options: nil)
+                }
+                
+                if timeoutSeconds > 100 {
+                    print("timeout")
+                    self.peripherals.removeAll()
+                    self.connectedPeripheral = nil;
+                    self.view.makeToast("Disconnected")
+                    self.btnConnect.setImage(UIImage(named: "power_off"), for: .normal)
+                    self.segmentProtocol.isEnabled = true
+                    if self.telemetry.getTelemetryType() == .MSP {
+                        self.MSPTelemetry(start: false)
+                    }
+                    Database.shared.stopLogging()
+                    timer.invalidate();
+                }
+                
+            })
         }
-        
-        peripherals.removeAll()
-        self.connectedPeripheral = nil;
-        self.view.makeToast("Disconnected")
-        btnConnect.setImage(UIImage(named: "power_off"), for: .normal)
-        Database.shared.stopLogging()
-        segmentProtocol.isEnabled = true
-        if telemetry.getTelemetryType() == .MSP {
-            MSPTelemetry(start: false)
+        else {
+            self.peripherals.removeAll()
+            self.connectedPeripheral = nil;
+            self.view.makeToast("Disconnected")
+            self.btnConnect.setImage(UIImage(named: "power_off"), for: .normal)
+            self.segmentProtocol.isEnabled = true
+            if self.telemetry.getTelemetryType() == .MSP {
+                self.MSPTelemetry(start: false)
+            }
+            Database.shared.stopLogging()
         }
     }
     
@@ -95,16 +131,16 @@ extension MainScreen: CBCentralManagerDelegate, CBPeripheralDelegate {
         for characteristic in service.characteristics! {
             peripheral.setNotifyValue(true, for: characteristic)
             
-            print("didDiscoverCharacteristicsFor: \(characteristic)")
-            
             if characteristic.uuid == CBUUID(string: BluetoothUUID.FRSKY_CHAR.rawValue){
                 print("FRSKY CONNECTED")
+                self.connectedUUID = characteristic.uuid
                 self.writeCharacteristic = characteristic
                 self.writeTypeCharacteristic = characteristic.properties == .write ? .withResponse : .withoutResponse
             }
             
             if characteristic.uuid == CBUUID(string: BluetoothUUID.HM10_CHAR.rawValue){
                 print("HM10 CONNECTED")
+                self.connectedUUID = characteristic.uuid
                 self.writeCharacteristic = characteristic
                 self.writeTypeCharacteristic = characteristic.properties == .write ? .withResponse : .withoutResponse
             }

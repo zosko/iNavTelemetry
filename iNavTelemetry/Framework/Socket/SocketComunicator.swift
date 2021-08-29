@@ -50,7 +50,10 @@ class SocketComunicator: NSObject {
             let decoder = JSONDecoder()
             do {
                 let planes = try decoder.decode([PlaneData].self, from: jsonData)
-                completion(planes)
+                if planes.count > 0 {
+                    completion(planes)
+                }
+                
             } catch {
                 print(error)
             }

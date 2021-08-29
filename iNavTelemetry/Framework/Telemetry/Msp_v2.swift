@@ -8,60 +8,53 @@
 
 import Foundation
 
-enum MSP_Request_Replies: Int16 {
-    case MSP_MSG_IDENT                  = 100
-    case MSP_MSG_STATUS                 = 101
-    case MSP_MSG_RAW_GPS                = 106
-    case MSP_MSG_COMP_GPS               = 107
-    case MSP_MSG_ATTITUDE               = 108
-    case MSP_MSG_ANALOG                 = 110
-}
+class MSP_V2: NSObject {
+    
+    enum MSP_Request_Replies: Int16 {
+        case MSP_MSG_STATUS                 = 101
+        case MSP_MSG_RAW_GPS                = 106
+        case MSP_MSG_COMP_GPS               = 107
+        case MSP_MSG_ATTITUDE               = 108
+        case MSP_MSG_ANALOG                 = 110
+    }
 
-struct msp_ident {
-    let version: UInt8
-    let multitype: UInt8
-    let msp_version: UInt8
-    let capability: UInt32
-}
+    struct msp_raw_gps {
+        let fix: UInt8 /* bool */
+        let num_sat: UInt8
+        let coord_lat: Int32 /* 1 / 10 000 000 deg */
+        let coord_lon: Int32 /* 1 / 10 000 000 deg */
+        let altitude: Int16 /* m */
+        let speed: Int16 /* cm/s */
+        let ground_course: Int16 /* deg * 10 */
+        let hdop: UInt16
+    }
 
-struct msp_raw_gps {
-    let fix: UInt8 /* bool */
-    let num_sat: UInt8
-    let coord_lat: UInt32 /* 1 / 10 000 000 deg */
-    let coord_lon: UInt32 /* 1 / 10 000 000 deg */
-    let altitude: UInt16 /* m */
-    let speed: UInt16 /* cm/s */
-    let ground_course: UInt16 /* deg * 10 */
-}
+    struct msp_comp_gps {
+        let distance_to_home: Int16
+        let direction_to_home: Int16 /* [-180:180] deg */
+        let update: UInt8
+    }
 
-struct msp_comp_gps {
-    let distance_to_home: UInt16
-    let direction_to_home: UInt16 /* [-180:180] deg */
-    let update: UInt8
-}
+    struct msp_attitude {
+        let angx: Int16 /* [-1800:1800] 1/10 deg */
+        let angy: Int16 /* [-900:900] 1/10 deg */
+        let heading: Int16 /* [-180:180] deg */
+    }
 
-struct msp_attitude {
-    let angx: Int16 /* [-1800:1800] 1/10 deg */
-    let angy: Int16 /* [-900:900] 1/10 deg */
-    let heading: Int16 /* [-180:180] deg */
-}
+    struct msp_analog {
+        let vbat: UInt8 /* 1/10 V */
+        let power_meter_sum: UInt16
+        let rssi: UInt16 /* [0:1023] */
+        let amperage: Int16 // Current in 0.01A steps, range is -320A to 320A
+    }
 
-struct msp_analog {
-    let vbat: UInt8 /* 1/10 V */
-    let power_meter_sum: UInt16
-    let rssi: UInt16 /* [0:1023] */
-    let amperage: UInt16 // Current in 0.01A steps, range is -320A to 320A
-}
-
-struct msp_status {
-  let cycle_time: UInt16 /* us */
-  let i2c_errors_count: UInt16
-  let sensor: UInt16
-  let flag: UInt32
-  let current_set: UInt8
-}
-
-class MSP: NSObject {
+    struct msp_status {
+      let cycle_time: UInt16 /* us */
+      let i2c_errors_count: UInt16
+      let sensor: UInt16
+      let flag: UInt32
+      let current_set: UInt8
+    }
     
     var packet = TelemetryStruct()
     
@@ -185,27 +178,26 @@ class MSP: NSObject {
             }
             
             switch MSP_Request_Replies(rawValue: messageID) {
-            case .MSP_MSG_IDENT:
-                break
-//                let ident = dataToStruct(buffer: payload, structType: msp_ident.self) // +1 bytes need in payload
-//                print(ident)
             case .MSP_MSG_ATTITUDE:
 //                let attitude = dataToStruct(buffer: payload, structType: msp_attitude.self)
 //                print(attitude)
+                if payload.count < 5 { break }
                 packet.roll = Int(buffer_get_int16(buffer: payload, index: 1)) / 10
                 packet.pitch = Int(buffer_get_int16(buffer: payload, index: 3)) / 10
                 packet.heading = Int(buffer_get_int16(buffer: payload, index: 5))
             case .MSP_MSG_RAW_GPS:
 //                let rawGPS = dataToStruct(buffer: payload, structType: msp_raw_gps.self)
 //                print(rawGPS)
+                if payload.count < 9 { break }
                 packet.gps_sats = Int(payload[1])
                 packet.lat = Double(buffer_get_int32(buffer: payload, index: 5)) / 10000000
                 packet.lng = Double(buffer_get_int32(buffer: payload, index: 9)) / 10000000
-                packet.alt = Int(buffer_get_int16(buffer: payload, index: 11))
-                packet.speed = Int(buffer_get_int16(buffer: payload, index: 13))
+                //packet.alt = Int(buffer_get_int16(buffer: payload, index: 11))
+                //packet.speed = Int(buffer_get_int16(buffer: payload, index: 13))
             case .MSP_MSG_ANALOG:
 //                let analog = dataToStruct(buffer: payload, structType: msp_analog.self)
 //                print(analog)
+                if payload.count < 6 { break }
                 packet.voltage = Double(payload[0]) / 10
                 packet.rssi = Int(buffer_get_int16(buffer: payload, index: 4)) / 10
                 packet.current = Int(buffer_get_int16(buffer: payload, index: 6)) / 100

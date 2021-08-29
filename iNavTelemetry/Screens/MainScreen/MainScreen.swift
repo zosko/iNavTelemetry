@@ -32,7 +32,6 @@ class MainScreen: UIViewController {
     @IBOutlet var imgHorizontPlane: UIImageView!
     @IBOutlet var imgHorizontLine: UIImageView!
     @IBOutlet var lblFlyTime: UILabel!
-    @IBOutlet var lblOnlineUsers: UILabel!
     @IBOutlet var segmentProtocol: UISegmentedControl!
     
     //MARK: - Variables
@@ -49,6 +48,7 @@ class MainScreen: UIViewController {
     var seconds = 0
     var fixHomePosition = false
     var timerRequestMSP: Timer? = nil
+    var connectedUUID: CBUUID!
     
     //MARK: - IBActions
     @IBAction func onSegmentTelemetryType(_ sender: UISegmentedControl){
@@ -66,7 +66,7 @@ class MainScreen: UIViewController {
         else{
             segmentProtocol.isEnabled = false
             peripherals.removeAll()
-            centralManager.scanForPeripherals(withServices: nil, options: nil)
+            centralManager.scanForPeripherals(withServices: nil, options: [CBCentralManagerScanOptionAllowDuplicatesKey : true])
             MBProgressHUD.showAdded(to: self.view, animated: true)
             DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                 MBProgressHUD.hide(for: self.view, animated: true)
@@ -116,6 +116,7 @@ class MainScreen: UIViewController {
     }
     func addHomePosition(){
         if planeAnnotation.coordinate.latitude != CLLocationCoordinate2D(latitude: 0, longitude: 0).latitude {
+            
             fixHomePosition = true
             
             Database.shared.startLogging()
@@ -141,12 +142,11 @@ class MainScreen: UIViewController {
                 otherPlane.coordinate = location.coordinate
                 self.mapPlane.addAnnotation(otherPlane)
             }
-            
-            let onlineUsers = planes.filter{ $0.type == .plane }.count
-            self.lblOnlineUsers.text = "Online\n \(onlineUsers)"
         }
     }
     func addAnnotations(){
+        mapPlane.removeAnnotations(mapPlane.annotations)
+        
         planeAnnotation = LocationPointAnnotation()
         planeAnnotation.title = "My Plane"
         planeAnnotation.imageName = "my_plane"
@@ -197,6 +197,8 @@ class MainScreen: UIViewController {
         imgHorizontLine.frame.origin.y = CGFloat(pitch)
     }
     func refreshLocation(latitude: Double, longitude: Double){
+        guard let _ = planeAnnotation else { return }
+        
         let location = CLLocation(latitude: latitude, longitude: longitude)
         planeAnnotation.coordinate = location.coordinate
         
@@ -208,7 +210,7 @@ class MainScreen: UIViewController {
     func stopSearchReader(){
         centralManager.stopScan()
         
-        let alert = UIAlertController.init(title: "Search device", message: "Choose Tracker device", preferredStyle: .actionSheet)
+        let alert = UIAlertController.init(title: "Search device", message: "Choose Bluetooth device", preferredStyle: .actionSheet)
         
         for periperal in peripherals{
             let action = UIAlertAction.init(title: periperal.name ?? "missing name", style: .default) { (action) in
@@ -236,7 +238,7 @@ class MainScreen: UIViewController {
         
         centralManager = CBCentralManager.init(delegate: self, queue: nil)
         addAnnotations()
-        addSocketListeners()
+        //addSocketListeners()
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
             CrashReport.anythingForReport(self)

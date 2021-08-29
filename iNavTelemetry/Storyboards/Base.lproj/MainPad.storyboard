@@ -284,19 +284,6 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BKF-LF-5z0">
-                                <rect key="frame" x="864" y="240" width="160" height="47"/>
-                                <color key="backgroundColor" white="1" alpha="0.5" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="47" id="ddG-Qp-Fsl"/>
-                                    <constraint firstAttribute="width" constant="160" id="uuz-zD-qW4"/>
-                                </constraints>
-                                <string key="text">Online
-~</string>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Protocol" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="doY-KK-C1T">
                                 <rect key="frame" x="422" y="604" width="200" height="22"/>
                                 <color key="backgroundColor" white="1" alpha="0.5" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -329,7 +316,6 @@
                             <constraint firstItem="vig-Md-PfB" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="QeU-sx-xWX"/>
                             <constraint firstItem="mj9-Zj-6fe" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="R0n-pc-Ah8"/>
                             <constraint firstItem="Crr-Iu-bUj" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="ShE-o4-nIx"/>
-                            <constraint firstItem="BKF-LF-5z0" firstAttribute="top" secondItem="DUJ-XM-Irk" secondAttribute="bottom" constant="1" id="UyO-ax-UtW"/>
                             <constraint firstItem="aFt-PY-13g" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="YEh-fy-Lbf"/>
                             <constraint firstItem="aFt-PY-13g" firstAttribute="leading" secondItem="VuF-Wy-P6V" secondAttribute="trailing" constant="1" id="azD-gu-Yq2"/>
                             <constraint firstItem="RWD-8h-6wN" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="bQz-an-hug"/>
@@ -348,7 +334,6 @@
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="wph-qX-xrq" secondAttribute="bottom" id="o6H-eW-sTw"/>
                             <constraint firstItem="a34-Se-597" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="oIk-ai-xzg"/>
                             <constraint firstItem="uFq-yg-t5U" firstAttribute="top" secondItem="1PJ-iE-sEQ" secondAttribute="bottom" constant="1" id="oq1-Vu-5yp"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="BKF-LF-5z0" secondAttribute="trailing" id="p0S-dA-pzk"/>
                             <constraint firstItem="Gcd-B3-8py" firstAttribute="leading" secondItem="wph-qX-xrq" secondAttribute="trailing" id="pSr-fs-FCr"/>
                             <constraint firstItem="vig-Md-PfB" firstAttribute="leading" secondItem="aFt-PY-13g" secondAttribute="trailing" constant="1" id="tzo-Ft-vqR"/>
                             <constraint firstItem="92G-06-Btk" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="wBX-ji-ONU"/>
@@ -367,7 +352,6 @@
                         <outlet property="lblFuel" destination="a34-Se-597" id="rQB-xL-GBD"/>
                         <outlet property="lblLatitude" destination="RWD-8h-6wN" id="Uej-uk-WES"/>
                         <outlet property="lblLongitude" destination="npN-YZ-ILV" id="Xpj-bd-1lL"/>
-                        <outlet property="lblOnlineUsers" destination="BKF-LF-5z0" id="qvx-h4-c7D"/>
                         <outlet property="lblSatellites" destination="hOL-3R-YkL" id="qyq-EP-JJp"/>
                         <outlet property="lblSignalStrength" destination="g9K-8d-NlM" id="vey-dJ-oiN"/>
                         <outlet property="lblSpeed" destination="iRb-GP-WSt" id="5uy-Zh-0Wm"/>

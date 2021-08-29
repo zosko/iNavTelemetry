@@ -61,7 +61,7 @@ class Telemetry: NSObject {
     
     private var smartPort = SmartPort()
     private var custom = CustomTelemetry()
-    private var msp = MSP()
+    private var msp = MSP_V1()
     private var bluetoothType: BluetoothType = .FRSKY_BUILT_IN
     
     func chooseTelemetry(type: TelemetryType){
@@ -100,7 +100,6 @@ class Telemetry: NSObject {
         case .SMARTPORT:
             break
         case .MSP:
-            print("MSP request: \(characteristic)  type:\(writeType)")
             peripheral.writeValue(msp.request(messageID: .MSP_MSG_STATUS), for: characteristic, type: writeType)
             peripheral.writeValue(msp.request(messageID: .MSP_MSG_RAW_GPS), for: characteristic, type: writeType)
             peripheral.writeValue(msp.request(messageID: .MSP_MSG_COMP_GPS), for: characteristic, type: writeType)
