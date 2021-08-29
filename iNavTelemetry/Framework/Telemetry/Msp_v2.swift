@@ -11,11 +11,11 @@ import Foundation
 class MSP_V2: NSObject {
     
     enum MSP_Request_Replies: Int16 {
-        case MSP_MSG_STATUS                 = 101
-        case MSP_MSG_RAW_GPS                = 106
-        case MSP_MSG_COMP_GPS               = 107
-        case MSP_MSG_ATTITUDE               = 108
-        case MSP_MSG_ANALOG                 = 110
+        case MSP_STATUS                 = 101
+        case MSP_RAW_GPS                = 106
+        case MSP_COMP_GPS               = 107
+        case MSP_ATTITUDE               = 108
+        case MSP_ANALOG                 = 110
     }
 
     struct msp_raw_gps {
@@ -58,15 +58,12 @@ class MSP_V2: NSObject {
     
     var packet = TelemetryStruct()
     
-    func request(messageID: MSP_Request_Replies, payload: [UInt8] = [], size: UInt16 = 0) -> Data{
+    func request(messageID: MSP_Request_Replies) -> Data{
         let flag: UInt8 = 0
-        var msg_size: Int = 9
         var crc: UInt8 = 0
         var tmp_buf: [UInt8] = [UInt8](repeating: 0, count: 2)
         
-        msg_size += Int(size)
-        
-        var buffer : [UInt8] = [UInt8](repeating: 0, count: payload.count + msg_size)
+        var buffer : [UInt8] = [UInt8](repeating: 0, count: 9)
         buffer[0] = 36 // "$"
         buffer[1] = 88 // "X"
         buffer[2] = 60 // "<"
@@ -83,22 +80,13 @@ class MSP_V2: NSObject {
         buffer[4] = tmp_buf[0]
         buffer[5] = tmp_buf[1]
         
-        tmp_buf[0] = UInt8(size & 0xff)
-        tmp_buf[1] = UInt8((size >> 8) & 0xff)
-        
         crc = crc8_dvb_s2(crc: crc, a: tmp_buf[0])
         crc = crc8_dvb_s2(crc: crc, a: tmp_buf[1])
         
         buffer[6] = tmp_buf[0]
         buffer[7] = tmp_buf[1]
         
-        var buffCount = 8
-        payload.forEach { b in
-            crc = crc8_dvb_s2(crc: crc, a: b)
-            buffer[buffCount] = b
-            buffCount += 1
-        }
-        buffer[buffCount] = crc
+        buffer[8] = crc
         
         return Data(bytes: buffer, count: buffer.count)
     }
@@ -166,7 +154,7 @@ class MSP_V2: NSObject {
             checksumCalc = crc8_dvb_s2(crc: checksumCalc, a: tmp_buf[0])
             checksumCalc = crc8_dvb_s2(crc: checksumCalc, a: tmp_buf[1])
             
-            var payload: [UInt8] = [] // needs 10 bytes to prevent crash on struct
+            var payload: [UInt8] = []
                         
             // read payload
             var idx = 8 // start from byte 8
@@ -177,38 +165,30 @@ class MSP_V2: NSObject {
                 idx += 1
             }
             
+            //let compGPS = dataToStruct(buffer: payload, structType: msp_comp_gps.self)
+            
+            print("messageID: \(messageID)")
+            print("payload: \(payload)")
+            
             switch MSP_Request_Replies(rawValue: messageID) {
-            case .MSP_MSG_ATTITUDE:
-//                let attitude = dataToStruct(buffer: payload, structType: msp_attitude.self)
-//                print(attitude)
-                if payload.count < 5 { break }
+            case .MSP_ATTITUDE:
                 packet.roll = Int(buffer_get_int16(buffer: payload, index: 1)) / 10
                 packet.pitch = Int(buffer_get_int16(buffer: payload, index: 3)) / 10
                 packet.heading = Int(buffer_get_int16(buffer: payload, index: 5))
-            case .MSP_MSG_RAW_GPS:
-//                let rawGPS = dataToStruct(buffer: payload, structType: msp_raw_gps.self)
-//                print(rawGPS)
-                if payload.count < 9 { break }
+            case .MSP_RAW_GPS:
                 packet.gps_sats = Int(payload[1])
                 packet.lat = Double(buffer_get_int32(buffer: payload, index: 5)) / 10000000
                 packet.lng = Double(buffer_get_int32(buffer: payload, index: 9)) / 10000000
                 //packet.alt = Int(buffer_get_int16(buffer: payload, index: 11))
                 //packet.speed = Int(buffer_get_int16(buffer: payload, index: 13))
-            case .MSP_MSG_ANALOG:
-//                let analog = dataToStruct(buffer: payload, structType: msp_analog.self)
-//                print(analog)
-                if payload.count < 6 { break }
+            case .MSP_ANALOG:
                 packet.voltage = Double(payload[0]) / 10
                 packet.rssi = Int(buffer_get_int16(buffer: payload, index: 4)) / 10
                 packet.current = Int(buffer_get_int16(buffer: payload, index: 6)) / 100
-            case .MSP_MSG_COMP_GPS:
-                //let compGPS = dataToStruct(buffer: payload, structType: msp_comp_gps.self)
-                //print(compGPS)
+            case .MSP_COMP_GPS:
                 packet.distance = Int(buffer_get_int16(buffer: payload, index: 1))
-            case .MSP_MSG_STATUS:
-                //let status = dataToStruct(buffer: payload, structType: msp_status.self) // +2 bytes need in payload
-                //print(status)
-                packet.flight_mode = Int(buffer_get_int16(buffer: payload, index: 3))
+            case .MSP_STATUS:
+                packet.flight_mode = Int(buffer_get_int16(buffer: payload, index: 9))
             default:
                 print("cant decode")
                 break

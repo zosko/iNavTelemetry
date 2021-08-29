@@ -11,11 +11,11 @@ import Foundation
 class MSP_V1: NSObject {
     
     enum MSP_Request_Replies: UInt8 {
-        case MSP_MSG_STATUS                 = 101
-        case MSP_MSG_RAW_GPS                = 106
-        case MSP_MSG_COMP_GPS               = 107
-        case MSP_MSG_ATTITUDE               = 108
-        case MSP_MSG_ANALOG                 = 110
+        case MSP_STATUS                 = 101
+        case MSP_RAW_GPS                = 106
+        case MSP_COMP_GPS               = 107
+        case MSP_ATTITUDE               = 108
+        case MSP_ANALOG                 = 110
     }
 
     struct msp_raw_gps {
@@ -97,25 +97,27 @@ class MSP_V1: NSObject {
                 idx += 1
             }
             
+            //let compGPS = dataToStruct(buffer: payload, structType: msp_comp_gps.self)
+            
             switch MSP_Request_Replies(rawValue: messageID) {
-            case .MSP_MSG_ATTITUDE:
+            case .MSP_ATTITUDE:
                 packet.roll = Int(buffer_get_int16(buffer: payload, index: 1)) / 10
                 packet.pitch = Int(buffer_get_int16(buffer: payload, index: 3)) / 10
                 packet.heading = Int(buffer_get_int16(buffer: payload, index: 5))
-            case .MSP_MSG_RAW_GPS:
+            case .MSP_RAW_GPS:
                 packet.gps_sats = Int(payload[1])
                 packet.lat = Double(buffer_get_int32(buffer: payload, index: 5)) / 10000000
                 packet.lng = Double(buffer_get_int32(buffer: payload, index: 9)) / 10000000
                 packet.alt = Int(buffer_get_int16(buffer: payload, index: 11))
                 packet.speed = Int(Double(buffer_get_int16(buffer: payload, index: 13)) * 0.036)
-            case .MSP_MSG_ANALOG:
+            case .MSP_ANALOG:
                 packet.voltage = Double(payload[0]) / 10
                 packet.rssi = Int(buffer_get_int16(buffer: payload, index: 4)) / 10
                 packet.current = Int(buffer_get_int16(buffer: payload, index: 6)) / 100
-            case .MSP_MSG_COMP_GPS:
+            case .MSP_COMP_GPS:
                 packet.distance = Int(buffer_get_int16(buffer: payload, index: 1))
-            case .MSP_MSG_STATUS:
-                packet.flight_mode = Int(buffer_get_int16(buffer: payload, index: 3))
+            case .MSP_STATUS:
+                packet.flight_mode = Int(buffer_get_int32(buffer: payload, index: 9))
             default:
                 print("cant decode")
                 break

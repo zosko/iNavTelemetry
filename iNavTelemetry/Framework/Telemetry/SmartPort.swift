@@ -69,27 +69,6 @@ class SmartPort: NSObject {
     var longitude : Double = 0.0
     var packet = TelemetryStruct()
     
-    //MARK: Functions
-    func getStabilization() -> String{
-        let mode = packet.flight_mode / 10 % 10
-        if mode == 2{
-            return "horizon"
-        }
-        else if mode == 1 {
-            return "angle"
-        }
-        else{
-            return "manual"
-        }
-    }
-    func getArmed() -> String{
-        let mode = packet.flight_mode % 10
-        if mode == 5{
-            return "YES"
-        }
-        return "NO"
-    }
-    
     //MARK: Helpers
     func buffer_get_int16(buffer: [UInt8], index : Int) -> UInt16{
         return UInt16(buffer[index]) << 8 | UInt16(buffer[index - 1])
@@ -148,20 +127,8 @@ class SmartPort: NSObject {
                     case VFAS_SENSOR:
                         packet.voltage = Double(rawData) / 100.0
                         break
-                    case CELL_SENSOR:
-                        let cell = Double(rawData) / 100.0
-                        print("CELL: \(cell)")
-                        break
-                    case VSPEED_SENSOR:
-                        let vspeed = Double(rawData) / 100.0
-                        print("VSPEED_SENSOR  vspeed:\(vspeed)")
-                        break
                     case GSPEED_SENSOR:
                         packet.speed = Int((Double(rawData) / (1944.0 / 100.0)) / 27.778)
-                        break
-                    case ALT_SENSOR:
-                        let alt = Double(rawData) / 100.0
-                        print("ALT_SENSOR  alt:\(alt)")
                         break
                     case GALT_SENSOR:
                         packet.alt = Int(Double(rawData) / 100.0)
@@ -213,15 +180,6 @@ class SmartPort: NSObject {
                     case ROLL_SENSOR:
                         let roll = Int(Double(rawData) / 10.0)
                         packet.roll = roll
-                        break
-                    case AIRSPEED_SENSOR:
-                        print("AIRSPEED_SENSOR")
-                        break
-                    case FLIGHT_PATH_VECTOR:
-                        print("FLIGHT_PATH_VECTOR")
-                        break
-                    case RX_BAT:
-                        print("RX_BAT")
                         break
                     default:
                         print("dataType: \(String(format:"%02X", dataType))  rawData: \(rawData) buffer \(String(format:"%02X,%02X,%02X,%02X,%02X,%02X,%02X,%02X,%02X", buffer[0],buffer[1],buffer[2],buffer[3],buffer[4],buffer[5],buffer[6],buffer[7],buffer[8]))")

@@ -84,11 +84,11 @@ class Telemetry: NSObject {
         case .SMARTPORT:
             break
         case .MSP:
-            serialPort.send(msp.request(messageID: .MSP_MSG_STATUS))
-            serialPort.send(msp.request(messageID: .MSP_MSG_RAW_GPS))
-            serialPort.send(msp.request(messageID: .MSP_MSG_COMP_GPS))
-            serialPort.send(msp.request(messageID: .MSP_MSG_ATTITUDE))
-            serialPort.send(msp.request(messageID: .MSP_MSG_ANALOG))
+            serialPort.send(msp.request(messageID: .MSP_STATUS))
+            serialPort.send(msp.request(messageID: .MSP_RAW_GPS))
+            serialPort.send(msp.request(messageID: .MSP_COMP_GPS))
+            serialPort.send(msp.request(messageID: .MSP_ATTITUDE))
+            serialPort.send(msp.request(messageID: .MSP_ANALOG))
         }
     }
     #endif
@@ -100,11 +100,11 @@ class Telemetry: NSObject {
         case .SMARTPORT:
             break
         case .MSP:
-            peripheral.writeValue(msp.request(messageID: .MSP_MSG_STATUS), for: characteristic, type: writeType)
-            peripheral.writeValue(msp.request(messageID: .MSP_MSG_RAW_GPS), for: characteristic, type: writeType)
-            peripheral.writeValue(msp.request(messageID: .MSP_MSG_COMP_GPS), for: characteristic, type: writeType)
-            peripheral.writeValue(msp.request(messageID: .MSP_MSG_ATTITUDE), for: characteristic, type: writeType)
-            peripheral.writeValue(msp.request(messageID: .MSP_MSG_ANALOG), for: characteristic, type: writeType)
+            peripheral.writeValue(msp.request(messageID: .MSP_STATUS), for: characteristic, type: writeType)
+            peripheral.writeValue(msp.request(messageID: .MSP_RAW_GPS), for: characteristic, type: writeType)
+            peripheral.writeValue(msp.request(messageID: .MSP_COMP_GPS), for: characteristic, type: writeType)
+            peripheral.writeValue(msp.request(messageID: .MSP_ATTITUDE), for: characteristic, type: writeType)
+            peripheral.writeValue(msp.request(messageID: .MSP_ANALOG), for: characteristic, type: writeType)
         }
     }
     
@@ -132,7 +132,7 @@ class Telemetry: NSObject {
     }
     
     //MARK: Functions
-    func getStabilization() -> String{
+    func getStabilization() -> String {
         if telemetryType == .SMARTPORT {
             let mode = telemetry.flight_mode / 10 % 10
             if mode == 2{
@@ -146,20 +146,33 @@ class Telemetry: NSObject {
             }
         }
         else{
-            return "N/A"
+            let flags = telemetry.flight_mode
+            if flags == 8 || flags == 9 {
+                return "horizon"
+            }
+            else if flags == 4 || flags == 5 {
+                return "angle"
+            }
+            else {
+                return "manual"
+            }
         }
         
     }
-    func getArmed() -> String{
+    func getArmed() -> String {
         if telemetryType == .SMARTPORT {
             let mode = telemetry.flight_mode % 10
-            if mode == 5{
+            if mode == 5 {
                 return "YES"
             }
             return "NO"
         }
         else{
-            return "N/A"
+            let flags = telemetry.flight_mode
+            if flags == 1 || flags == 5 || flags == 9 {
+                return "YES"
+            }
+            return "NO"
         }
     }
 }
