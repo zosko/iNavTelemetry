@@ -9,9 +9,17 @@ import SwiftUI
 
 @main
 struct iNavTelemetryApp: App {
+    
+    @StateObject var viewRouter = ViewRouter()
+    
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            switch viewRouter.currentPage {
+            case .dashboard:
+                Dashboard().environmentObject(viewRouter)
+            case .logBook:
+                Logbook().environmentObject(viewRouter)
+            }
         }
     }
 }

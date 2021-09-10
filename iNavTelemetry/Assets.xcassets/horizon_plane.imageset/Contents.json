@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "horizon_plane1.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
