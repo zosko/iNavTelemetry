@@ -10,15 +10,10 @@ import Combine
 
 struct ConnectionView: View {
     
-    enum ProtocolType: Int {
-        case smartPort = 0
-        case msp = 1
-    }
-    
     enum Actions {
-        case buttonLogbookOpen
-        case buttonPower
-        case protocolChoosen(protocol: ProtocolType)
+        case logBook
+        case search
+        case protocolChoosen(protocol: Telemetry.TelemetryType)
     }
     
     var actionSubject = PassthroughSubject<Actions, Never>()
@@ -34,8 +29,8 @@ struct ConnectionView: View {
                 .cornerRadius(5)
             
             Picker("Protocol", selection: $viewModel.selectedProtocol) {
-                Text("S.Port").tag(ProtocolType.smartPort)
-                Text("MSP").tag(ProtocolType.msp)
+                Text("S.Port").tag(Telemetry.TelemetryType.SMARTPORT)
+                Text("MSP").tag(Telemetry.TelemetryType.MSP)
             }.onChange(of: viewModel.selectedProtocol, perform: { value in
                 actionSubject.send(.protocolChoosen(protocol: value))
             }).pickerStyle(SegmentedPickerStyle())
@@ -50,19 +45,27 @@ struct ConnectionView: View {
                 }.actionSheet(isPresented: $viewModel.showingActionSheetLogs, content: {
                     let buttons: [ActionSheet.Button] = viewModel.savedLogs.map { title in
                         .default(Text(title)) {
-                            self.viewRouter.currentPage = .logBook
+                            self.viewRouter.currentPage = .logBook(log: "")
                         }
                     }
                     return ActionSheet(title: Text("Logs"), buttons: buttons + [.cancel()])
                 })
                 
                 Button(action: {
-                    actionSubject.send(.buttonPower)
+                    actionSubject.send(.search)
+                    viewModel.searchDevice()
                 }){
                     Image("power_off")
                         .resizable()
                         .aspectRatio(contentMode: .fit)
-                }
+                }.actionSheet(isPresented: $viewModel.showingActionSheetPeripherals, content: {
+                    let buttons: [ActionSheet.Button] = viewModel.peripherals.map { peripheral in
+                        .default(Text(peripheral.name ?? "")) {
+                            viewModel.connectTo(peripheral)
+                        }
+                    }
+                    return ActionSheet(title: Text("Devices"), buttons: buttons + [.cancel()])
+                })
             }
         }
         .frame(width: 120, height: 120, alignment: .center)

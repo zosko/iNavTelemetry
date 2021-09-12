@@ -9,34 +9,34 @@ import SwiftUI
 import Combine
 
 struct DisplayView: View {
-    
+        
     var body: some View {
         ZStack {
             HStack {
                 VStack(spacing: 1) {
-                    InstrumentView(title: "Latitude", value: .constant("~"))
-                    InstrumentView(title: "Longitude", value: .constant("~"))
-                    InstrumentView(title: "Satellites", value: .constant("~"))
-                    InstrumentView(title: "Distance", value: .constant("~"))
-                    InstrumentView(title: "Altitude", value: .constant("~"))
-                    InstrumentView(title: "Speed", value: .constant("~"))
+                    InstrumentView(type: .latitude, value: .constant("~"))
+                    InstrumentView(type: .longitude, value: .constant("~"))
+                    InstrumentView(type: .satelittes, value: .constant("~"))
+                    InstrumentView(type: .distance, value: .constant("~"))
+                    InstrumentView(type: .altitude, value: .constant("~"))
+                    InstrumentView(type: .speed, value: .constant("~"))
                     Spacer()
                 }
                 Spacer()
                 VStack(spacing: 1) {
-                    InstrumentView(title: "Armed", value: .constant("~"))
-                    InstrumentView(title: "SIgnal", value: .constant("~"))
-                    InstrumentView(title: "Fuel", value: .constant("~"))
-                    InstrumentView(title: "Flymode", value: .constant("~"))
-                    InstrumentView(title: "Fly time", value: .constant("~"))
+                    InstrumentView(type: .armed, value: .constant("~"))
+                    InstrumentView(type: .signal, value: .constant("~"))
+                    InstrumentView(type: .fuel, value: .constant("~"))
+                    InstrumentView(type: .flymode, value: .constant("~"))
+                    InstrumentView(type: .flytime, value: .constant("~"))
                     Spacer()
                 }
             }
             VStack {
                 Spacer()
                 HStack(alignment: .bottom ,spacing: 1) {
-                    InstrumentView(title: "Current", value: .constant("~"))
-                    InstrumentView(title: "Voltage", value: .constant("~"))
+                    InstrumentView(type: .current, value: .constant("~"))
+                    InstrumentView(type: .voltage, value: .constant("~"))
                     Spacer()
                     ConnectionView()
                     CompassView(heading: .constant(0))

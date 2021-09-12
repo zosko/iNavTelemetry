@@ -8,7 +8,7 @@
 import SwiftUI
 
 enum Screen {
-    case logBook
+    case logBook(log: String)
     case dashboard
 }
 

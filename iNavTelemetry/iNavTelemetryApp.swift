@@ -17,7 +17,7 @@ struct iNavTelemetryApp: App {
             switch viewRouter.currentPage {
             case .dashboard:
                 Dashboard().environmentObject(viewRouter)
-            case .logBook:
+            case .logBook(_):
                 Logbook().environmentObject(viewRouter)
             }
         }
