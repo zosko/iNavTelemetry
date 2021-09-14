@@ -56,7 +56,7 @@ class MSP_V2: NSObject {
       let current_set: UInt8
     }
     
-    var packet = Telemetry.TelemetryStruct()
+    var packet = TelemetryManager.Packet()
     
     func request(messageID: MSP_Request_Replies) -> Data{
         let flag: UInt8 = 0

@@ -14,7 +14,7 @@ class CustomTelemetry : NSObject{
     private var found_header : Bool = false
     private var rcv_length : UInt8 = 0
     
-    var packet = Telemetry.TelemetryStruct()
+    var packet = TelemetryManager.Packet()
     
     //MARK: Helpers
     private func buffer_get_int16(buffer: [UInt8], index : Int) -> UInt16{

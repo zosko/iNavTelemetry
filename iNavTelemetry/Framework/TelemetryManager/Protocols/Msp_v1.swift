@@ -56,7 +56,7 @@ class MSP_V1: NSObject {
       let current_set: UInt8
     }
     
-    var packet = Telemetry.TelemetryStruct()
+    var packet = TelemetryManager.Packet()
     
     func request(messageID: MSP_Request_Replies) -> Data{
         var buffer : [UInt8] = [UInt8](repeating: 0, count: 6)
