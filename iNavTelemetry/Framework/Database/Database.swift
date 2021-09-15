@@ -9,24 +9,28 @@
 import SwiftUI
 
 class Database: NSObject {
+    
     var jsonDatabase : [TelemetryManager.LogTelemetry] = []
     var nameFile : String!
     var active = false
     
-    static var shared: Database = {
-        let instance = Database()
+    //MARK: - Initialization
+    override init(){
+        super.init()
         
-        instance.nameFile = instance.generateName()
-        instance.jsonDatabase = []
-        instance.active = false
-        return instance
-    }()
+        self.nameFile = generateName()
+        self.jsonDatabase = []
+        self.active = false
+    }
     
+    //MARK: - Private Methods
     private func pathDatabase(fileName: String) -> URL{
         let documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
         let fileURL = documentsURL?.appendingPathComponent(fileName)
         return fileURL!
     }
+    
+    //MARK: - Internal Methods
     func saveTelemetryData(packet : TelemetryManager.LogTelemetry){
         jsonDatabase.append(packet)
     }
@@ -46,7 +50,7 @@ class Database: NSObject {
         active = true
     }
     func cleanDatabase(){
-        for logs in Database.getLogs() {
+        for logs in getLogs() {
             do{
                 try FileManager.default.removeItem(atPath: logs.path)
             }catch{
@@ -55,13 +59,15 @@ class Database: NSObject {
         }
     }
     func stopLogging(){
+        if !active { return }
+        
         active = false
         
         let jsonData = try! JSONEncoder().encode(jsonDatabase)
         let jsonString = String(data: jsonData, encoding: .utf8)!
         try! jsonString.write(toFile: pathDatabase(fileName: nameFile).path, atomically: true, encoding: .utf8)
     }
-    static func getLogs() -> [URL]{
+    func getLogs() -> [URL]{
         let documentsUrl =  FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
         let directoryContents = try! FileManager.default.contentsOfDirectory(at: documentsUrl, includingPropertiesForKeys: nil, options: [.skipsHiddenFiles])
         return directoryContents.filter { url in

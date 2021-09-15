@@ -9,13 +9,14 @@ import SwiftUI
 
 struct Logbook: View {
     
-    @EnvironmentObject var viewRouter: ViewRouter
+    var log: URL
+    @Binding var screen: Screen
     
     var body: some View {
-        ZStack(alignment: .topLeading)  {
+        return ZStack(alignment: .topLeading)  {
             MapView()
             Button(action: {
-                viewRouter.currentPage = .dashboard
+                screen = .dashboard
             }){
                 Image("back")
                     .resizable()
@@ -27,6 +28,6 @@ struct Logbook: View {
 
 struct Logbook_Previews: PreviewProvider {
     static var previews: some View {
-        Logbook()
+        Logbook(log: URL(string: "")! , screen: .constant(.dashboard))
     }
 }

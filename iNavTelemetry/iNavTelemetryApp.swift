@@ -7,18 +7,27 @@
 
 import SwiftUI
 
+enum Screen {
+    case dashboard
+    case logbook(url: URL)
+}
+
 @main
 struct iNavTelemetryApp: App {
     
-    @StateObject var viewRouter = ViewRouter()
+    @State private var screen: Screen = .dashboard
     
     var body: some Scene {
         WindowGroup {
-            switch viewRouter.currentPage {
+            switch screen {
             case .dashboard:
-                Dashboard().environmentObject(viewRouter)
-            case .logBook(_):
-                Logbook().environmentObject(viewRouter)
+                Dashboard(screen: $screen)
+                    .animation(.easeOut)
+                    .transition(.opacity)
+            case .logbook(let url):
+                Logbook(log: url, screen: $screen)
+                    .animation(.easeOut)
+                    .transition(.opacity)
             }
         }
     }

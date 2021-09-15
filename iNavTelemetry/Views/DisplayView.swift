@@ -11,6 +11,7 @@ import Combine
 struct DisplayView: View {
     
     @State private var viewModel = ConnectionViewModel()
+    @Binding var screen: Screen
     
     var body: some View {
         ZStack {
@@ -40,7 +41,7 @@ struct DisplayView: View {
                     InstrumentView(type: .current(packet: viewModel.telemetry))
                     InstrumentView(type: .voltage(packet: viewModel.telemetry))
                     Spacer()
-                    ConnectionView(viewModel: $viewModel)
+                    ConnectionView(viewModel: $viewModel, screen: $screen)
                     CompassView(heading: viewModel.telemetry.packet.heading)
                     AttitudeView(roll: viewModel.telemetry.packet.roll, pitch: viewModel.telemetry.packet.pitch)
                 }
@@ -51,7 +52,7 @@ struct DisplayView: View {
 
 struct DisplayView_Previews: PreviewProvider {
     static var previews: some View {
-        DisplayView()
+        DisplayView(screen: .constant(.dashboard))
             .background(Color.black)
             .previewLayout(.fixed(width: 812, height: 375))
             .environment(\.horizontalSizeClass, .compact)

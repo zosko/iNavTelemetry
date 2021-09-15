@@ -26,7 +26,6 @@
 		6D3F821E26ED47FF009B408D /* CustomTelemetry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D3F821926ED47FF009B408D /* CustomTelemetry.swift */; };
 		6D49B7A326E80515006833A9 /* ConnectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D49B7A226E80515006833A9 /* ConnectionViewModel.swift */; };
 		6DAF1E5426EDEAD700DBE06A /* Database.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DAF1E5326EDEAD700DBE06A /* Database.swift */; };
-		6DF1F27726E5F61600DCACA4 /* ViewRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DF1F27626E5F61600DCACA4 /* ViewRouter.swift */; };
 		6DF1F28E26E6ACC000DCACA4 /* MapViewModelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DF1F28D26E6ACC000DCACA4 /* MapViewModelView.swift */; };
 /* End PBXBuildFile section */
 
@@ -52,7 +51,6 @@
 		6D3F821926ED47FF009B408D /* CustomTelemetry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomTelemetry.swift; sourceTree = "<group>"; };
 		6D49B7A226E80515006833A9 /* ConnectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionViewModel.swift; sourceTree = "<group>"; };
 		6DAF1E5326EDEAD700DBE06A /* Database.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Database.swift; sourceTree = "<group>"; };
-		6DF1F27626E5F61600DCACA4 /* ViewRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewRouter.swift; sourceTree = "<group>"; };
 		6DF1F28D26E6ACC000DCACA4 /* MapViewModelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewModelView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -70,7 +68,6 @@
 		6D1D8E2C26EDE7F900CDDDDE /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
-				6DF1F27626E5F61600DCACA4 /* ViewRouter.swift */,
 				6DF1F28D26E6ACC000DCACA4 /* MapViewModelView.swift */,
 				6D49B7A226E80515006833A9 /* ConnectionViewModel.swift */,
 			);
@@ -249,7 +246,6 @@
 				6D04DBEE26E4D0AA003783F2 /* DisplayView.swift in Sources */,
 				6D3F821A26ED47FF009B408D /* SmartPort.swift in Sources */,
 				6D04DC0E26E4F4BD003783F2 /* Logbook.swift in Sources */,
-				6DF1F27726E5F61600DCACA4 /* ViewRouter.swift in Sources */,
 				6D04DC0526E4EAD2003783F2 /* AttitudeView.swift in Sources */,
 				6D04DBFB26E4DC67003783F2 /* InstrumentView.swift in Sources */,
 				6D34746926E4CDBB001F1E59 /* MapView.swift in Sources */,

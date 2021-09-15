@@ -9,6 +9,7 @@ import Foundation
 import Combine
 import MapKit
 
+
 class MapViewModelView: ObservableObject {
     @Published var region: MKCoordinateRegion
     

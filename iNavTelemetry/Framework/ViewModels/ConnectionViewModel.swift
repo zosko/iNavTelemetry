@@ -13,17 +13,17 @@ import CoreBluetooth
 class ConnectionViewModel: NSObject, ObservableObject {
     
     @Published var selectedProtocol = TelemetryManager.TelemetryType.smartPort
-    @Published var showingActionSheetLogs = false
     @Published var showingActionSheetPeripherals = false
+    @Published var connected = false
     @Published var telemetry = TelemetryManager.InstrumentTelemetry(packet: TelemetryManager.Packet(),
                                                                     telemetryType: .smartPort,
                                                                     flyTime: 0)
     @Published var peripherals : [CBPeripheral] = []
+    var logsData: [URL] { database.getLogs() }
     
     @ObservedObject private var bluetoothManager = BluetoothManager()
     
-    var savedLogs = Database.getLogs()
-    
+    private var database = Database()
     private var cancellable: [AnyCancellable] = []
     private var telemetryManager = TelemetryManager()
     private var timerRequestMSP: Timer?
@@ -32,7 +32,6 @@ class ConnectionViewModel: NSObject, ObservableObject {
         super.init()
         
         $selectedProtocol.sink {
-            print($0)
             self.telemetryManager.chooseTelemetry(type: $0)
         }.store(in: &cancellable)
 
@@ -41,6 +40,9 @@ class ConnectionViewModel: NSObject, ObservableObject {
                 return
             }
             self.telemetry = self.telemetryManager.telemetry
+            
+            database.saveTelemetryData(packet: .init(lat: self.telemetry.location.latitude,
+                                                     lng: self.telemetry.location.longitude))
         }.store(in: &cancellable)
         
         bluetoothManager.$peripheralFound.sink { [unowned self] peripheral in
@@ -52,7 +54,16 @@ class ConnectionViewModel: NSObject, ObservableObject {
             }
         }.store(in: &cancellable)
         
-        bluetoothManager.$connected.sink { [unowned self]  connected in
+        bluetoothManager.$connected.sink { [unowned self] connected in
+            self.connected = connected
+            
+            if connected {
+                database.startLogging()
+            }
+            else{
+                database.stopLogging()
+            }
+            
             if self.telemetryManager.telemetryType == .msp {
                 self.MSPTelemetry(start: connected)
             }
@@ -60,6 +71,9 @@ class ConnectionViewModel: NSObject, ObservableObject {
     }
     
     //MARK: Internal functions
+    func cleanDatabase(){
+        database.cleanDatabase()
+    }
     func searchDevice() {
         peripherals.removeAll()
         bluetoothManager.search()

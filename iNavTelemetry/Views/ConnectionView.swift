@@ -10,8 +10,10 @@ import Combine
 
 struct ConnectionView: View {
     
-    @EnvironmentObject var viewRouter: ViewRouter
     @Binding var viewModel: ConnectionViewModel
+    @Binding var screen: Screen
+    
+    @State private var showingActionSheetLogs = false
     
     var body: some View {
         VStack {
@@ -27,18 +29,23 @@ struct ConnectionView: View {
             
             HStack {
                 Button(action: {
-                    viewModel.showingActionSheetLogs.toggle()
+                    showingActionSheetLogs = true
                 }){
                     Image("log")
                         .resizable()
                         .aspectRatio(contentMode: .fit)
-                }.actionSheet(isPresented: $viewModel.showingActionSheetLogs){
-                    let buttons: [ActionSheet.Button] = viewModel.savedLogs.map { log in
+                }.actionSheet(isPresented: $showingActionSheetLogs){
+                    var buttons: [ActionSheet.Button] = viewModel.logsData.map { log in
                         let timestamp = Double(log.pathComponents.last!)!
                         let name = Database.toName(timestamp: timestamp)
                         return .default(Text(name)) {
-                            self.viewRouter.currentPage = .logBook(log)
+                            screen = .logbook(url: log)
                         }
+                    }
+                    if buttons.count > 0 {
+                        buttons.append(.destructive(Text("Clear database")){
+                            viewModel.cleanDatabase()
+                        })
                     }
                     return ActionSheet(title: Text("Logs"), buttons: buttons + [.cancel()])
                 }
@@ -46,7 +53,7 @@ struct ConnectionView: View {
                 Button(action: {
                     viewModel.searchDevice()
                 }){
-                    Image("power_off")
+                    Image(viewModel.connected ? "power_on" : "power_off")
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                 }.actionSheet(isPresented: $viewModel.showingActionSheetPeripherals) {
@@ -65,7 +72,7 @@ struct ConnectionView: View {
 
 struct ConnectionView_Previews: PreviewProvider {
     static var previews: some View {
-        ConnectionView(viewModel: .constant(.init()))
+        ConnectionView(viewModel: .constant(.init()), screen: .constant(.dashboard))
             .previewLayout(.fixed(width: 120, height: 120))
             .background(Color.blue)
     }
