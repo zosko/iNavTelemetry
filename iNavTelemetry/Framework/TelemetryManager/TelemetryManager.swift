@@ -15,6 +15,17 @@ class TelemetryManager: NSObject {
         case smartPort = 0
         case msp = 1
         case custom = 2
+        
+        var name: String {
+            switch self {
+            case .smartPort:
+                return "S.Port"
+            case .msp:
+                return "MSP"
+            case .custom:
+                return "Custom"
+            }
+        }
     }
 
     enum BluetoothType : Int {
@@ -38,7 +49,7 @@ class TelemetryManager: NSObject {
         var name: String { return self.rawValue.capitalized }
     }
     
-    enum Engine : String {
+    enum Engine: String {
         case undefined
         case disarmed
         case armed

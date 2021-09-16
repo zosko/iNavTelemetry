@@ -11,10 +11,12 @@ struct Dashboard: View {
     
     @Binding var screen: Screen
     
+    @StateObject private var viewModel = ConnectionViewModel()
+    
     var body: some View {
         ZStack {
-            MapView()
-            DisplayView(screen: $screen)
+            MapView(viewModel: viewModel)
+            DisplayView(viewModel: viewModel, screen: $screen)
         }
     }
 }

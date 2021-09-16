@@ -9,9 +9,17 @@ import Foundation
 import Combine
 import SwiftUI
 import CoreBluetooth
+import MapKit
+
+struct Plane: Identifiable {
+    let id = UUID()
+    let coordinate: CLLocationCoordinate2D
+}
 
 class ConnectionViewModel: NSObject, ObservableObject {
-    
+    private let span = MKCoordinateSpan(latitudeDelta: 0.2, longitudeDelta: 0.2)
+    @Published var region = MKCoordinateRegion()
+    @Published var planeLocation = [Plane(coordinate: .init())]
     @Published var selectedProtocol = TelemetryManager.TelemetryType.smartPort
     @Published var showingActionSheetPeripherals = false
     @Published var connected = false
@@ -30,16 +38,19 @@ class ConnectionViewModel: NSObject, ObservableObject {
     
     override init(){
         super.init()
+        self.region.span = span
         
         $selectedProtocol.sink {
             self.telemetryManager.chooseTelemetry(type: $0)
         }.store(in: &cancellable)
-
+        
         bluetoothManager.$dataReceived.sink { [unowned self] data in
             guard self.telemetryManager.parse(incomingData: data) else {
                 return
             }
             self.telemetry = self.telemetryManager.telemetry
+            
+            self.updateLocation(location: self.telemetry.location)
             
             database.saveTelemetryData(packet: .init(lat: self.telemetry.location.latitude,
                                                      lng: self.telemetry.location.longitude))
@@ -71,6 +82,10 @@ class ConnectionViewModel: NSObject, ObservableObject {
     }
     
     //MARK: Internal functions
+    func updateLocation(location: CLLocationCoordinate2D) {
+        self.region = MKCoordinateRegion(center: location, span: span)
+        self.planeLocation[0] = Plane(coordinate: location)
+    }
     func cleanDatabase(){
         database.cleanDatabase()
     }

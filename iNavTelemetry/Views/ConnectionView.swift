@@ -10,7 +10,7 @@ import Combine
 
 struct ConnectionView: View {
     
-    @Binding var viewModel: ConnectionViewModel
+    @ObservedObject var viewModel: ConnectionViewModel
     @Binding var screen: Screen
     
     @State private var showingActionSheetLogs = false
@@ -23,8 +23,8 @@ struct ConnectionView: View {
                 .cornerRadius(5)
             
             Picker("Protocol", selection: $viewModel.selectedProtocol) {
-                Text("S.Port").tag(TelemetryManager.TelemetryType.smartPort)
-                Text("MSP").tag(TelemetryManager.TelemetryType.msp)
+                Text(TelemetryManager.TelemetryType.smartPort.name).tag(TelemetryManager.TelemetryType.smartPort)
+                Text(TelemetryManager.TelemetryType.msp.name).tag(TelemetryManager.TelemetryType.msp)
             }.pickerStyle(SegmentedPickerStyle())
             
             HStack {
@@ -72,7 +72,7 @@ struct ConnectionView: View {
 
 struct ConnectionView_Previews: PreviewProvider {
     static var previews: some View {
-        ConnectionView(viewModel: .constant(.init()), screen: .constant(.dashboard))
+        ConnectionView(viewModel: .init(), screen: .constant(.dashboard))
             .previewLayout(.fixed(width: 120, height: 120))
             .background(Color.blue)
     }

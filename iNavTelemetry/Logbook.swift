@@ -14,7 +14,7 @@ struct Logbook: View {
     
     var body: some View {
         return ZStack(alignment: .topLeading)  {
-            MapView()
+//            MapView()
             Button(action: {
                 screen = .dashboard
             }){
