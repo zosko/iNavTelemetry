@@ -12,7 +12,7 @@ struct InstrumentView: View {
     enum InstrumentType {
         case latitude(packet: TelemetryManager.InstrumentTelemetry)
         case longitude(packet: TelemetryManager.InstrumentTelemetry)
-        case satelittes(packet: TelemetryManager.InstrumentTelemetry)
+        case satellites(packet: TelemetryManager.InstrumentTelemetry)
         case distance(packet: TelemetryManager.InstrumentTelemetry)
         case altitude(packet: TelemetryManager.InstrumentTelemetry)
         case speed(packet: TelemetryManager.InstrumentTelemetry)
@@ -28,7 +28,7 @@ struct InstrumentView: View {
             switch self {
             case .latitude: return "Latitude"
             case .longitude: return "Longitude"
-            case .satelittes: return "Satelittes"
+            case .satellites: return "Satellites"
             case .distance: return "Distance"
             case .altitude: return "Altitude"
             case .speed: return "Speed"
@@ -46,7 +46,7 @@ struct InstrumentView: View {
             switch self {
             case .latitude: return "network"
             case .longitude: return "network"
-            case .satelittes: return "bonjour"
+            case .satellites: return "bonjour"
             case .distance: return "shuffle"
             case .altitude: return "mount"
             case .speed: return "speedometer"
@@ -64,7 +64,7 @@ struct InstrumentView: View {
             switch self {
             case .latitude(let packet): return "\(packet.location.latitude)"
             case .longitude(let packet): return "\(packet.location.longitude)"
-            case .satelittes(let packet): return "\(packet.packet.gps_sats)"
+            case .satellites(let packet): return "\(packet.packet.gps_sats)"
             case .distance(let packet): return "\(packet.packet.distance)"
             case .altitude(let packet): return "\(packet.packet.alt)"
             case .speed(let packet): return "\(packet.packet.speed)"
@@ -77,14 +77,34 @@ struct InstrumentView: View {
             case .voltage(let packet): return "\(packet.packet.voltage)"
             }
         }
+        
+        var warning: Bool {
+            switch self {
+            case .latitude(let packet): return packet.location.latitude == 0
+            case .longitude(let packet): return packet.location.longitude == 0
+            case .satellites(let packet): return packet.packet.gps_sats < 6
+            case .distance(let packet): return packet.packet.distance > 500
+            case .altitude(let packet): return packet.packet.alt > 300
+            case .speed(let packet): return packet.packet.speed > 100
+            case .armed(let packet): return packet.engine == .armed
+            case .signal(let packet): return packet.packet.rssi < 20
+            case .fuel(let packet): return packet.packet.fuel < 20
+            case .flymode(let packet): return packet.stabilization == .manual
+            case .flytime(_): return false
+            case .current(let packet): return packet.packet.current > 30
+            case .voltage(let packet): return packet.packet.voltage < 7
+            }
+        }
     }
 
     var type: InstrumentType
-    
+
     var body: some View {
         VStack {
             Text(type.name).bold()
+                .foregroundColor(type.warning ? Color.red : Color.black)
             Text(type.value).bold()
+                .foregroundColor(type.warning ? Color.red : Color.black)
         }
         .frame(width: 100, height: 40, alignment: .center)
         .background(Color.white.opacity(0.5))
@@ -94,7 +114,7 @@ struct InstrumentView: View {
 
 struct InstrumentView_Previews: PreviewProvider {
     static var previews: some View {
-        InstrumentView(type: .armed(packet: .init(packet: .init(), telemetryType: .smartPort, flyTime: 0)))
+        InstrumentView(type: .armed(packet: .init(packet: .init(), telemetryType: .smartPort, seconds: 0)))
             .previewLayout(.fixed(width: 100, height: 50))
     }
 }

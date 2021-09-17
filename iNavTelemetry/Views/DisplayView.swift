@@ -19,7 +19,7 @@ struct DisplayView: View {
                 VStack(spacing: 1) {
                     InstrumentView(type: .latitude(packet: viewModel.telemetry))
                     InstrumentView(type: .longitude(packet: viewModel.telemetry))
-                    InstrumentView(type: .satelittes(packet: viewModel.telemetry))
+                    InstrumentView(type: .satellites(packet: viewModel.telemetry))
                     InstrumentView(type: .distance(packet: viewModel.telemetry))
                     InstrumentView(type: .altitude(packet: viewModel.telemetry))
                     InstrumentView(type: .speed(packet: viewModel.telemetry))

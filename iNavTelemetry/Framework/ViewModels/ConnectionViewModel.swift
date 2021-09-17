@@ -17,7 +17,7 @@ struct Plane: Identifiable {
 }
 
 class ConnectionViewModel: NSObject, ObservableObject {
-    private let span = MKCoordinateSpan(latitudeDelta: 0.2, longitudeDelta: 0.2)
+    private let span = MKCoordinateSpan(latitudeDelta: 0.005, longitudeDelta: 0.005)
     @Published var region = MKCoordinateRegion()
     @Published var planeLocation = [Plane(coordinate: .init())]
     @Published var selectedProtocol = TelemetryManager.TelemetryType.smartPort
@@ -25,7 +25,7 @@ class ConnectionViewModel: NSObject, ObservableObject {
     @Published var connected = false
     @Published var telemetry = TelemetryManager.InstrumentTelemetry(packet: TelemetryManager.Packet(),
                                                                     telemetryType: .smartPort,
-                                                                    flyTime: 0)
+                                                                    seconds: 0)
     @Published var peripherals : [CBPeripheral] = []
     var logsData: [URL] { database.getLogs() }
     
@@ -35,6 +35,9 @@ class ConnectionViewModel: NSObject, ObservableObject {
     private var cancellable: [AnyCancellable] = []
     private var telemetryManager = TelemetryManager()
     private var timerRequestMSP: Timer?
+    private var homePositionAdded = false
+    private var timerFlying: Timer?
+    private var seconds = 0
     
     override init(){
         super.init()
@@ -49,6 +52,10 @@ class ConnectionViewModel: NSObject, ObservableObject {
                 return
             }
             self.telemetry = self.telemetryManager.telemetry
+            
+            if (self.telemetry.packet.gps_sats > 5 && !self.homePositionAdded) {
+                self.showHomePosition(location: self.telemetry.location)
+            }
             
             self.updateLocation(location: self.telemetry.location)
             
@@ -69,9 +76,17 @@ class ConnectionViewModel: NSObject, ObservableObject {
             self.connected = connected
             
             if connected {
+                self.seconds = 0
                 database.startLogging()
+                timerFlying = Timer.scheduledTimer(withTimeInterval: 1, repeats: true){ timer in
+                    self.seconds += 1
+                    self.telemetryManager.flyingTime(seconds: self.seconds)
+                }
             }
             else{
+                self.homePositionAdded = false
+                timerFlying?.invalidate()
+                timerFlying = nil
                 database.stopLogging()
             }
             
@@ -82,8 +97,12 @@ class ConnectionViewModel: NSObject, ObservableObject {
     }
     
     //MARK: Internal functions
-    func updateLocation(location: CLLocationCoordinate2D) {
+    func showHomePosition(location: CLLocationCoordinate2D) {
+        homePositionAdded = true
         self.region = MKCoordinateRegion(center: location, span: span)
+        self.planeLocation[0] = Plane(coordinate: location)
+    }
+    func updateLocation(location: CLLocationCoordinate2D) {
         self.planeLocation[0] = Plane(coordinate: location)
     }
     func cleanDatabase(){

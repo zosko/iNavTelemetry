@@ -82,8 +82,11 @@ class TelemetryManager: NSObject {
     struct InstrumentTelemetry {
         var packet: Packet
         
-        var flyTime: Int = 0
+        private var seconds: Int
         var telemetryType: TelemetryType = .smartPort
+        var flyTime: String {
+            String(format:"%02ld:%02ld:%02ld", seconds / 3600, (seconds / 60) % 60, seconds % 60)
+        }
         var location: CLLocationCoordinate2D {
             .init(latitude: packet.lat, longitude: packet.lng)
         }
@@ -120,10 +123,10 @@ class TelemetryManager: NSObject {
             }
         }
         
-        init(packet: Packet, telemetryType: TelemetryType, flyTime: Int) {
+        init(packet: Packet, telemetryType: TelemetryType, seconds: Int) {
             self.packet = packet
             self.telemetryType = telemetryType
-            self.flyTime = flyTime
+            self.seconds = seconds
         }
     }
     
@@ -135,18 +138,20 @@ class TelemetryManager: NSObject {
     private var _packet = Packet()
     private var _telemetryType: TelemetryType = .smartPort
     private var _bluetoothType: BluetoothType = .frskyBuildIn
-    private var _flyTime = 0
+    private var _seconds = 0
     
     var telemetryType: TelemetryType { return _telemetryType }
     var bluetoothType: BluetoothType { return _bluetoothType }
     var telemetry: InstrumentTelemetry { InstrumentTelemetry(packet: _packet,
                                                              telemetryType: _telemetryType,
-                                                             flyTime: _flyTime) }
+                                                             seconds: _seconds) }
     
     func chooseTelemetry(type: TelemetryType){
         self._telemetryType = type
     }
-    
+    func flyingTime(seconds: Int){
+        self._seconds = seconds
+    }
     func requestTelemetry(peripheral: CBPeripheral, characteristic: CBCharacteristic, writeType: CBCharacteristicWriteType) {
         switch _telemetryType {
         case .custom:

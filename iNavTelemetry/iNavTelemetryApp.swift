@@ -13,6 +13,9 @@ struct iNavTelemetryApp: App {
     var body: some Scene {
         WindowGroup {
             MainView()
+                .onAppear {
+                    UIApplication.shared.isIdleTimerDisabled = true
+                }
         }
     }
 }
