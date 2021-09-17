@@ -77,6 +77,10 @@ class TelemetryManager: NSObject {
     struct LogTelemetry: Codable {
         var lat: Double = 0.0
         var lng: Double = 0.0
+        
+        var location: CLLocationCoordinate2D {
+            .init(latitude: lat, longitude: lng)
+        }
     }
     
     struct InstrumentTelemetry {

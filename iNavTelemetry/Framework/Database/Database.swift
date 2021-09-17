@@ -81,8 +81,4 @@ class Database: NSObject {
         let date = Date(timeIntervalSince1970: timestamp)
         return dateFormatter.string(from: date)
     }
-    func openLog(urlLog : URL){
-        let jsonData = try! Data(contentsOf: urlLog)
-        let logData = try! JSONDecoder().decode([TelemetryManager.LogTelemetry].self, from: jsonData)
-    }
 }

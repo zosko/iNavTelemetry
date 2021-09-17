@@ -47,7 +47,11 @@ struct ConnectionView: View {
                             let timestamp = Double(log.pathComponents.last!)!
                             let name = Database.toName(timestamp: timestamp)
                             return .default(Text(name)) {
-                                screen = .logbook(url: log)
+                                
+                                let jsonData = try! Data(contentsOf: log)
+                                let logData = try! JSONDecoder().decode([TelemetryManager.LogTelemetry].self, from: jsonData)
+                                
+                                screen = .logbook(coordinates: logData)
                             }
                         }
                         if buttons.count > 0 {

@@ -9,7 +9,7 @@ import SwiftUI
 
 enum Screen {
     case dashboard
-    case logbook(url: URL)
+    case logbook(coordinates: [TelemetryManager.LogTelemetry])
 }
 
 struct MainView: View {
@@ -22,8 +22,9 @@ struct MainView: View {
             Dashboard(screen: $screen)
                 .animation(.easeOut)
                 .transition(.opacity)
-        case .logbook(let url):
-            Logbook(log: url, screen: $screen)
+        case .logbook(let coordinates):
+            let mapToLocations = coordinates.map { $0.location }
+            Logbook(screen: $screen, coordinates: mapToLocations)
                 .animation(.easeOut)
                 .transition(.opacity)
         }
