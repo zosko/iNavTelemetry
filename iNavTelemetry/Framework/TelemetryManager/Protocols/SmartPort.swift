@@ -151,7 +151,7 @@ class SmartPort: NSObject {
                         break
                     case PITCH_SENSOR:
                         let pitch = Int(Double(rawData) / 10.0)
-                        packet.pitch = pitch
+                        packet.pitch = -pitch
                         break
                     case ROLL_SENSOR:
                         let roll = Int(Double(rawData) / 10.0)
