@@ -43,11 +43,6 @@
       function addPins(planes){
         for(var i in planes) {
           var info = "[Location] " + planes[i].lat + ", " + planes[i].lng + "<br>";
-          info = info + "[Altitude] " + planes[i].alt + " m<br>";
-          info = info + "[Speed] " + planes[i].speed + " km/h<br>";
-          info = info + "[Heading] " + planes[i].heading + " deg<br>";
-          info = info + "[Name] " + planes[i].name + "<br>";
-          info = info + '<img width="300" src="data:image/jpeg;base64,'+ planes[i].photo + '" />';
           
           var description = {
               description: info
