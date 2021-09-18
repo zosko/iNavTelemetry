@@ -9,7 +9,7 @@
 https://apps.apple.com/us/app/inav-telemetry/id1543244904
 
 # What is iNavTelemetry
-iNav telemetry is application for iOS devices (iPhone / iPad / MacOS / Safari Viewer)
+Its application to read telementry from iNav flight controllers. Designed for iPhone/iPad. Later maybe for other devices.
 
 # Setup on iNav flight controller
 - smartport_fuel_unit = PERCENT
@@ -31,10 +31,10 @@ In order this to work you need additional hardware: inverter and bluetooth modul
 ![Signal Inverter](inverter.jpg)
 
 # Supported Protocol
-- Custom Telemetry - check example of [Tracker](https://github.com/zosko/R9M_Inav_antenna_tracker/blob/master/bt_r9m_accst/bt_r9m_accst.ino)
-- FrSky Smart Port 
-- Multiwii Serial Protocol (MSP)
-- MAVLink (by request if need)
-- LTM (by request if need)
-- Crossfire (by request if need)
+- **Custom Telemetry** - check example of [Tracker](https://github.com/zosko/R9M_Inav_antenna_tracker/blob/master/bt_r9m_accst/bt_r9m_accst.ino)
+- **FrSky Smart Port** 
+- **Multiwii Serial Protocol** (MSP)
+- **MAVLink** (by request if need)
+- **LTM** (by request if need)
+- **Crossfire** (by request if need)
 
