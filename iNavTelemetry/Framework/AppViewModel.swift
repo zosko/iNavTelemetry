@@ -68,7 +68,9 @@ class AppViewModel: NSObject, ObservableObject {
                                                              lng: self.telemetry.location.longitude)
             
             //socketCommunicator.sendPlaneData(location: logTelemetry)
-            database.saveTelemetryData(packet: logTelemetry)
+            if self.homePositionAdded {
+                database.saveTelemetryData(packet: logTelemetry)
+            }
         }.store(in: &cancellable)
         
         bluetoothManager.$peripheralFound.sink { [unowned self] peripheral in
