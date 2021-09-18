@@ -102,7 +102,7 @@ class MSP_V1: NSObject {
             switch MSP_Request_Replies(rawValue: messageID) {
             case .MSP_ATTITUDE:
                 packet.roll = Int(buffer_get_int16(buffer: payload, index: 1)) / 10
-                packet.pitch = Int(buffer_get_int16(buffer: payload, index: 3)) / 10
+                packet.pitch = -Int(buffer_get_int16(buffer: payload, index: 3)) / 10
                 packet.heading = Int(buffer_get_int16(buffer: payload, index: 5))
             case .MSP_RAW_GPS:
                 packet.gps_sats = Int(payload[1])
