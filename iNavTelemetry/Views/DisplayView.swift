@@ -29,7 +29,9 @@ struct DisplayView: View {
                 VStack(spacing: 1) {
                     InstrumentView(type: .armed(packet: viewModel.telemetry))
                     InstrumentView(type: .signal(packet: viewModel.telemetry))
-                    InstrumentView(type: .fuel(packet: viewModel.telemetry))
+                    if viewModel.selectedProtocol != TelemetryManager.TelemetryType.msp {
+                        InstrumentView(type: .fuel(packet: viewModel.telemetry))
+                    }
                     InstrumentView(type: .flymode(packet: viewModel.telemetry))
                     InstrumentView(type: .flytime(packet: viewModel.telemetry))
                     Spacer()

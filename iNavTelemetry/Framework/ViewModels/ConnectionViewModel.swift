@@ -20,7 +20,7 @@ class ConnectionViewModel: NSObject, ObservableObject {
     private let span = MKCoordinateSpan(latitudeDelta: 0.005, longitudeDelta: 0.005)
     @Published var region = MKCoordinateRegion()
     @Published var planeLocation = [Plane(coordinate: .init())]
-    @Published var selectedProtocol = TelemetryManager.TelemetryType.smartPort
+    @Published var selectedProtocol: TelemetryManager.TelemetryType = TelemetryManager.TelemetryType.smartPort
     @Published var showingActionSheetPeripherals = false
     @Published var connected = false
     @Published var homePositionAdded = false

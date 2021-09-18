@@ -14,6 +14,7 @@ struct MapViewLines: UIViewRepresentable {
     
     func makeUIView(context: Context) -> MKMapView {
         let mapView = MKMapView()
+        mapView.mapType = .satellite
         mapView.delegate = context.coordinator
         mapView.region = region
         
@@ -40,7 +41,7 @@ struct MapViewLines: UIViewRepresentable {
         if let routePolyline = overlay as? MKPolyline {
           let renderer = MKPolylineRenderer(polyline: routePolyline)
           renderer.strokeColor = UIColor.systemBlue
-          renderer.lineWidth = 5
+          renderer.lineWidth = 4
           return renderer
         }
         return MKOverlayRenderer()
@@ -55,11 +56,11 @@ struct Logbook: View {
 
     var coordinates: [CLLocationCoordinate2D]
     
+    let span = MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
+    
     var body: some View {
         return ZStack(alignment: .topLeading)  {
-            MapViewLines(region: MKCoordinateRegion(center: coordinates.first!,
-                                                    span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01))
-                         , lineCoordinates: coordinates)
+            MapViewLines(region: MKCoordinateRegion(center: coordinates.first!, span: span), lineCoordinates: coordinates)
               .edgesIgnoringSafeArea(.all)
             
             Button(action: {
