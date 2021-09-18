@@ -12,18 +12,18 @@ import CoreBluetooth
 import MapKit
 
 struct Plane: Identifiable {
-    let id = UUID()
+    let id: String = UUID().uuidString
     let coordinate: CLLocationCoordinate2D
 }
 
 class AppViewModel: NSObject, ObservableObject {
-    private let span = MKCoordinateSpan(latitudeDelta: 0.005, longitudeDelta: 0.005)
     @Published var region = MKCoordinateRegion()
-    @Published var planeLocation = [Plane(coordinate: .init())]
     @Published var selectedProtocol: TelemetryManager.TelemetryType = TelemetryManager.TelemetryType.smartPort
     @Published var showingActionSheetPeripherals = false
     @Published var connected = false
     @Published var homePositionAdded = false
+    @Published var mineLocation = [Plane(coordinate: .init())]
+//    @Published var allPlanes = [Plane(coordinate: .init())]
     @Published var telemetry = TelemetryManager.InstrumentTelemetry(packet: TelemetryManager.Packet(),
                                                                     telemetryType: .smartPort,
                                                                     seconds: 0)
@@ -31,6 +31,7 @@ class AppViewModel: NSObject, ObservableObject {
     var logsData: [URL] { database.getLogs() }
     
     @ObservedObject private var bluetoothManager = BluetoothManager()
+    //@ObservedObject private var socketCommunicator = SocketComunicator()
     
     private var database = Database()
     private var cancellable: [AnyCancellable] = []
@@ -41,7 +42,11 @@ class AppViewModel: NSObject, ObservableObject {
     
     override init(){
         super.init()
-        self.region.span = span
+        self.region.span = MKCoordinateSpan(latitudeDelta: 100, longitudeDelta: 100)
+        
+//        Publishers.CombineLatest(socketCommunicator.$planes, $mineLocation)
+//            .map{ $0.0 + $0.1 }
+//            .assign(to: &$allPlanes)
         
         $selectedProtocol.sink {
             self.telemetryManager.chooseTelemetry(type: $0)
@@ -59,8 +64,11 @@ class AppViewModel: NSObject, ObservableObject {
             
             self.updateLocation(location: self.telemetry.location)
             
-            database.saveTelemetryData(packet: .init(lat: self.telemetry.location.latitude,
-                                                     lng: self.telemetry.location.longitude))
+            let logTelemetry = TelemetryManager.LogTelemetry(lat: self.telemetry.location.latitude,
+                                                             lng: self.telemetry.location.longitude)
+            
+            //socketCommunicator.sendPlaneData(location: logTelemetry)
+            database.saveTelemetryData(packet: logTelemetry)
         }.store(in: &cancellable)
         
         bluetoothManager.$peripheralFound.sink { [unowned self] peripheral in
@@ -99,12 +107,11 @@ class AppViewModel: NSObject, ObservableObject {
     //MARK: Internal functions
     func showHomePosition(location: CLLocationCoordinate2D) {
         homePositionAdded = true
+        self.region = MKCoordinateRegion(center: location,
+                                         span: MKCoordinateSpan(latitudeDelta: 0.005, longitudeDelta: 0.005))
     }
     func updateLocation(location: CLLocationCoordinate2D) {
-        if (homePositionAdded) {
-            self.region = MKCoordinateRegion(center: location, span: span)
-        }
-        self.planeLocation[0] = Plane(coordinate: location)
+        self.mineLocation[0] = Plane(coordinate: location)
     }
     func cleanDatabase(){
         database.cleanDatabase()

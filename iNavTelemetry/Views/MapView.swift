@@ -15,8 +15,12 @@ struct MapView: View {
     
     var body: some View {
         ZStack {
-            Map(coordinateRegion: $viewModel.region, annotationItems: viewModel.planeLocation) { plane in
-                MapPin(coordinate: plane.coordinate, tint: .red)
+            Map(coordinateRegion: $viewModel.region, annotationItems: viewModel.mineLocation) { plane in
+                MapAnnotation(coordinate: plane.coordinate) {
+                    Circle()
+                        .fill(Color.red)
+                        .frame(width: 20, height: 20)
+                }
             }
         }.edgesIgnoringSafeArea(.all)
     }

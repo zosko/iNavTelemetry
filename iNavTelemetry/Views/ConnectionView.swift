@@ -81,6 +81,7 @@ struct ConnectionView: View {
             }
         }
         .frame(width: 120, height: 120, alignment: .center)
+        .padding(10)
     }
 }
 
