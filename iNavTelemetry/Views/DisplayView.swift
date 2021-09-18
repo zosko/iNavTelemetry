@@ -46,6 +46,12 @@ struct DisplayView: View {
                     AttitudeView(roll: viewModel.telemetry.packet.roll, pitch: viewModel.telemetry.packet.pitch)
                 }
             }
+            if viewModel.connected && !viewModel.homePositionAdded {
+                Text("Waiting for 3D Fix")
+                    .font(.largeTitle)
+                    .bold()
+                    .foregroundColor(.red)
+            }
         }
     }
 }

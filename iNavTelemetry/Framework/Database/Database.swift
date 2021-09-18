@@ -70,10 +70,12 @@ class Database: NSObject {
     func getLogs() -> [URL]{
         let documentsUrl =  FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
         let directoryContents = try! FileManager.default.contentsOfDirectory(at: documentsUrl, includingPropertiesForKeys: nil, options: [.skipsHiddenFiles])
-        return directoryContents.filter { url in
-            let nameFile = url.lastPathComponent
-            return !nameFile.isEmpty && nameFile.rangeOfCharacter(from: CharacterSet.decimalDigits.inverted) == nil
-        }
+        return directoryContents
+            .filter { url in
+                let nameFile = url.lastPathComponent
+                return !nameFile.isEmpty && nameFile.rangeOfCharacter(from: CharacterSet.decimalDigits.inverted) == nil
+            }
+            .sorted{ Int($0.lastPathComponent)! > Int($1.lastPathComponent)! }
     }
     static func toName(timestamp : Double) -> String{
         let dateFormatter = DateFormatter()

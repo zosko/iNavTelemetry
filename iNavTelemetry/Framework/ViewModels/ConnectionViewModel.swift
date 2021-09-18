@@ -23,6 +23,7 @@ class ConnectionViewModel: NSObject, ObservableObject {
     @Published var selectedProtocol = TelemetryManager.TelemetryType.smartPort
     @Published var showingActionSheetPeripherals = false
     @Published var connected = false
+    @Published var homePositionAdded = false
     @Published var telemetry = TelemetryManager.InstrumentTelemetry(packet: TelemetryManager.Packet(),
                                                                     telemetryType: .smartPort,
                                                                     seconds: 0)
@@ -35,7 +36,6 @@ class ConnectionViewModel: NSObject, ObservableObject {
     private var cancellable: [AnyCancellable] = []
     private var telemetryManager = TelemetryManager()
     private var timerRequestMSP: Timer?
-    private var homePositionAdded = false
     private var timerFlying: Timer?
     private var seconds = 0
     
@@ -99,10 +99,11 @@ class ConnectionViewModel: NSObject, ObservableObject {
     //MARK: Internal functions
     func showHomePosition(location: CLLocationCoordinate2D) {
         homePositionAdded = true
-        self.region = MKCoordinateRegion(center: location, span: span)
-        self.planeLocation[0] = Plane(coordinate: location)
     }
     func updateLocation(location: CLLocationCoordinate2D) {
+        if (homePositionAdded) {
+            self.region = MKCoordinateRegion(center: location, span: span)
+        }
         self.planeLocation[0] = Plane(coordinate: location)
     }
     func cleanDatabase(){

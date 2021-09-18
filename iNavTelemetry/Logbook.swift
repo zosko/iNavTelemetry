@@ -29,24 +29,24 @@ struct MapViewLines: UIViewRepresentable {
         Coordinator(self)
     }
     
-}
+    class Coordinator: NSObject, MKMapViewDelegate {
+      var parent: MapViewLines
 
-class Coordinator: NSObject, MKMapViewDelegate {
-  var parent: MapViewLines
+      init(_ parent: MapViewLines) {
+        self.parent = parent
+      }
 
-  init(_ parent: MapViewLines) {
-    self.parent = parent
-  }
-
-  func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
-    if let routePolyline = overlay as? MKPolyline {
-      let renderer = MKPolylineRenderer(polyline: routePolyline)
-      renderer.strokeColor = UIColor.systemBlue
-      renderer.lineWidth = 5
-      return renderer
+      func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
+        if let routePolyline = overlay as? MKPolyline {
+          let renderer = MKPolylineRenderer(polyline: routePolyline)
+          renderer.strokeColor = UIColor.systemBlue
+          renderer.lineWidth = 5
+          return renderer
+        }
+        return MKOverlayRenderer()
+      }
     }
-    return MKOverlayRenderer()
-  }
+    
 }
 
 struct Logbook: View {
