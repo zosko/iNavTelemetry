@@ -10,7 +10,7 @@ import Combine
 
 struct ConnectionView: View {
     
-    @ObservedObject var viewModel: ConnectionViewModel
+    @ObservedObject var viewModel: AppViewModel
     @Binding var screen: Screen
     
     @State private var showingActionSheetLogs = false

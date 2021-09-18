@@ -65,16 +65,16 @@ struct InstrumentView: View {
             case .latitude(let packet): return "\(packet.location.latitude)"
             case .longitude(let packet): return "\(packet.location.longitude)"
             case .satellites(let packet): return "\(packet.packet.gps_sats)"
-            case .distance(let packet): return "\(packet.packet.distance)"
-            case .altitude(let packet): return "\(packet.packet.alt)"
-            case .speed(let packet): return "\(packet.packet.speed)"
+            case .distance(let packet): return "\(packet.packet.distance)m"
+            case .altitude(let packet): return "\(packet.packet.alt)m"
+            case .speed(let packet): return "\(packet.packet.speed) km/h"
             case .armed(let packet): return "\(packet.engine.rawValue)"
-            case .signal(let packet): return "\(packet.packet.rssi)"
-            case .fuel(let packet): return "\(packet.packet.fuel)"
+            case .signal(let packet): return "\(packet.packet.rssi)%"
+            case .fuel(let packet): return "\(packet.packet.fuel)%"
             case .flymode(let packet): return "\(packet.stabilization)"
             case .flytime(let packet): return "\(packet.flyTime)"
-            case .current(let packet): return "\(packet.packet.current)"
-            case .voltage(let packet): return "\(packet.packet.voltage)"
+            case .current(let packet): return "\(packet.packet.current) amp"
+            case .voltage(let packet): return "\(packet.packet.voltage)v"
             }
         }
         

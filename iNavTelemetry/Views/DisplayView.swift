@@ -10,7 +10,7 @@ import Combine
 
 struct DisplayView: View {
     
-    @ObservedObject var viewModel: ConnectionViewModel
+    @ObservedObject var viewModel: AppViewModel
     @Binding var screen: Screen
     
     var body: some View {

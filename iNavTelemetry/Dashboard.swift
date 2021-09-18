@@ -11,7 +11,7 @@ struct Dashboard: View {
     
     @Binding var screen: Screen
     
-    @StateObject private var viewModel = ConnectionViewModel()
+    @StateObject private var viewModel = AppViewModel()
     
     var body: some View {
         ZStack {

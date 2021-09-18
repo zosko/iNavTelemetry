@@ -11,7 +11,7 @@ import Combine
 
 struct MapView: View {
     
-    @ObservedObject var viewModel: ConnectionViewModel
+    @ObservedObject var viewModel: AppViewModel
     
     var body: some View {
         ZStack {

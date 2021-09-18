@@ -16,7 +16,7 @@ struct Plane: Identifiable {
     let coordinate: CLLocationCoordinate2D
 }
 
-class ConnectionViewModel: NSObject, ObservableObject {
+class AppViewModel: NSObject, ObservableObject {
     private let span = MKCoordinateSpan(latitudeDelta: 0.005, longitudeDelta: 0.005)
     @Published var region = MKCoordinateRegion()
     @Published var planeLocation = [Plane(coordinate: .init())]

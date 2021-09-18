@@ -24,7 +24,7 @@
 		6D3F821C26ED47FF009B408D /* Msp_v1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D3F821726ED47FF009B408D /* Msp_v1.swift */; };
 		6D3F821D26ED47FF009B408D /* TelemetryManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D3F821826ED47FF009B408D /* TelemetryManager.swift */; };
 		6D3F821E26ED47FF009B408D /* CustomTelemetry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D3F821926ED47FF009B408D /* CustomTelemetry.swift */; };
-		6D49B7A326E80515006833A9 /* ConnectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D49B7A226E80515006833A9 /* ConnectionViewModel.swift */; };
+		6D49B7A326E80515006833A9 /* AppViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D49B7A226E80515006833A9 /* AppViewModel.swift */; };
 		6DAF1E5426EDEAD700DBE06A /* Database.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DAF1E5326EDEAD700DBE06A /* Database.swift */; };
 		6DD7D1AF26F3D46E00735EA2 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DD7D1AE26F3D46E00735EA2 /* MainView.swift */; };
 /* End PBXBuildFile section */
@@ -49,7 +49,7 @@
 		6D3F821726ED47FF009B408D /* Msp_v1.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Msp_v1.swift; sourceTree = "<group>"; };
 		6D3F821826ED47FF009B408D /* TelemetryManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TelemetryManager.swift; sourceTree = "<group>"; };
 		6D3F821926ED47FF009B408D /* CustomTelemetry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomTelemetry.swift; sourceTree = "<group>"; };
-		6D49B7A226E80515006833A9 /* ConnectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionViewModel.swift; sourceTree = "<group>"; };
+		6D49B7A226E80515006833A9 /* AppViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppViewModel.swift; sourceTree = "<group>"; };
 		6DAF1E5326EDEAD700DBE06A /* Database.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Database.swift; sourceTree = "<group>"; };
 		6DD7D1AE26F3D46E00735EA2 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -68,7 +68,7 @@
 		6D1D8E2C26EDE7F900CDDDDE /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
-				6D49B7A226E80515006833A9 /* ConnectionViewModel.swift */,
+				6D49B7A226E80515006833A9 /* AppViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -240,7 +240,7 @@
 				6D06263126EE8C1000FCAC40 /* BluetoothManager.swift in Sources */,
 				6DD7D1AF26F3D46E00735EA2 /* MainView.swift in Sources */,
 				6D04DC0B26E4EE2C003783F2 /* ConnectionView.swift in Sources */,
-				6D49B7A326E80515006833A9 /* ConnectionViewModel.swift in Sources */,
+				6D49B7A326E80515006833A9 /* AppViewModel.swift in Sources */,
 				6DAF1E5426EDEAD700DBE06A /* Database.swift in Sources */,
 				6D3F821D26ED47FF009B408D /* TelemetryManager.swift in Sources */,
 				6D04DBEE26E4D0AA003783F2 /* DisplayView.swift in Sources */,
