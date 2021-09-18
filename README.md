@@ -1,5 +1,5 @@
 <p align="center">
-<img src="http://static.rcgroups.net/forums/attachments/6/1/0/3/7/6/a9088858-102-inav.png" /><br /><br />
+<img src="https://camo.githubusercontent.com/928436350a228bf7b9bc397b7c6e44fb82af2d4c8725ecb60ad841cde06685f5/68747470733a2f2f717561646d6575702e636f6d2f6173736574732f77696e6765642d696e61762e706e67" /><br /><br />
 <a href="https://www.buymeacoffee.com/bosko" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Beer" style="height: auto !important;width: auto !important;" ></a>
 </p>
 
