@@ -1,0 +1,21 @@
+{
+  "name": "iNavTelemetryServer",
+  "version": "0.0.1",
+  "description": "iNavTelemetry Server for communication",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "socket.io": "^2.3.0"
+  },
+  "engines": {
+    "node": "12.x"
+  },
+  "license": "MIT",
+  "keywords": [
+    "node",
+    "express"
+  ]
+}

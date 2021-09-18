@@ -1,0 +1,78 @@
+<html>
+  <head>
+    <title> iNav Viewer </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/openlayers/2.11/lib/OpenLayers.js"></script> 
+  </head>
+  <body>
+    <div id="mapdiv"></div>
+    <div id="information" style="background: #eeeeee; font-size:20px; padding: 10px; position: fixed; top:0; right:0; z-index:1000;"></div>
+
+    <script>
+      $(document).ready(function(){
+        var socket = io.connect();
+        socket.on('planesLocation', function(data) {
+          removePins();
+          addPins(data);
+        });
+        socket.on('connect', function(){
+          console.log('Connected');
+        });
+      })
+      map = new OpenLayers.Map("mapdiv");
+      map.addLayer(new OpenLayers.Layer.OSM());
+    
+      epsg4326 =  new OpenLayers.Projection("EPSG:4326");
+      projectTo = map.getProjectionObject();
+      var vectorLayer = new OpenLayers.Layer.Vector("Overlay");
+      var controls = { selector: new OpenLayers.Control.SelectFeature(vectorLayer, { onSelect: createPopup })};
+      var lonLat = new OpenLayers.LonLat( 21.432546,41.995788 ).transform(epsg4326, projectTo);
+      var zoom = 12;
+      map.setCenter (lonLat, zoom);
+      map.addControl(controls['selector']);
+      controls['selector'].activate();
+      
+      function createPopup(feature) {
+        $("#information").html(feature.attributes.description);
+      }
+      function removePins(){
+        vectorLayer.destroyFeatures();
+      }
+      function addPins(planes){
+        for(var i in planes) {
+          var info = "[Location] " + planes[i].lat + ", " + planes[i].lng + "<br>";
+          info = info + "[Altitude] " + planes[i].alt + " m<br>";
+          info = info + "[Speed] " + planes[i].speed + " km/h<br>";
+          info = info + "[Heading] " + planes[i].heading + " deg<br>";
+          info = info + "[Name] " + planes[i].name + "<br>";
+          info = info + '<img width="300" src="data:image/jpeg;base64,'+ planes[i].photo + '" />';
+          
+          var description = {
+              description: info
+          }
+          
+          //http://dev.openlayers.org/docs/files/OpenLayers/Feature/Vector-js.html#OpenLayers.Feature.Vector.style
+          var style = {
+            strokeColor: "red",
+            fillColor: "cyan",
+            strokeWidth: 3,
+            pointRadius: 6,
+            label: planes[i].name,
+            labelYOffset: 15,
+            fontColor: "black",
+            graphicName: planes[i].type == 0 ? "triangle" : "circle"
+          };
+          
+          var ol = new OpenLayers.Geometry.Point(planes[i].lng,planes[i].lat).transform(epsg4326, projectTo);
+          var feature = new OpenLayers.Feature.Vector(ol,description,style);
+          vectorLayer.addFeatures(feature);        
+          map.addLayer(vectorLayer);
+        }
+      }
+      </script>
+    </body>
+  </html>
+
+

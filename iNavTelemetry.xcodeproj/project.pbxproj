@@ -125,8 +125,8 @@
 		6D3F821426ED47FF009B408D /* TelemetryManager */ = {
 			isa = PBXGroup;
 			children = (
-				6D3F821826ED47FF009B408D /* TelemetryManager.swift */,
 				6DAF1E5726EDF57400DBE06A /* Protocols */,
+				6D3F821826ED47FF009B408D /* TelemetryManager.swift */,
 			);
 			path = TelemetryManager;
 			sourceTree = "<group>";
@@ -145,11 +145,11 @@
 		6DF1F27526E5F5FE00DCACA4 /* Framework */ = {
 			isa = PBXGroup;
 			children = (
+				6D3F821426ED47FF009B408D /* TelemetryManager */,
 				6D49B7A226E80515006833A9 /* AppViewModel.swift */,
 				6DF2432C26F5F5E600DE6FE8 /* SocketManager.swift */,
 				6D06263026EE8C1000FCAC40 /* BluetoothManager.swift */,
 				6DAF1E5326EDEAD700DBE06A /* Database.swift */,
-				6D3F821426ED47FF009B408D /* TelemetryManager */,
 			);
 			path = Framework;
 			sourceTree = "<group>";

@@ -34,13 +34,6 @@ class Database: NSObject {
     func saveTelemetryData(packet : TelemetryManager.LogTelemetry){
         jsonDatabase.append(packet)
     }
-    func removeFile(fileName: URL) -> Void{
-        do{
-            try FileManager.default.removeItem(at: fileName)
-        }catch{
-            print(error)
-        }
-    }
     func generateName() ->String{
         return "\(Int(NSDate.now.timeIntervalSince1970))"
     }
