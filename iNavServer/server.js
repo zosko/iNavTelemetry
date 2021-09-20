@@ -2,18 +2,14 @@ var express = require("express");
 var app = express();
 var http = require("http");
 var server = http.createServer(app);
-var io = require("socket.io").listen(server);
 var path = require('path');
 var database = {};
+const { Server } = require("socket.io");
+const io = new Server(server);
 
 server.listen(3000);
 app.use(express.static(path.join(__dirname, 'public')))
 app.get('/', function(req, res){
-  res.sendFile('public/index.html', { root : __dirname })
-})
-
-app.get('/restart', function(req, res){
-  database = {};
   res.sendFile('public/index.html', { root : __dirname })
 })
 
@@ -32,8 +28,8 @@ io.sockets.on("connection", function(socket) {
   
   socket.on("planeLocation", function(plane) {
     database[socket.id] = {lat : plane.lat,
-                           lng : plane.lng
-                          };
+                           lng : plane.lng,
+                           id: plane.id};
   });
   socket.on("disconnect", function() {
     //remove plane from database
