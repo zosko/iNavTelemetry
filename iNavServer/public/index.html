@@ -54,10 +54,10 @@
             fillColor: "cyan",
             strokeWidth: 3,
             pointRadius: 6,
-            label: planes[i].name,
+            //label: planes[i].id,
             labelYOffset: 15,
             fontColor: "black",
-            graphicName: planes[i].type == 0 ? "triangle" : "circle"
+            graphicName: "circle"
           };
           
           var ol = new OpenLayers.Geometry.Point(planes[i].lng,planes[i].lat).transform(epsg4326, projectTo);
