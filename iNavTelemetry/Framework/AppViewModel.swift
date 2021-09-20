@@ -114,6 +114,10 @@ class AppViewModel: NSObject, ObservableObject {
                                          span: MKCoordinateSpan(latitudeDelta: 0.005, longitudeDelta: 0.005))
     }
     func updateLocation(location: CLLocationCoordinate2D) {
+        if !homePositionAdded {
+            self.region = MKCoordinateRegion(center: location,
+                                             span: MKCoordinateSpan(latitudeDelta: 40, longitudeDelta: 40))
+        }
         self.mineLocation[0] = Plane(coordinate: location)
     }
     func cleanDatabase(){

@@ -49,7 +49,7 @@ struct DisplayView: View {
                 }
             }
             if viewModel.connected && !viewModel.homePositionAdded {
-                Text("Waiting for 3D Fix")
+                Text("Waiting for satellites")
                     .font(.largeTitle)
                     .bold()
                     .foregroundColor(.red)
