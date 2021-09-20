@@ -15,7 +15,7 @@ class SocketComunicator: NSObject, ObservableObject {
     let manager = SocketManager(socketURL: URL(string: "https://deadpan-rightful-aunt.glitch.me")!, config: [.log(false), .compress])
     
     @Published var planes: [Plane] = []
-    
+        
     override init() {
         super.init()
         
@@ -36,7 +36,11 @@ class SocketComunicator: NSObject, ObservableObject {
             let decoder = JSONDecoder()
             do {
                 let allPlanes = try decoder.decode([TelemetryManager.LogTelemetry].self, from: jsonData)
-                self.planes = allPlanes.map { Plane(coordinate: $0.location) }
+                self.planes = allPlanes.map {
+                    Plane(id: $0.id, coordinate: $0.location, mine: $0.id == manager.defaultSocket.sid)
+                }.filter{
+                    return $0.id != manager.defaultSocket.sid
+                }
             } catch {
                 print(error)
             }
@@ -46,8 +50,11 @@ class SocketComunicator: NSObject, ObservableObject {
     }
     
     func sendPlaneData(location: TelemetryManager.LogTelemetry){
-        manager.defaultSocket.emit("planeLocation",["lat":location.lat,
-                                                    "lng":location.lng,
-        ])
+        if let uniqID = manager.defaultSocket.sid {
+            manager.defaultSocket.emit("planeLocation",["lat":location.lat,
+                                                        "lng":location.lng,
+                                                        "id": uniqID
+            ])
+        }
     }
 }

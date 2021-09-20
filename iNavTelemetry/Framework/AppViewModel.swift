@@ -12,8 +12,9 @@ import CoreBluetooth
 import MapKit
 
 struct Plane: Identifiable {
-    let id: String = UUID().uuidString
+    let id: String
     let coordinate: CLLocationCoordinate2D
+    let mine: Bool
 }
 
 class AppViewModel: NSObject, ObservableObject {
@@ -22,8 +23,8 @@ class AppViewModel: NSObject, ObservableObject {
     @Published var showingActionSheetPeripherals = false
     @Published var connected = false
     @Published var homePositionAdded = false
-    @Published var mineLocation = [Plane(coordinate: .init())]
-//    @Published var allPlanes = [Plane(coordinate: .init())]
+    @Published var mineLocation = [Plane(id: "", coordinate: .init(), mine: true)]
+    @Published var allPlanes = [Plane(id: "", coordinate: .init(), mine: false)]
     @Published var telemetry = TelemetryManager.InstrumentTelemetry(packet: TelemetryManager.Packet(),
                                                                     telemetryType: .smartPort,
                                                                     seconds: 0)
@@ -31,7 +32,7 @@ class AppViewModel: NSObject, ObservableObject {
     var logsData: [URL] { database.getLogs() }
     
     @ObservedObject private var bluetoothManager = BluetoothManager()
-    //@ObservedObject private var socketCommunicator = SocketComunicator()
+    @ObservedObject private var socketCommunicator = SocketComunicator()
     
     private var database = Database()
     private var cancellable: [AnyCancellable] = []
@@ -44,9 +45,11 @@ class AppViewModel: NSObject, ObservableObject {
         super.init()
         self.region.span = MKCoordinateSpan(latitudeDelta: 100, longitudeDelta: 100)
         
-//        Publishers.CombineLatest(socketCommunicator.$planes, $mineLocation)
-//            .map{ $0.0 + $0.1 }
-//            .assign(to: &$allPlanes)
+        Publishers.CombineLatest(socketCommunicator.$planes, $mineLocation)
+            .map{
+                return $0.0 + $0.1
+            }
+            .assign(to: &$allPlanes)
         
         $selectedProtocol.sink {
             self.telemetryManager.chooseTelemetry(type: $0)
@@ -67,8 +70,8 @@ class AppViewModel: NSObject, ObservableObject {
             let logTelemetry = TelemetryManager.LogTelemetry(lat: self.telemetry.location.latitude,
                                                              lng: self.telemetry.location.longitude)
             
-            //socketCommunicator.sendPlaneData(location: logTelemetry)
             if self.homePositionAdded {
+                socketCommunicator.sendPlaneData(location: logTelemetry)
                 database.saveTelemetryData(packet: logTelemetry)
             }
         }.store(in: &cancellable)
@@ -118,7 +121,7 @@ class AppViewModel: NSObject, ObservableObject {
             self.region = MKCoordinateRegion(center: location,
                                              span: MKCoordinateSpan(latitudeDelta: 40, longitudeDelta: 40))
         }
-        self.mineLocation[0] = Plane(coordinate: location)
+        self.mineLocation[0] = Plane(id:UUID().uuidString, coordinate: location, mine: true)
     }
     func cleanDatabase(){
         database.cleanDatabase()
