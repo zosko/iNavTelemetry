@@ -11,7 +11,7 @@ import Combine
 struct ConnectionView: View {
     
     @ObservedObject var viewModel: AppViewModel
-    @Binding var screen: Screen
+    @Binding var logBookCoordinates: [TelemetryManager.LogTelemetry]?
     
     @State private var showingActionSheetLogs = false
     
@@ -47,11 +47,13 @@ struct ConnectionView: View {
                             let timestamp = Double(log.pathComponents.last!)!
                             let name = Database.toName(timestamp: timestamp)
                             return .default(Text(name)) {
-                                
-                                let jsonData = try! Data(contentsOf: log)
-                                let logData = try! JSONDecoder().decode([TelemetryManager.LogTelemetry].self, from: jsonData)
-                                
-                                screen = .logbook(coordinates: logData)
+                                do {
+                                    let jsonData = try Data(contentsOf: log)
+                                    let logData = try JSONDecoder().decode([TelemetryManager.LogTelemetry].self, from: jsonData)
+                                    logBookCoordinates = logData
+                                } catch {
+                                  print(error)
+                                }
                             }
                         }
                         if buttons.count > 0 {
@@ -87,7 +89,7 @@ struct ConnectionView: View {
 
 struct ConnectionView_Previews: PreviewProvider {
     static var previews: some View {
-        ConnectionView(viewModel: .init(), screen: .constant(.dashboard))
+        ConnectionView(viewModel: .init(), logBookCoordinates: .constant(nil))
             .previewLayout(.fixed(width: 120, height: 120))
             .background(Color.blue)
     }

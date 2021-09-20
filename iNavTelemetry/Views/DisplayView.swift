@@ -11,7 +11,7 @@ import Combine
 struct DisplayView: View {
     
     @ObservedObject var viewModel: AppViewModel
-    @Binding var screen: Screen
+    @Binding var logBookCoordinates: [TelemetryManager.LogTelemetry]?
     
     var body: some View {
         ZStack {
@@ -43,7 +43,7 @@ struct DisplayView: View {
                     InstrumentView(type: .current(packet: viewModel.telemetry))
                     InstrumentView(type: .voltage(packet: viewModel.telemetry))
                     Spacer()
-                    ConnectionView(viewModel: viewModel, screen: $screen)
+                    ConnectionView(viewModel: viewModel, logBookCoordinates: $logBookCoordinates)
                     CompassView(heading: viewModel.telemetry.packet.heading)
                     AttitudeView(roll: viewModel.telemetry.packet.roll, pitch: viewModel.telemetry.packet.pitch)
                 }
@@ -60,7 +60,7 @@ struct DisplayView: View {
 
 struct DisplayView_Previews: PreviewProvider {
     static var previews: some View {
-        DisplayView(viewModel: .init(), screen: .constant(.dashboard))
+        DisplayView(viewModel: .init(), logBookCoordinates: .constant(nil))
             .background(Color.black)
             .previewLayout(.fixed(width: 812, height: 375))
             .environment(\.horizontalSizeClass, .compact)

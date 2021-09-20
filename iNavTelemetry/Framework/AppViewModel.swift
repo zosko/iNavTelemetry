@@ -86,6 +86,7 @@ class AppViewModel: NSObject, ObservableObject {
             self.connected = connected
             
             if connected {
+                self.homePositionAdded = false
                 self.seconds = 0
                 database.startLogging()
                 timerFlying = Timer.scheduledTimer(withTimeInterval: 1, repeats: true){ timer in

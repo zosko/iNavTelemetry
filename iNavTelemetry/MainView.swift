@@ -7,26 +7,17 @@
 
 import SwiftUI
 
-enum Screen {
-    case dashboard
-    case logbook(coordinates: [TelemetryManager.LogTelemetry])
-}
-
 struct MainView: View {
     
-    @State private var screen: Screen = .dashboard
+    @State private var logBookCoordinates: [TelemetryManager.LogTelemetry]? = nil
     
     var body: some View {
-        switch screen {
-        case .dashboard:
-            Dashboard(screen: $screen)
-                .animation(.easeOut)
-                .transition(.opacity)
-        case .logbook(let coordinates):
-            let mapToLocations = coordinates.map { $0.location }
-            Logbook(screen: $screen, coordinates: mapToLocations)
-                .animation(.easeOut)
-                .transition(.opacity)
+        ZStack {
+            Dashboard(logBookCoordinates: $logBookCoordinates)
+            
+            if logBookCoordinates != nil {
+                Logbook(logBookCoordinates: $logBookCoordinates)
+            }
         }
     }
 }

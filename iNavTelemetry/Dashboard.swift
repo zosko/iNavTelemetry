@@ -9,21 +9,21 @@ import SwiftUI
 
 struct Dashboard: View {
     
-    @Binding var screen: Screen
+    @Binding var logBookCoordinates: [TelemetryManager.LogTelemetry]?
     
     @StateObject private var viewModel = AppViewModel()
     
     var body: some View {
         ZStack {
             MapView(viewModel: viewModel)
-            DisplayView(viewModel: viewModel, screen: $screen)
+            DisplayView(viewModel: viewModel, logBookCoordinates: $logBookCoordinates)
         }
     }
 }
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        Dashboard(screen: .constant(.dashboard))
+        Dashboard(logBookCoordinates: .constant(nil))
             .previewLayout(.fixed(width: 812, height: 375))
             .environment(\.horizontalSizeClass, .compact)
             .environment(\.verticalSizeClass, .compact)

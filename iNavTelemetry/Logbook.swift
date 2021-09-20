@@ -9,16 +9,18 @@ import SwiftUI
 import MapKit
 
 struct MapViewLines: UIViewRepresentable {
-    let region: MKCoordinateRegion
-    let lineCoordinates: [CLLocationCoordinate2D]
+    let coordinates: [CLLocationCoordinate2D]
     
     func makeUIView(context: Context) -> MKMapView {
         let mapView = MKMapView()
         mapView.mapType = .satellite
         mapView.delegate = context.coordinator
-        mapView.region = region
+        if let firstCoordinate = coordinates.first {
+            let span = MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
+            mapView.region = .init(center: firstCoordinate, span: span)
+        }
         
-        let polyline = MKPolyline(coordinates: lineCoordinates, count: lineCoordinates.count)
+        let polyline = MKPolyline(coordinates: coordinates, count: coordinates.count)
         mapView.addOverlay(polyline)
         
         return mapView
@@ -52,19 +54,20 @@ struct MapViewLines: UIViewRepresentable {
 
 struct Logbook: View {
     
-    @Binding var screen: Screen
-
-    var coordinates: [CLLocationCoordinate2D]
+    @Binding var logBookCoordinates: [TelemetryManager.LogTelemetry]?
     
-    let span = MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
+    private var coordinates: [CLLocationCoordinate2D] {
+        guard let logBook = logBookCoordinates else { return [] }
+        return logBook.map{ $0.location }
+    }
     
     var body: some View {
         return ZStack(alignment: .topLeading)  {
-            MapViewLines(region: MKCoordinateRegion(center: coordinates.first!, span: span), lineCoordinates: coordinates)
+            MapViewLines(coordinates: coordinates)
               .edgesIgnoringSafeArea(.all)
             
             Button(action: {
-                screen = .dashboard
+                logBookCoordinates = nil
             }){
                 Image("back")
                     .resizable()
@@ -76,6 +79,6 @@ struct Logbook: View {
 
 struct Logbook_Previews: PreviewProvider {
     static var previews: some View {
-        Logbook(screen: .constant(.dashboard), coordinates: .init())
+        Logbook(logBookCoordinates: .constant(nil))
     }
 }
