@@ -35,10 +35,8 @@ iPhone|iPad
 MacOS|Browser
 |![MacOS application](osx.jpg)|![Browser](browser.jpg)
 
-# How to use if you dont have build in Bluetooth Module
+# How to use on Frsky R9 module if you dont have build in Bluetooth Module
 In order this to work you need additional hardware: inverter and bluetooth module (HC-05 or HC-06 or something else, also you don't need module and inverter if your transmitter has internal one) One important thing: Module should be configured to work on 57600 baud rate, otherwise it won't work. Connect inverter to your Smart Port and then connect bluetooth module to the inverter. You now can connect your phone to your bluetooth module and view data
 
-# Signal Inverter used
+# Signal Inverter used for Frsky R9 module
 ![Signal Inverter](inverter.jpg)
-
-
