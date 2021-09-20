@@ -10,9 +10,10 @@ import SwiftUI
 
 class Database: NSObject {
     
-    var jsonDatabase : [TelemetryManager.LogTelemetry] = []
-    var nameFile : String!
-    var active = false
+    private var jsonDatabase : [TelemetryManager.LogTelemetry] = []
+    private var nameFile : String!
+    private var active = false
+    private var lastUpdateLocation = Date()
     
     //MARK: - Initialization
     override init(){
@@ -32,7 +33,12 @@ class Database: NSObject {
     
     //MARK: - Internal Methods
     func saveTelemetryData(packet : TelemetryManager.LogTelemetry){
-        jsonDatabase.append(packet)
+        let dateComponent = Calendar.current.dateComponents([.second], from: lastUpdateLocation, to: Date())
+        guard let second = dateComponent.second else { return }
+        if second > 1 {
+            lastUpdateLocation = Date()
+            jsonDatabase.append(packet)
+        }
     }
     func generateName() ->String{
         return "\(Int(NSDate.now.timeIntervalSince1970))"
