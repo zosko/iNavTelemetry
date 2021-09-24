@@ -21,7 +21,7 @@ struct Dashboard: View {
     }
 }
 
-struct ContentView_Previews: PreviewProvider {
+struct Dashboard_Previews: PreviewProvider {
     static var previews: some View {
         Dashboard(logBookCoordinates: .constant(nil))
             .previewLayout(.fixed(width: 812, height: 375))
