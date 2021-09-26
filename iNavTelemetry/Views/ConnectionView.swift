@@ -22,7 +22,7 @@ struct ConnectionView: View {
                     .background(Color.white.opacity(0.5))
                     .cornerRadius(5)
                 
-                Picker("Protocol", selection: $viewModel.selectedProtocol) {
+                Picker("",selection: $viewModel.selectedProtocol) {
                     Text(TelemetryManager.TelemetryType.smartPort.name).tag(TelemetryManager.TelemetryType.smartPort)
                     Text(TelemetryManager.TelemetryType.msp.name).tag(TelemetryManager.TelemetryType.msp)
                 }.pickerStyle(SegmentedPickerStyle())
@@ -39,7 +39,7 @@ struct ConnectionView: View {
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                             .frame(width:60, height:60)
-                    }
+                    }.buttonStyle(PlainButtonStyle())
                 }
                 
                 Button(action: {
@@ -49,7 +49,7 @@ struct ConnectionView: View {
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .frame(width:60, height:60)
-                }
+                }.buttonStyle(PlainButtonStyle())
             }
         }
         .frame(width: 120, height: 120, alignment: .center)

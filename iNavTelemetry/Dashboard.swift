@@ -18,7 +18,6 @@ struct Dashboard: View {
             MapView(viewModel: viewModel)
             DisplayView(viewModel: viewModel, logBookCoordinates: $logBookCoordinates)
             
-            
             if viewModel.showPeripherals {
                 Color.black
                     .opacity(0.5)
@@ -36,7 +35,9 @@ struct Dashboard: View {
                                     .foregroundColor(.white)
                                     .font(.title)
                                     .bold()
-                            }.padding(.bottom, 20)
+                            }
+                            .padding(.bottom, 20)
+                            .buttonStyle(PlainButtonStyle())
                             
                         }
                     }
@@ -48,6 +49,7 @@ struct Dashboard: View {
                             .font(.system(size: 40))
                             .foregroundColor(.white)
                     }
+                    .buttonStyle(PlainButtonStyle())
                 }
             }
             
@@ -82,8 +84,9 @@ struct Dashboard: View {
                                     .foregroundColor(.white)
                                     .font(.title)
                                     .bold()
-                            }.padding(.bottom, 20)
-                            
+                            }
+                            .padding(.bottom, 20)
+                            .buttonStyle(PlainButtonStyle())
                         }
                     }
                     Spacer()
@@ -95,6 +98,7 @@ struct Dashboard: View {
                                 .font(.system(size: 40))
                                 .foregroundColor(.white)
                         }
+                        .buttonStyle(PlainButtonStyle())
                         Spacer()
                         if !viewModel.logsData.isEmpty {
                             Button {
@@ -105,6 +109,7 @@ struct Dashboard: View {
                                     .font(.system(size: 40))
                                     .foregroundColor(.red)
                             }
+                            .buttonStyle(PlainButtonStyle())
                         }
                     }
                 }
