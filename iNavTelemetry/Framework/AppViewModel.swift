@@ -20,16 +20,17 @@ struct Plane: Identifiable {
 class AppViewModel: NSObject, ObservableObject {
     @Published var region = MKCoordinateRegion()
     @Published var selectedProtocol: TelemetryManager.TelemetryType = TelemetryManager.TelemetryType.smartPort
-    @Published var showingActionSheetPeripherals = false
     @Published var connected = false
     @Published var homePositionAdded = false
     @Published var mineLocation = [Plane(id: "", coordinate: .init(), mine: true)]
     @Published var allPlanes = [Plane(id: "", coordinate: .init(), mine: false)]
+    @Published var peripherals : [CBPeripheral] = []
     @Published var telemetry = TelemetryManager.InstrumentTelemetry(packet: TelemetryManager.Packet(),
                                                                     telemetryType: .smartPort,
                                                                     seconds: 0)
-    @Published var peripherals : [CBPeripheral] = []
     var logsData: [URL] { database.getLogs() }
+    var showListLogs = false
+    var showPeripherals = false
     
     @ObservedObject private var bluetoothManager = BluetoothManager()
     @ObservedObject private var socketCommunicator = SocketComunicator()
@@ -81,7 +82,7 @@ class AppViewModel: NSObject, ObservableObject {
             
             if !self.peripherals.contains(device) {
                 self.peripherals.append(device)
-                self.showingActionSheetPeripherals = self.peripherals.count > 0
+                self.showPeripherals = self.peripherals.count > 0
             }
         }.store(in: &cancellable)
         
@@ -98,10 +99,13 @@ class AppViewModel: NSObject, ObservableObject {
                 }
             }
             else{
+                if self.homePositionAdded {
+                    database.stopLogging()
+                }
                 self.homePositionAdded = false
                 timerFlying?.invalidate()
                 timerFlying = nil
-                database.stopLogging()
+                
             }
             
             if self.telemetryManager.telemetryType == .msp {
@@ -132,6 +136,7 @@ class AppViewModel: NSObject, ObservableObject {
     }
     func connectTo(_ periperal: CBPeripheral) {
         bluetoothManager.connect(periperal)
+        showPeripherals = false
     }
     
     //MARK: Private functions

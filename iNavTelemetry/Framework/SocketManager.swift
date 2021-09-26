@@ -32,9 +32,10 @@ class SocketComunicator: NSObject, ObservableObject {
             print("socket disconnect")
         }
         manager.defaultSocket.on("planesLocation") { [unowned self] data, _ in
-            let jsonData = try! JSONSerialization.data(withJSONObject: data[0])
-            let decoder = JSONDecoder()
             do {
+                let jsonData = try JSONSerialization.data(withJSONObject: data[0])
+                let decoder = JSONDecoder()
+                
                 let allPlanes = try decoder.decode([TelemetryManager.LogTelemetry].self, from: jsonData)
                 self.planes = allPlanes.map {
                     Plane(id: $0.id, coordinate: $0.location, mine: $0.id == manager.defaultSocket.sid)

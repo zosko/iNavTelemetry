@@ -13,8 +13,6 @@ struct ConnectionView: View {
     @ObservedObject var viewModel: AppViewModel
     @Binding var logBookCoordinates: [TelemetryManager.LogTelemetry]?
     
-    @State private var showingActionSheetLogs = false
-    
     var body: some View {
         VStack {
             Spacer()
@@ -30,38 +28,17 @@ struct ConnectionView: View {
                 }.pickerStyle(SegmentedPickerStyle())
             }
             
-            
             HStack {
                 Spacer()
                 
                 if !viewModel.connected {
                     Button(action: {
-                        showingActionSheetLogs = true
+                        viewModel.showListLogs = true
                     }){
                         Image("log")
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                             .frame(width:60, height:60)
-                    }.actionSheet(isPresented: $showingActionSheetLogs){
-                        var buttons: [ActionSheet.Button] = viewModel.logsData.map { log in
-                            let timestamp = Double(log.pathComponents.last!)!
-                            let name = Database.toName(timestamp: timestamp)
-                            return .default(Text(name)) {
-                                do {
-                                    let jsonData = try Data(contentsOf: log)
-                                    let logData = try JSONDecoder().decode([TelemetryManager.LogTelemetry].self, from: jsonData)
-                                    logBookCoordinates = logData
-                                } catch {
-                                  print(error)
-                                }
-                            }
-                        }
-                        if buttons.count > 0 {
-                            buttons.append(.destructive(Text("Clear database")){
-                                viewModel.cleanDatabase()
-                            })
-                        }
-                        return ActionSheet(title: Text("Logs"), buttons: buttons + [.cancel()])
                     }
                 }
                 
@@ -72,13 +49,6 @@ struct ConnectionView: View {
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .frame(width:60, height:60)
-                }.actionSheet(isPresented: $viewModel.showingActionSheetPeripherals) {
-                    let buttons: [ActionSheet.Button] = viewModel.peripherals.map { peripheral in
-                        .default(Text(peripheral.name ?? "")) {
-                            viewModel.connectTo(peripheral)
-                        }
-                    }
-                    return ActionSheet(title: Text("Devices"), buttons: buttons + [.cancel()])
                 }
             }
         }

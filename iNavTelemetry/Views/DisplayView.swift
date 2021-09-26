@@ -63,7 +63,5 @@ struct DisplayView_Previews: PreviewProvider {
         DisplayView(viewModel: .init(), logBookCoordinates: .constant(nil))
             .background(Color.black)
             .previewLayout(.fixed(width: 812, height: 375))
-            .environment(\.horizontalSizeClass, .compact)
-            .environment(\.verticalSizeClass, .compact)
     }
 }

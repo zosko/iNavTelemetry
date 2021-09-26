@@ -12,16 +12,17 @@ import Combine
 class BluetoothManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate, ObservableObject {
     
     @Published var dataReceived: Data = Data()
-    @Published var peripheralFound : CBPeripheral!
+    @Published var peripheralFound : CBPeripheral? = nil
     @Published var connected : Bool = false
  
     private var centralManager: CBCentralManager?
-    private var _connectedPeripheral: CBPeripheral?
+    private var _connectedPeripheral: CBPeripheral? = nil
     
     var connectedPeripheral: CBPeripheral? { return _connectedPeripheral }
     var writeCharacteristic: CBCharacteristic?
     var writeTypeCharacteristic: CBCharacteristicWriteType = .withoutResponse
     
+    //MARK: Init
     override init(){
         super.init()
         
@@ -32,19 +33,20 @@ class BluetoothManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
     func search() {
         if CBCentralManager.authorization == .denied { return }
         
-        if _connectedPeripheral != nil {
-            centralManager!.cancelPeripheralConnection(_connectedPeripheral!)
-            _connectedPeripheral = nil
-        }
-        else{
-            centralManager!.scanForPeripherals(withServices: nil, options: [CBCentralManagerScanOptionAllowDuplicatesKey : true])
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                self.centralManager!.stopScan()
+        guard let connectedPeriperal = _connectedPeripheral, let manager = centralManager else {
+            guard let manager = centralManager else { return }
+            manager.scanForPeripherals(withServices: nil, options: [CBCentralManagerScanOptionAllowDuplicatesKey : true])
+            DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                manager.stopScan()
             }
+            return
         }
+        manager.cancelPeripheralConnection(connectedPeriperal)
+        _connectedPeripheral = nil
     }
     func connect(_ periperal: CBPeripheral) {
-        self.centralManager!.connect(periperal, options: nil)
+        guard let manager = centralManager else { return }
+        manager.connect(periperal, options: nil)
     }
     
     //MARK: CentralManagerDelegates
@@ -65,8 +67,9 @@ class BluetoothManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
     }
     func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
         _connectedPeripheral = peripheral
-        _connectedPeripheral!.delegate = self
-        _connectedPeripheral!.discoverServices(nil)
+        guard let connectedPeripheral = _connectedPeripheral else { return }
+        connectedPeripheral.delegate = self
+        connectedPeripheral.discoverServices(nil)
         
         connected = true
     }
@@ -79,23 +82,25 @@ class BluetoothManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
         if error != nil {
             print("FailToDisconnect" + error!.localizedDescription)
             
+            guard let connectedPeripheral = _connectedPeripheral, let manager = centralManager else { return }
+            
             var timeoutSeconds = 0;
             Timer.scheduledTimer(withTimeInterval: 1, repeats: true, block: { timer in
                 timeoutSeconds += 1
                 
-                if self._connectedPeripheral!.state == .connected {
+                if connectedPeripheral.state == .connected {
                     print("connected....")
                     timer.invalidate();
                 }
-                else if self._connectedPeripheral!.state == .connecting {
+                else if connectedPeripheral.state == .connecting {
                     print("connecting....")
                 }
-                else if self._connectedPeripheral!.state == .disconnecting {
+                else if connectedPeripheral.state == .disconnecting {
                     print("disconnecting....")
                 }
-                else if self._connectedPeripheral!.state == .disconnected {
+                else if connectedPeripheral.state == .disconnected {
                     print("disconnected....")
-                    self.centralManager!.connect(self._connectedPeripheral!, options: nil)
+                    manager.connect(connectedPeripheral, options: nil)
                 }
                 
                 if timeoutSeconds > 100 {
