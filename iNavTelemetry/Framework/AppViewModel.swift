@@ -18,19 +18,21 @@ struct Plane: Identifiable {
 }
 
 class AppViewModel: NSObject, ObservableObject {
-    @Published var region = MKCoordinateRegion()
+    
     @Published var selectedProtocol: TelemetryManager.TelemetryType = TelemetryManager.TelemetryType.smartPort
-    @Published var connected = false
-    @Published var homePositionAdded = false
     @Published var mineLocation = [Plane(id: "", coordinate: .init(), mine: true)]
     @Published var allPlanes = [Plane(id: "", coordinate: .init(), mine: false)]
-    @Published var peripherals : [CBPeripheral] = []
-    @Published var telemetry = TelemetryManager.InstrumentTelemetry(packet: TelemetryManager.Packet(),
-                                                                    telemetryType: .smartPort,
-                                                                    seconds: 0)
+    
     var logsData: [URL] { database.getLogs() }
     var showListLogs = false
     var showPeripherals = false
+    var region = MKCoordinateRegion()
+    var connected = false
+    var homePositionAdded = false
+    var peripherals : [CBPeripheral] = []
+    var telemetry = TelemetryManager.InstrumentTelemetry(packet: TelemetryManager.Packet(),
+                                                                    telemetryType: .smartPort,
+                                                                    seconds: 0)
     
     @ObservedObject private var bluetoothManager = BluetoothManager()
     @ObservedObject private var socketCommunicator = SocketComunicator()
