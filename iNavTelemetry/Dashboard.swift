@@ -75,6 +75,7 @@ struct Dashboard: View {
                                 do {
                                     let jsonData = try Data(contentsOf: log)
                                     let logData = try JSONDecoder().decode([TelemetryManager.LogTelemetry].self, from: jsonData)
+                                    viewModel.showListLogs = false
                                     logBookCoordinates = logData
                                 } catch {
                                     print(error)
