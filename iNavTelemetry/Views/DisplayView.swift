@@ -52,7 +52,11 @@ struct DisplayView: View {
                 Text("Waiting for satellites")
                     .font(.largeTitle)
                     .bold()
-                    .foregroundColor(.red)
+                    .foregroundColor(.white)
+                    .padding(40)
+                    .background(Color.black
+                                    .opacity(0.5)
+                                    .cornerRadius(20))
             }
         }
     }

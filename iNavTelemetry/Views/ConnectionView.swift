@@ -33,6 +33,7 @@ struct ConnectionView: View {
                 
                 if !viewModel.connected {
                     Button(action: {
+                        viewModel.getFlightLogs()
                         viewModel.showListLogs = true
                     }){
                         Image("log")

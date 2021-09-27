@@ -22,8 +22,8 @@ class AppViewModel: NSObject, ObservableObject {
     @Published var selectedProtocol: TelemetryManager.TelemetryType = TelemetryManager.TelemetryType.smartPort
     @Published var mineLocation = [Plane(id: "", coordinate: .init(), mine: true)]
     @Published var allPlanes = [Plane(id: "", coordinate: .init(), mine: false)]
+    @Published var logsData: [URL] = []
     
-    var logsData: [URL] { database.getLogs() }
     var showListLogs = false
     var showPeripherals = false
     var region = MKCoordinateRegion()
@@ -37,6 +37,7 @@ class AppViewModel: NSObject, ObservableObject {
     @ObservedObject private var bluetoothManager = BluetoothManager()
     @ObservedObject private var socketCommunicator = SocketComunicator()
     
+    private var cloudStorage = CloudStorage()
     private var database = Database()
     private var cancellable: [AnyCancellable] = []
     private var telemetryManager = TelemetryManager()
@@ -49,10 +50,33 @@ class AppViewModel: NSObject, ObservableObject {
         self.region.span = MKCoordinateSpan(latitudeDelta: 100, longitudeDelta: 100)
         
         Publishers.CombineLatest(socketCommunicator.$planes, $mineLocation)
-            .map{
-                return $0.0 + $0.1
-            }
+            .map{ $0.0 + $0.1 }
             .assign(to: &$allPlanes)
+        
+        Publishers.CombineLatest(database.$logs,cloudStorage.$logs)
+            .map { localLogs, remoteLogs in
+                let merged = localLogs + remoteLogs
+                let sorted = merged.sorted { first, second in
+                    return Int(first.lastPathComponent)! > Int(second.lastPathComponent)!
+                }
+                var filtered: [URL] = []
+                var prevFileName = ""
+                sorted.forEach { url in
+                    
+                    if prevFileName.isEmpty {
+                        prevFileName = url.lastPathComponent
+                        filtered.append(url)
+                    }
+                    else {
+                        if url.lastPathComponent != prevFileName {
+                            filtered.append(url)
+                        }
+                        prevFileName = url.lastPathComponent
+                    }
+                }
+                return filtered
+            }
+            .assign(to: &$logsData)
         
         $selectedProtocol.sink {
             self.telemetryManager.chooseTelemetry(type: $0)
@@ -102,12 +126,13 @@ class AppViewModel: NSObject, ObservableObject {
             }
             else{
                 if self.homePositionAdded {
-                    database.stopLogging()
+                    if let url = database.stopLogging() {
+                        cloudStorage.saveFileToiCloud(url)
+                    }
                 }
                 self.homePositionAdded = false
                 timerFlying?.invalidate()
                 timerFlying = nil
-                
             }
             
             if self.telemetryManager.telemetryType == .msp {
@@ -129,8 +154,13 @@ class AppViewModel: NSObject, ObservableObject {
         }
         self.mineLocation[0] = Plane(id:UUID().uuidString, coordinate: location, mine: true)
     }
+    func getFlightLogs() {
+        database.getLogs()
+        cloudStorage.getLogs()
+    }
     func cleanDatabase(){
         database.cleanDatabase()
+        cloudStorage.cleanDatabase()
     }
     func searchDevice() {
         peripherals.removeAll()
