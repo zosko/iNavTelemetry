@@ -8,7 +8,9 @@
 
 import SwiftUI
 
-class Database: NSObject {
+class Database: NSObject, ObservableObject {
+    
+    @Published var logs: [URL] = []
     
     private var jsonDatabase : [TelemetryManager.LogTelemetry] = []
     private var nameFile : String!
@@ -49,7 +51,7 @@ class Database: NSObject {
         active = true
     }
     func cleanDatabase(){
-        for logs in getLogs() {
+        for logs in self.logs {
             do{
                 try FileManager.default.removeItem(atPath: logs.path)
             }catch{
@@ -57,19 +59,23 @@ class Database: NSObject {
             }
         }
     }
-    func stopLogging(){
-        if !active { return }
+    func stopLogging() -> URL? {
+        if !active { return nil }
         
-        active = false
-        
-        let jsonData = try! JSONEncoder().encode(jsonDatabase)
-        let jsonString = String(data: jsonData, encoding: .utf8)!
-        try! jsonString.write(toFile: pathDatabase(fileName: nameFile).path, atomically: true, encoding: .utf8)
+        do {
+            active = false
+            let jsonData = try JSONEncoder().encode(jsonDatabase)
+            let jsonString = String(data: jsonData, encoding: .utf8)!
+            try jsonString.write(toFile: pathDatabase(fileName: nameFile).path, atomically: true, encoding: .utf8)
+            return pathDatabase(fileName: nameFile)
+        } catch {
+            return nil
+        }
     }
-    func getLogs() -> [URL]{
+    func getLogs(){
         let documentsUrl =  FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
         let directoryContents = try! FileManager.default.contentsOfDirectory(at: documentsUrl, includingPropertiesForKeys: nil, options: [.skipsHiddenFiles])
-        return directoryContents
+        self.logs = directoryContents
             .filter { url in
                 let nameFile = url.lastPathComponent
                 return !nameFile.isEmpty && nameFile.rangeOfCharacter(from: CharacterSet.decimalDigits.inverted) == nil

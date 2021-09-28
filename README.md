@@ -31,12 +31,12 @@ Application (youtube)|Browser Viewer (youtube)
 ----------|----------
 [![Video presentation](http://img.youtube.com/vi/9Z63v9UPBO4/0.jpg)](http://www.youtube.com/watch?v=9Z63v9UPBO4 "Testing")|[![Video presentation](http://img.youtube.com/vi/csjpeDqP2JU/0.jpg)](http://www.youtube.com/watch?v=csjpeDqP2JU "Testing")
 iPhone|iPad
-![iPhone Application](iphone.jpg)|![iPad application](ipad.jpg)
+![iPhone Application](images/iphone.jpg)|![iPad application](images/ipad.jpg)
 MacOS|Browser
-|![MacOS application](osx.jpg)|![Browser](browser.jpg)
+|![MacOS application](images/osx.jpg)|![Browser](images/browser.jpg)
 
 # How to use on Frsky R9 module if you dont have build in Bluetooth Module
 In order this to work you need additional hardware: inverter and bluetooth module (HC-05 or HC-06 or something else, also you don't need module and inverter if your transmitter has internal one) One important thing: Module should be configured to work on 57600 baud rate, otherwise it won't work. Connect inverter to your Smart Port and then connect bluetooth module to the inverter. You now can connect your phone to your bluetooth module and view data
 
 # Signal Inverter used for Frsky R9 module
-![Signal Inverter](inverter.jpg)
+![Signal Inverter](images/inverter.jpg)
