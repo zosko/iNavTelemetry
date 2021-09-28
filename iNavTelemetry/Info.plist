@@ -23,9 +23,9 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSBluetoothAlwaysUsageDescription</key>
-	<string>To connect with radio</string>
+	<string>To connect with device</string>
 	<key>NSBluetoothPeripheralUsageDescription</key>
-	<string>To connect with radio</string>
+	<string>To connect with device</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
