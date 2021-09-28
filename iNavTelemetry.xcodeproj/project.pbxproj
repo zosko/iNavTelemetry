@@ -584,7 +584,7 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.3;
 				MARKETING_VERSION = 1.0.0;
-				PRODUCT_BUNDLE_IDENTIFIER = us.g6.iNavTelemetry.iNavTelemetryOSX;
+				PRODUCT_BUNDLE_IDENTIFIER = us.g6.iNavTelemetry;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -617,7 +617,7 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.3;
 				MARKETING_VERSION = 1.0.0;
-				PRODUCT_BUNDLE_IDENTIFIER = us.g6.iNavTelemetry.iNavTelemetryOSX;
+				PRODUCT_BUNDLE_IDENTIFIER = us.g6.iNavTelemetry;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				SWIFT_EMIT_LOC_STRINGS = YES;
