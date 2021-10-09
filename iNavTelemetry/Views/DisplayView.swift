@@ -42,6 +42,10 @@ struct DisplayView: View {
                 HStack(alignment: .bottom ,spacing: 1) {
                     InstrumentView(type: .current(packet: viewModel.telemetry))
                     InstrumentView(type: .voltage(packet: viewModel.telemetry))
+                    InstrumentView(type: .packets(packet: viewModel.telemetry))
+                        .onTapGesture(count: 5) {
+                            viewModel.showDebug = true
+                        }
                     Spacer()
                     ConnectionView(viewModel: viewModel, logBookCoordinates: $logBookCoordinates)
                     CompassView(heading: viewModel.telemetry.packet.heading)
@@ -57,6 +61,30 @@ struct DisplayView: View {
                     .background(Color.black
                                     .opacity(0.5)
                                     .cornerRadius(20))
+            }
+            if viewModel.showDebug {
+                Color.black
+                    .opacity(0.5)
+                    .edgesIgnoringSafeArea(.all)
+                
+                VStack(alignment: .leading) {
+                    ScrollView(showsIndicators: true) {
+                        ForEach(viewModel.debugData, id:\.self) { rawString in
+                            Text(rawString)
+                                .foregroundColor(.white)
+                                .frame(maxWidth:.infinity)
+                        }
+                    }
+                    Spacer()
+                    Button {
+                        viewModel.showDebug = false
+                    } label: {
+                        Image(systemName: "xmark.circle.fill")
+                            .font(.system(size: 40))
+                            .foregroundColor(.white)
+                    }
+                    .buttonStyle(PlainButtonStyle())
+                }
             }
         }
     }

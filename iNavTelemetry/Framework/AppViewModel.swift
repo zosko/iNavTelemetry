@@ -23,9 +23,11 @@ class AppViewModel: NSObject, ObservableObject {
     @Published var mineLocation = [Plane(id: "", coordinate: .init(), mine: true)]
     @Published var allPlanes = [Plane(id: "", coordinate: .init(), mine: false)]
     @Published var logsData: [URL] = []
+    @Published var debugData: [String] = []
+    @Published var showDebug = false
+    @Published var showListLogs = false
+    @Published var showPeripherals = false
     
-    var showListLogs = false
-    var showPeripherals = false
     var region = MKCoordinateRegion()
     var connected = false
     var homePositionAdded = false
@@ -78,15 +80,24 @@ class AppViewModel: NSObject, ObservableObject {
             }
             .assign(to: &$logsData)
         
+        $showDebug.sink { show in
+            if !show {
+                self.debugData = ["----"]
+            }
+        }.store(in: &cancellable)
+        
         $selectedProtocol.sink {
             self.telemetryManager.chooseTelemetry(type: $0)
         }.store(in: &cancellable)
         
         bluetoothManager.$dataReceived.sink { [unowned self] data in
             guard self.telemetryManager.parse(incomingData: data) else {
+                self.debugLog(message: "can't parse")
                 return
             }
             self.telemetry = self.telemetryManager.telemetry
+            
+            self.debugLog(message: self.telemetry.packet.debug)
             
             if (self.telemetry.packet.gps_sats > 5 && !self.homePositionAdded) {
                 self.showHomePosition(location: self.telemetry.location)
@@ -172,6 +183,11 @@ class AppViewModel: NSObject, ObservableObject {
     }
     
     //MARK: Private functions
+    private func debugLog(message: String){
+        if showDebug {
+            debugData.append(message)
+        }
+    }
     private func MSPTelemetry(start: Bool){
         timerRequestMSP?.invalidate()
         timerRequestMSP = nil
