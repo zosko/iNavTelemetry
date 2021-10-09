@@ -18,8 +18,10 @@ https://deadpan-rightful-aunt.glitch.me
 - **Custom Telemetry** - check example of [Tracker](https://github.com/zosko/R9M_Inav_antenna_tracker/blob/master/bt_r9m_accst/bt_r9m_accst.ino)
 - **FrSky Smart Port** 
 - **Multiwii Serial Protocol** (MSP)
-- **Crossfire** (by request if need)
-- **MAVLink** (by request if need)
+- **QCZEK LRS**
+- **ExpressLRS** (comming soon)
+- **Crossfire** (comming soon)
+- **MAVLink** (comming soon)
 - **LTM** (by request if need)
 
 # Setup on iNav flight controller in CLI
