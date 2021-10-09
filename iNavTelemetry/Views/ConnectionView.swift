@@ -25,6 +25,7 @@ struct ConnectionView: View {
                 Picker("",selection: $viewModel.selectedProtocol) {
                     Text(TelemetryManager.TelemetryType.smartPort.name).tag(TelemetryManager.TelemetryType.smartPort)
                     Text(TelemetryManager.TelemetryType.msp.name).tag(TelemetryManager.TelemetryType.msp)
+                    Text(TelemetryManager.TelemetryType.mavLink.name).tag(TelemetryManager.TelemetryType.mavLink)
                 }.pickerStyle(SegmentedPickerStyle())
             }
             

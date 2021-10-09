@@ -15,6 +15,7 @@ class TelemetryManager: NSObject {
         case smartPort = 0
         case msp = 1
         case custom = 2
+        case mavLink = 3
         
         var name: String {
             switch self {
@@ -24,7 +25,10 @@ class TelemetryManager: NSObject {
                 return "MSP"
             case .custom:
                 return "Custom"
+            case .mavLink:
+                return "MavLink"
             }
+            
         }
     }
 
@@ -118,6 +122,8 @@ class TelemetryManager: NSObject {
                 }
             case .custom:
                 return .undefined
+            case .mavLink:
+                return .undefined
             }
         }
         var engine: Engine {
@@ -130,6 +136,9 @@ class TelemetryManager: NSObject {
                 return (flags == 1 || flags == 5 || flags == 9) ? .armed : .disarmed
             case .custom:
                 return .undefined
+            case .mavLink:
+                let flags = packet.flight_mode
+                return flags == 128 ? .armed : .disarmed
             }
         }
         
@@ -144,6 +153,7 @@ class TelemetryManager: NSObject {
     private var smartPort = SmartPort()
     private var custom = CustomTelemetry()
     private var msp = MSP_V1()
+    private var mavLink = MavLink()
     
     private var _packet = Packet()
     private var _telemetryType: TelemetryType = .smartPort
@@ -167,6 +177,8 @@ class TelemetryManager: NSObject {
         case .custom:
             break
         case .smartPort:
+            break
+        case .mavLink:
             break
         case .msp:
             peripheral.writeValue(msp.request(messageID: .MSP_STATUS), for: characteristic, type: writeType)
@@ -193,6 +205,12 @@ class TelemetryManager: NSObject {
             return false
         case .msp:
             if msp.process_incoming_bytes(incomingData: incomingData) {
+                _packet = msp.packet
+                return true
+            }
+            return false
+        case .mavLink:
+            if mavLink.process_incoming_bytes(incomingData: incomingData) {
                 _packet = msp.packet
                 return true
             }
