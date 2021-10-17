@@ -90,7 +90,7 @@ class SmartPort: NSObject {
     //MARK: Telemetry functions
     func process_incoming_bytes(incomingData: Data) -> Bool{
         let data: [UInt8] = incomingData.map{ $0 }
-
+        var isProcessed = false
         for i in 0 ..< data.count {
             switch state {
             case .IDLE:
@@ -128,46 +128,30 @@ class SmartPort: NSObject {
                     let rawData = buffer_get_int32(buffer: buffer, index:7)
                     
                     switch dataType {
-                    case VSPEED_SENSOR,
-                        APID_VARIO,
-                        FLIGHT_PATH_VECTOR,
-                        RX_BAT,
-                        ALT_SENSOR,
-                        PGR_PGN_VERSION_MASK,
-                        CELL_SENSOR,
-                        UNKNOWN_PACKET_1,
-                        FSSP_DATAID_ADC2,
-                        APID_RX_PACKET_LOST_VAL,
-                        APID_RX_SNR_REG_VAL,
-                        APID_RX_RSSI_REG_VAL,
-                        APID_CUST_RSSI,
-                        APID_MAV_CUSTOM_MODE,
-                        APID_MAV_SYS_STATUS,
-                        APID_MAV_BASE_MODE,
-                        APID_AIR_SPEED,
-                        APID_ALTITUDE,
-                    APID_CELLS:
-                        packet.invalid += 1
-                        break
                     case VFAS_SENSOR, APID_VFAS:
                         packet.voltage = Double(rawData) / 100.0
                         packet.valid += 1
+                        isProcessed = true
                         break
                     case GSPEED_SENSOR, APID_GPS_SPEED:
                         packet.speed = Int((Double(rawData) / (1944.0 / 100.0)) / 27.778)
                         packet.valid += 1
+                        isProcessed = true
                         break
                     case GALT_SENSOR, APID_GPS_ALTITUDE:
                         packet.alt = Int(Double(rawData) / 100.0)
                         packet.valid += 1
+                        isProcessed = true
                         break
                     case DISTANCE_SENSOR:
                         packet.distance = Int(rawData)
                         packet.valid += 1
+                        isProcessed = true
                         break
                     case FUEL_SENSOR, APID_FUEL:
                         packet.fuel = Int(rawData)
                         packet.valid += 1
+                        isProcessed = true
                         break
                     case GPS_SENSOR, APID_LATLONG:
                         var gpsData = Double((rawData & 0x3FFFFFFF)) / 10000.0 / 60.0
@@ -188,46 +172,54 @@ class SmartPort: NSObject {
                             packet.lng = longitude
                         }
                         packet.valid += 1
+                        isProcessed = true
                         break
                     case CURRENT_SENSOR, APID_CURRENT:
                         packet.current = Int(Double(rawData) / 10.0)
                         packet.valid += 1
+                        isProcessed = true
                         break
                     case HEADING_SENSOR, APID_GPS_COURSE:
                         packet.heading = Int(Double(rawData) / 100.0)
                         packet.valid += 1
+                        isProcessed = true
                         break
                     case RSSI_SENSOR, APID_RSSI:
                         packet.rssi = Int(rawData)
                         packet.valid += 1
+                        isProcessed = true
                         break
                     case FLYMODE_SENSOR, APID_T1:
                         packet.flight_mode = Int(rawData)
                         packet.valid += 1
+                        isProcessed = true
                         break
                     case GPS_STATE_SENSOR, APID_T2:
                         packet.gps_sats = Int(rawData % 100)
                         packet.valid += 1
+                        isProcessed = true
                         break
                     case PITCH_SENSOR, APID_PITCH:
                         let pitch = Int(Double(rawData) / 10.0)
                         packet.pitch = -pitch
                         packet.valid += 1
+                        isProcessed = true
                         break
                     case ROLL_SENSOR, APID_ROLL:
                         let roll = Int(Double(rawData) / 10.0)
                         packet.roll = roll
                         packet.valid += 1
+                        isProcessed = true
                         break
                     default:
                         packet.unknown += 1
-                        packet.debug = "type: \(String(format:"%02X", dataType))  data: \(rawData) buffer \(String(format:"%02X,%02X,%02X,%02X,%02X,%02X,%02X,%02X,%02X", buffer[0],buffer[1],buffer[2],buffer[3],buffer[4],buffer[5],buffer[6],buffer[7],buffer[8]))"
+                        print("type: \(String(format:"%02X", dataType))  data: \(rawData) buffer \(String(format:"%02X,%02X,%02X,%02X,%02X,%02X,%02X,%02X,%02X", buffer[0],buffer[1],buffer[2],buffer[3],buffer[4],buffer[5],buffer[6],buffer[7],buffer[8]))")
+                        isProcessed = false
                         break
                     }
-                    return true
                 }
             }
         }
-        return false
+        return isProcessed
     }
 }

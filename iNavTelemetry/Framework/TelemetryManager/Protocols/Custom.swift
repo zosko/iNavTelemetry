@@ -8,8 +8,8 @@
 
 import SwiftUI
 
-class CustomTelemetry : NSObject{
-    private var rcv_buffer : [UInt8] = [UInt8](repeating: 0, count: 200)
+class Custom : NSObject{
+    private var rcv_buffer : [UInt8] = []
     private var buffer_index : Int = 0
     private var found_header : Bool = false
     private var rcv_length : UInt8 = 0
@@ -74,7 +74,7 @@ class CustomTelemetry : NSObject{
                 rcv_length = bytes[i]
             }
             else if (found_header && rcv_length > 10) {
-                rcv_buffer[buffer_index] = bytes[i]
+                rcv_buffer.append(bytes[i])
                 buffer_index += 1
             }
         }

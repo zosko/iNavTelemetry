@@ -18,23 +18,19 @@ struct Plane: Identifiable {
 }
 
 class AppViewModel: NSObject, ObservableObject {
-    
-    @Published var selectedProtocol: TelemetryManager.TelemetryType = TelemetryManager.TelemetryType.smartPort
     @Published var mineLocation = [Plane(id: "", coordinate: .init(), mine: true)]
     @Published var allPlanes = [Plane(id: "", coordinate: .init(), mine: false)]
     @Published var logsData: [URL] = []
-    @Published var debugData: [String] = []
-    @Published var showDebug = false
     @Published var showListLogs = false
     @Published var showPeripherals = false
+    @Published var connected = false
+    @Published var homePositionAdded = false
+    @Published var seconds = 0
     
+    var selectedProtocol: TelemetryManager.TelemetryType = TelemetryManager.TelemetryType.unknown
     var region = MKCoordinateRegion()
-    var connected = false
-    var homePositionAdded = false
     var peripherals : [CBPeripheral] = []
-    var telemetry = TelemetryManager.InstrumentTelemetry(packet: TelemetryManager.Packet(),
-                                                                    telemetryType: .smartPort,
-                                                                    seconds: 0)
+    var telemetry = TelemetryManager.InstrumentTelemetry(packet: TelemetryManager.Packet(), telemetryType: .smartPort)
     
     @ObservedObject private var bluetoothManager = BluetoothManager()
     @ObservedObject private var socketCommunicator = SocketComunicator()
@@ -43,13 +39,12 @@ class AppViewModel: NSObject, ObservableObject {
     private var database = Database()
     private var cancellable: [AnyCancellable] = []
     private var telemetryManager = TelemetryManager()
-    private var timerRequestMSP: Timer?
     private var timerFlying: Timer?
-    private var seconds = 0
     
     override init(){
         super.init()
         self.region.span = MKCoordinateSpan(latitudeDelta: 100, longitudeDelta: 100)
+        telemetryManager.addBluetoothManager(bluetoothManager: bluetoothManager)
         
         Publishers.CombineLatest(socketCommunicator.$planes, $mineLocation)
             .map{ $0.0 + $0.1 }
@@ -80,25 +75,12 @@ class AppViewModel: NSObject, ObservableObject {
             }
             .assign(to: &$logsData)
         
-        $showDebug.sink { show in
-            if !show {
-                self.debugData = ["----"]
-            }
-        }.store(in: &cancellable)
-        
-        $selectedProtocol.sink {
-            self.telemetryManager.chooseTelemetry(type: $0)
-        }.store(in: &cancellable)
-        
         bluetoothManager.$dataReceived.sink { [unowned self] data in
             guard self.telemetryManager.parse(incomingData: data) else {
-                self.debugLog(message: "can't parse")
                 return
             }
             self.telemetry = self.telemetryManager.telemetry
-            
-            self.debugLog(message: self.telemetry.packet.debug)
-            
+                        
             if (self.telemetry.packet.gps_sats > 5 && !self.homePositionAdded) {
                 self.showHomePosition(location: self.telemetry.location)
             }
@@ -127,12 +109,16 @@ class AppViewModel: NSObject, ObservableObject {
             self.connected = connected
             
             if connected {
+                _ = self.telemetryManager.parse(incomingData: Data()) // initial start for MSP only
+                
                 self.homePositionAdded = false
                 self.seconds = 0
+                timerFlying?.invalidate()
+                timerFlying = nil
                 database.startLogging()
+                
                 timerFlying = Timer.scheduledTimer(withTimeInterval: 1, repeats: true){ timer in
                     self.seconds += 1
-                    self.telemetryManager.flyingTime(seconds: self.seconds)
                 }
             }
             else{
@@ -144,10 +130,7 @@ class AppViewModel: NSObject, ObservableObject {
                 self.homePositionAdded = false
                 timerFlying?.invalidate()
                 timerFlying = nil
-            }
-            
-            if self.telemetryManager.telemetryType == .msp {
-                self.MSPTelemetry(start: connected)
+                self.telemetryManager.stopTelemetry()
             }
         }.store(in: &cancellable)
     }
@@ -180,28 +163,5 @@ class AppViewModel: NSObject, ObservableObject {
     func connectTo(_ periperal: CBPeripheral) {
         bluetoothManager.connect(periperal)
         showPeripherals = false
-    }
-    
-    //MARK: Private functions
-    private func debugLog(message: String){
-        if showDebug {
-            debugData.append(message)
-        }
-    }
-    private func MSPTelemetry(start: Bool){
-        timerRequestMSP?.invalidate()
-        timerRequestMSP = nil
-        
-        if start {
-            timerRequestMSP = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [self] _ in
-                guard let writeChars = bluetoothManager.writeCharacteristic,
-                      let peripheral = bluetoothManager.connectedPeripheral else {
-                    return
-                }
-                telemetryManager.requestTelemetry(peripheral: peripheral,
-                                                  characteristic: writeChars,
-                                                  writeType: bluetoothManager.writeTypeCharacteristic)
-            }
-        }
     }
 }

@@ -17,7 +17,7 @@ class BluetoothManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
  
     private var centralManager: CBCentralManager?
     private var _connectedPeripheral: CBPeripheral? = nil
-    
+    private var timerReconnect: Timer?
     var connectedPeripheral: CBPeripheral? { return _connectedPeripheral }
     var writeCharacteristic: CBCharacteristic?
     var writeTypeCharacteristic: CBCharacteristicWriteType = .withoutResponse
@@ -43,10 +43,14 @@ class BluetoothManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
         }
         manager.cancelPeripheralConnection(connectedPeriperal)
         _connectedPeripheral = nil
+        timerReconnect?.invalidate()
+        timerReconnect = nil
     }
     func connect(_ periperal: CBPeripheral) {
         guard let manager = centralManager else { return }
         manager.connect(periperal, options: nil)
+        timerReconnect?.invalidate()
+        timerReconnect = nil
     }
     
     //MARK: CentralManagerDelegates
@@ -70,8 +74,6 @@ class BluetoothManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
         guard let connectedPeripheral = _connectedPeripheral else { return }
         connectedPeripheral.delegate = self
         connectedPeripheral.discoverServices(nil)
-        
-        connected = true
     }
     func centralManager(_ central: CBCentralManager, didFailToConnect peripheral: CBPeripheral, error: Error?) {
         if error != nil {
@@ -85,7 +87,7 @@ class BluetoothManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
             guard let connectedPeripheral = _connectedPeripheral, let manager = centralManager else { return }
             
             var timeoutSeconds = 0;
-            Timer.scheduledTimer(withTimeInterval: 1, repeats: true, block: { timer in
+            timerReconnect = Timer.scheduledTimer(withTimeInterval: 1, repeats: true, block: { timer in
                 timeoutSeconds += 1
                 
                 if connectedPeripheral.state == .connected {
@@ -115,6 +117,8 @@ class BluetoothManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
         else {
             self._connectedPeripheral = nil
             self.connected = false
+            timerReconnect?.invalidate()
+            timerReconnect = nil
         }
     }
     
@@ -149,5 +153,6 @@ class BluetoothManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
             }
 
         }
+        self.connected = true
     }
 }

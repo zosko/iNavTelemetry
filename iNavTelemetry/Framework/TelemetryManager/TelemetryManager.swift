@@ -11,14 +11,17 @@ import MapKit
 
 class TelemetryManager: NSObject {
     
-    enum TelemetryType: Int {
-        case smartPort = 0
-        case msp = 1
-        case custom = 2
-        case mavLink = 3
+    enum TelemetryType {
+        case unknown
+        case smartPort
+        case msp
+        case custom
+        case mavLink
         
         var name: String {
             switch self {
+            case .unknown:
+                return "Unknown"
             case .smartPort:
                 return "S.Port"
             case .msp:
@@ -76,10 +79,7 @@ class TelemetryManager: NSObject {
         var fuel: Int = 0
         var roll: Int = 0
         var pitch: Int = 0
-        
-        var debug: String = ""
         var valid: Int = 0
-        var invalid: Int = 0
         var unknown: Int = 0
     }
     
@@ -96,11 +96,7 @@ class TelemetryManager: NSObject {
     struct InstrumentTelemetry {
         var packet: Packet
         
-        private var seconds: Int
         var telemetryType: TelemetryType = .smartPort
-        var flyTime: String {
-            String(format:"%02ld:%02ld:%02ld", seconds / 3600, (seconds / 60) % 60, seconds % 60)
-        }
         var location: CLLocationCoordinate2D {
             .init(latitude: packet.lat, longitude: packet.lng)
         }
@@ -124,6 +120,8 @@ class TelemetryManager: NSObject {
                 return .undefined
             case .mavLink:
                 return .undefined
+            case .unknown:
+                return .undefined
             }
         }
         var engine: Engine {
@@ -139,41 +137,127 @@ class TelemetryManager: NSObject {
             case .mavLink:
                 let flags = packet.flight_mode
                 return flags == 128 ? .armed : .disarmed
+            case .unknown:
+                return .undefined
             }
         }
         
-        init(packet: Packet, telemetryType: TelemetryType, seconds: Int) {
+        init(packet: Packet, telemetryType: TelemetryType) {
             self.packet = packet
             self.telemetryType = telemetryType
-            self.seconds = seconds
         }
     }
     
-    
     private var smartPort = SmartPort()
-    private var custom = CustomTelemetry()
+    private var custom = Custom()
     private var msp = MSP_V1()
     private var mavLink = MavLink()
+    private var packet = Packet()
+    private var telemetryType: TelemetryType = .unknown
+    private var protocolDetector: [TelemetryType] = []
+    private var timerRequestMSP: Timer?
+    private var bluetoothManager: BluetoothManager?
     
-    private var _packet = Packet()
-    private var _telemetryType: TelemetryType = .smartPort
-    private var _bluetoothType: BluetoothType = .frskyBuildIn
-    private var _seconds = 0
+    var telemetry: InstrumentTelemetry { InstrumentTelemetry(packet: packet, telemetryType: telemetryType) }
     
-    var telemetryType: TelemetryType { return _telemetryType }
-    var bluetoothType: BluetoothType { return _bluetoothType }
-    var telemetry: InstrumentTelemetry { InstrumentTelemetry(packet: _packet,
-                                                             telemetryType: _telemetryType,
-                                                             seconds: _seconds) }
-    
-    func chooseTelemetry(type: TelemetryType){
-        self._telemetryType = type
+    //MARK: - Internal functions
+    func stopTelemetry() {
+        self.telemetryType = .unknown
+        self.protocolDetector = []
+        timerRequestMSP?.invalidate()
+        timerRequestMSP = nil
     }
-    func flyingTime(seconds: Int){
-        self._seconds = seconds
+    func addBluetoothManager(bluetoothManager: BluetoothManager){
+        self.bluetoothManager = bluetoothManager
     }
-    func requestTelemetry(peripheral: CBPeripheral, characteristic: CBCharacteristic, writeType: CBCharacteristicWriteType) {
-        switch _telemetryType {
+    func parse(incomingData: Data) -> Bool{
+        switch telemetryType {
+        case .unknown:
+            let hits = detectProtocol(incomingData: incomingData)
+            if hits.count > 15 {
+                print(protocolDetector)
+                if let result = mostFrequent(array: protocolDetector) {
+                    print("\(result.value) occurs \(result.count) times")
+                    self.telemetryType = result.value
+                }
+                if self.telemetryType == .msp {
+                    mspRequest(requesting: true)
+                }
+                protocolDetector = []
+            }
+            return false
+        case .custom:
+            if custom.process_incoming_bytes(incomingData: incomingData) {
+                packet = custom.packet
+                return true
+            }
+            return false
+        case .smartPort:
+            if smartPort.process_incoming_bytes(incomingData: incomingData) {
+                packet = smartPort.packet
+                return true
+            }
+            return false
+        case .msp:
+            if msp.process_incoming_bytes(incomingData: incomingData) {
+                packet = msp.packet
+                return true
+            }
+            return false
+        case .mavLink:
+            if mavLink.process_incoming_bytes(incomingData: incomingData) {
+                packet = msp.packet
+                return true
+            }
+            return false
+        }
+    }
+
+    //MARK: - Private functions
+    private func detectProtocol(incomingData: Data) -> [TelemetryType]{
+        var receivedUnknown = true
+        if let manager = self.bluetoothManager,
+           let writeChars = manager.writeCharacteristic,
+           let peripheral = manager.connectedPeripheral {
+            peripheral.writeValue(msp.request(messageID: .MSP_STATUS),
+                                  for: writeChars,
+                                  type: manager.writeTypeCharacteristic)
+        }
+        
+        if custom.process_incoming_bytes(incomingData: incomingData) {
+            protocolDetector.append(.custom)
+            receivedUnknown = false
+        }
+        if smartPort.process_incoming_bytes(incomingData: incomingData) {
+            protocolDetector.append(.smartPort)
+            receivedUnknown = false
+        }
+        if msp.process_incoming_bytes(incomingData: incomingData) {
+            protocolDetector.append(.msp)
+            receivedUnknown = false
+        }
+        if mavLink.process_incoming_bytes(incomingData: incomingData) {
+            protocolDetector.append(.mavLink)
+            receivedUnknown = false
+        }
+        
+        if receivedUnknown {
+            protocolDetector.append(.unknown)
+        }
+        
+        return protocolDetector
+    }
+    private func mostFrequent<T: Hashable>(array: [T]) -> (value: T, count: Int)? {
+        let counts = array.reduce(into: [:]) { $0[$1, default: 0] += 1 }
+        if let (value, count) = counts.max(by: { $0.1 < $1.1 }) {
+            return (value, count)
+        }
+        return nil
+    }
+    private func requestTelemetry(peripheral: CBPeripheral, characteristic: CBCharacteristic, writeType: CBCharacteristicWriteType) {
+        switch telemetryType {
+        case .unknown:
+            break
         case .custom:
             break
         case .smartPort:
@@ -188,34 +272,21 @@ class TelemetryManager: NSObject {
             peripheral.writeValue(msp.request(messageID: .MSP_ANALOG), for: characteristic, type: writeType)
         }
     }
-    
-    func parse(incomingData: Data) -> Bool{
-        switch _telemetryType {
-        case .custom:
-            if custom.process_incoming_bytes(incomingData: incomingData) {
-                _packet = custom.packet
-                return true
+    private func mspRequest(requesting: Bool){
+        timerRequestMSP?.invalidate()
+        timerRequestMSP = nil
+        
+        if requesting {
+            timerRequestMSP = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [self] _ in
+                print("REQUEST MSP")
+                if let manager = self.bluetoothManager,
+                   let writeChars = manager.writeCharacteristic,
+                   let peripheral = manager.connectedPeripheral {
+                    requestTelemetry(peripheral: peripheral,
+                                     characteristic: writeChars,
+                                     writeType: manager.writeTypeCharacteristic)
+                }
             }
-            return false
-        case .smartPort:
-            if smartPort.process_incoming_bytes(incomingData: incomingData) {
-                _packet = smartPort.packet
-                return true
-            }
-            return false
-        case .msp:
-            if msp.process_incoming_bytes(incomingData: incomingData) {
-                _packet = msp.packet
-                return true
-            }
-            return false
-        case .mavLink:
-            if mavLink.process_incoming_bytes(incomingData: incomingData) {
-                _packet = msp.packet
-                return true
-            }
-            return false
         }
     }
-    
 }

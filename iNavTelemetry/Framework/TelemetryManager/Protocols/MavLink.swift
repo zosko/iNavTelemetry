@@ -111,7 +111,7 @@ class MavLink: NSObject {
     //MARK: Telemetry functions
     func process_incoming_bytes(incomingData: Data) -> Bool{
         let data: [UInt8] = incomingData.map{ $0 }
-
+        var isProcessed = false
         for i in 0 ..< data.count {
             switch state {
             case .IDLE:
@@ -148,7 +148,7 @@ class MavLink: NSObject {
                 messageIdBuffer[messageIdIndex] = data[i]
                 messageIdIndex += 1
                 if (messageIdIndex >= 3) {
-                    messageId = Int(buffer_get_int32(buffer: messageIdBuffer, index: 0))
+                    messageId = Int(buffer_get_int32(buffer: messageIdBuffer, index: 3))
                     state = .PAYLOAD
                     payloadIndex = 0
                     buffer = [UInt8](repeating: 0, count: Int(packetLength))
@@ -168,21 +168,21 @@ class MavLink: NSObject {
                 crcHigh = data[i]
                 if checkCrc() {
                     processPacket()
+                    isProcessed = true
                 } else {
-                    packet.debug = "Bad CRC"
+                    print("Bad CRC")
                 }
                 state = .IDLE
                 break
             }
-            return true
         }
-        return false
+        return isProcessed
     }
     
     private func processPacket() {
         if (messageId == MAV_PACKET_STATUS_ID) {
-            packet.voltage = Double(buffer_get_int16(buffer: buffer, index: 12)) / 1000.0
-            packet.current = Int(Double(buffer_get_int16(buffer: buffer, index: 14)) / 100.0)
+            packet.voltage = Double(buffer_get_int16(buffer: buffer, index: 13)) / 1000.0
+            packet.current = Int(Double(buffer_get_int16(buffer: buffer, index: 15)) / 100.0)
             packet.fuel = Int(buffer[27])
         } else if (messageId == MAV_PACKET_HEARTBEAT_ID) {
             packet.flight_mode = Int(buffer[6])
@@ -192,19 +192,19 @@ class MavLink: NSObject {
                 packet.rssi = rssi == 255 ? -1 : rssi * 100 / 254
             }
         } else if (messageId == MAV_PACKET_ATTITUDE_ID) {
-            packet.roll = Int(buffer_get_int32(buffer: buffer, index: 4))
-            packet.pitch = Int(buffer_get_int32(buffer: buffer, index: 8))
+            packet.roll = Int(buffer_get_int32(buffer: buffer, index: 7))
+            packet.pitch = Int(buffer_get_int32(buffer: buffer, index: 11))
         } else if (messageId == MAV_PACKET_VFR_HUD_ID) {
-            packet.speed = Int(Double(buffer_get_int32(buffer: buffer, index: 4)) * 100 / 100 * 3.6)
-            packet.alt = Int(buffer_get_int32(buffer: buffer, index: 8)) * 100 / 100
+            packet.speed = Int(Double(buffer_get_int32(buffer: buffer, index: 7)) * 100 / 100 * 3.6)
+            packet.alt = Int(buffer_get_int32(buffer: buffer, index: 11)) * 100 / 100
         } else if (messageId == MAV_PACKET_RADIO_STATUS_ID) {
             let rssi = Int(buffer[3] & 0xff)
             packet.rssi = rssi == 255 ? -1 : rssi * 100 / 254
             gotRadioStatus = true
         } else if (messageId == MAV_PACKET_GPS_RAW_ID) {
-            latitude = Double(buffer_get_int32(buffer: buffer, index: 4)) / 10000000
-            longitude = Double(buffer_get_int32(buffer: buffer, index: 8)) / 10000000
-            packet.heading = Int(buffer_get_int16(buffer: buffer, index: 20))
+            latitude = Double(buffer_get_int32(buffer: buffer, index: 7)) / 10000000
+            longitude = Double(buffer_get_int32(buffer: buffer, index: 11)) / 10000000
+            packet.heading = Int(buffer_get_int16(buffer: buffer, index: 21))
             packet.gps_sats = Int(buffer[22])
             
             newLatitude = true
@@ -213,11 +213,11 @@ class MavLink: NSObject {
             self.gpsCoordinate()
             
         } else if (messageId == MAV_PACKET_GPS_ORIGIN_ID) {
-            originLatitude = Double(buffer_get_int32(buffer: buffer, index: 0)) / 10000000
-            originLongitude = Double(buffer_get_int32(buffer: buffer, index: 4)) / 10000000
+            originLatitude = Double(buffer_get_int32(buffer: buffer, index: 3)) / 10000000
+            originLongitude = Double(buffer_get_int32(buffer: buffer, index: 7)) / 10000000
             self.gpsCoordinate()
         } else {
-            packet.debug = "not parsed: \(messageId)"
+            print("not parsed: \(messageId)")
             packet.unknown += 1
         }
     }

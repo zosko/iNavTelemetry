@@ -20,7 +20,7 @@ struct InstrumentView: View {
         case signal(packet: TelemetryManager.InstrumentTelemetry)
         case fuel(packet: TelemetryManager.InstrumentTelemetry)
         case flymode(packet: TelemetryManager.InstrumentTelemetry)
-        case flytime(packet: TelemetryManager.InstrumentTelemetry)
+        case flytime(seconds: Int)
         case current(packet: TelemetryManager.InstrumentTelemetry)
         case voltage(packet: TelemetryManager.InstrumentTelemetry)
         case packets(packet: TelemetryManager.InstrumentTelemetry)
@@ -62,7 +62,6 @@ struct InstrumentView: View {
             case .packets: return ""
             }
         }
-        
         var value: String {
             switch self {
             case .latitude(let packet): return "\(packet.location.latitude)"
@@ -75,10 +74,10 @@ struct InstrumentView: View {
             case .signal(let packet): return "\(packet.packet.rssi)%"
             case .fuel(let packet): return "\(packet.packet.fuel)%"
             case .flymode(let packet): return "\(packet.stabilization)"
-            case .flytime(let packet): return "\(packet.flyTime)"
+            case .flytime(let seconds): return "\(String(format:"%02ld:%02ld:%02ld",seconds/3600,(seconds/60)%60,seconds%60))"
             case .current(let packet): return "\(packet.packet.current) amp"
             case .voltage(let packet): return "\(packet.packet.voltage)v"
-            case .packets(let packet): return "\(packet.packet.valid) / \(packet.packet.invalid) / \(packet.packet.unknown)"
+            case .packets(let packet): return "\(packet.packet.valid) / \(packet.packet.unknown)"
             }
         }
         
@@ -119,7 +118,7 @@ struct InstrumentView: View {
 
 struct InstrumentView_Previews: PreviewProvider {
     static var previews: some View {
-        InstrumentView(type: .armed(packet: .init(packet: .init(), telemetryType: .smartPort, seconds: 0)))
+        InstrumentView(type: .armed(packet: .init(packet: .init(), telemetryType: .smartPort)))
             .previewLayout(.fixed(width: 100, height: 50))
     }
 }

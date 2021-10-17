@@ -16,19 +16,6 @@ struct ConnectionView: View {
     var body: some View {
         VStack {
             Spacer()
-            if !viewModel.connected {
-                Text("Protocol")
-                    .frame(maxWidth: .infinity)
-                    .background(Color.white.opacity(0.5))
-                    .cornerRadius(5)
-                
-                Picker("",selection: $viewModel.selectedProtocol) {
-                    Text(TelemetryManager.TelemetryType.smartPort.name).tag(TelemetryManager.TelemetryType.smartPort)
-                    Text(TelemetryManager.TelemetryType.msp.name).tag(TelemetryManager.TelemetryType.msp)
-                    Text(TelemetryManager.TelemetryType.mavLink.name).tag(TelemetryManager.TelemetryType.mavLink)
-                }.pickerStyle(SegmentedPickerStyle())
-            }
-            
             HStack {
                 Spacer()
                 

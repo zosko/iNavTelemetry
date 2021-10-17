@@ -129,8 +129,8 @@ class MSP_V1: NSObject {
                 packet.valid += 1
                 break
             default:
-                packet.debug = "messageID: [\(messageID)] payload: \(payload)"
-                packet.invalid += 1
+                print("messageID: [\(messageID)] payload: \(payload)")
+                packet.unknown += 1
                 break
             }
             

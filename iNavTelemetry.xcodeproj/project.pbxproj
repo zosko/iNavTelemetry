@@ -23,7 +23,7 @@
 		6D3F821B26ED47FF009B408D /* Msp_v2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D3F821626ED47FF009B408D /* Msp_v2.swift */; };
 		6D3F821C26ED47FF009B408D /* Msp_v1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D3F821726ED47FF009B408D /* Msp_v1.swift */; };
 		6D3F821D26ED47FF009B408D /* TelemetryManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D3F821826ED47FF009B408D /* TelemetryManager.swift */; };
-		6D3F821E26ED47FF009B408D /* CustomTelemetry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D3F821926ED47FF009B408D /* CustomTelemetry.swift */; };
+		6D3F821E26ED47FF009B408D /* Custom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D3F821926ED47FF009B408D /* Custom.swift */; };
 		6D49B7A326E80515006833A9 /* AppViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D49B7A226E80515006833A9 /* AppViewModel.swift */; };
 		6D5B151F2701EC9F001C40BF /* CloudStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D5B151E2701EC9F001C40BF /* CloudStorage.swift */; };
 		6D5B15202701EC9F001C40BF /* CloudStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D5B151E2701EC9F001C40BF /* CloudStorage.swift */; };
@@ -38,7 +38,7 @@
 		6DF672232701201E007CBD63 /* SmartPort.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D3F821526ED47FF009B408D /* SmartPort.swift */; };
 		6DF6722427012021007CBD63 /* Msp_v2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D3F821626ED47FF009B408D /* Msp_v2.swift */; };
 		6DF6722527012023007CBD63 /* Msp_v1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D3F821726ED47FF009B408D /* Msp_v1.swift */; };
-		6DF6722627012025007CBD63 /* CustomTelemetry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D3F821926ED47FF009B408D /* CustomTelemetry.swift */; };
+		6DF6722627012025007CBD63 /* Custom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D3F821926ED47FF009B408D /* Custom.swift */; };
 		6DF6722727012027007CBD63 /* TelemetryManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D3F821826ED47FF009B408D /* TelemetryManager.swift */; };
 		6DF6722827012029007CBD63 /* AppViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D49B7A226E80515006833A9 /* AppViewModel.swift */; };
 		6DF672292701202C007CBD63 /* SocketManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DF2432C26F5F5E600DE6FE8 /* SocketManager.swift */; };
@@ -78,7 +78,7 @@
 		6D3F821626ED47FF009B408D /* Msp_v2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Msp_v2.swift; sourceTree = "<group>"; };
 		6D3F821726ED47FF009B408D /* Msp_v1.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Msp_v1.swift; sourceTree = "<group>"; };
 		6D3F821826ED47FF009B408D /* TelemetryManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TelemetryManager.swift; sourceTree = "<group>"; };
-		6D3F821926ED47FF009B408D /* CustomTelemetry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomTelemetry.swift; sourceTree = "<group>"; };
+		6D3F821926ED47FF009B408D /* Custom.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Custom.swift; sourceTree = "<group>"; };
 		6D49B7A226E80515006833A9 /* AppViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppViewModel.swift; sourceTree = "<group>"; };
 		6D5B151C2701EB82001C40BF /* iNavTelemetry.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = iNavTelemetry.entitlements; sourceTree = "<group>"; };
 		6D5B151D2701EC74001C40BF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
@@ -189,7 +189,7 @@
 				6DBA3DCA27119B9500D79FFB /* MavLink.swift */,
 				6D3F821626ED47FF009B408D /* Msp_v2.swift */,
 				6D3F821726ED47FF009B408D /* Msp_v1.swift */,
-				6D3F821926ED47FF009B408D /* CustomTelemetry.swift */,
+				6D3F821926ED47FF009B408D /* Custom.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -343,7 +343,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6D04DC0826E4EADA003783F2 /* CompassView.swift in Sources */,
-				6D3F821E26ED47FF009B408D /* CustomTelemetry.swift in Sources */,
+				6D3F821E26ED47FF009B408D /* Custom.swift in Sources */,
 				6DF6723A27012558007CBD63 /* MapLines.swift in Sources */,
 				6D34745726E4CD39001F1E59 /* Dashboard.swift in Sources */,
 				6D06263126EE8C1000FCAC40 /* BluetoothManager.swift in Sources */,
@@ -386,7 +386,7 @@
 				6DF6722A2701202E007CBD63 /* BluetoothManager.swift in Sources */,
 				6DF6722E2701203F007CBD63 /* CompassView.swift in Sources */,
 				6DF672342701205A007CBD63 /* MainView.swift in Sources */,
-				6DF6722627012025007CBD63 /* CustomTelemetry.swift in Sources */,
+				6DF6722627012025007CBD63 /* Custom.swift in Sources */,
 				6DF6722527012023007CBD63 /* Msp_v1.swift in Sources */,
 				6DF6722427012021007CBD63 /* Msp_v2.swift in Sources */,
 				6DF6722D2701203D007CBD63 /* AttitudeView.swift in Sources */,
@@ -522,7 +522,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = iNavTelemetry/iNavTelemetry.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"iNavTelemetry/Preview Content\"";
 				DEVELOPMENT_TEAM = RXDLA8Y5J4;
 				ENABLE_PREVIEWS = YES;
@@ -532,7 +532,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.0.2;
+				MARKETING_VERSION = 2.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = us.g6.iNavTelemetry;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -547,7 +547,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = iNavTelemetry/iNavTelemetry.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"iNavTelemetry/Preview Content\"";
 				DEVELOPMENT_TEAM = RXDLA8Y5J4;
 				ENABLE_PREVIEWS = YES;
@@ -557,7 +557,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.0.2;
+				MARKETING_VERSION = 2.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = us.g6.iNavTelemetry;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
