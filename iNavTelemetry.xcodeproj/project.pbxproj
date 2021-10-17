@@ -26,37 +26,12 @@
 		6D3F821E26ED47FF009B408D /* Custom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D3F821926ED47FF009B408D /* Custom.swift */; };
 		6D49B7A326E80515006833A9 /* AppViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D49B7A226E80515006833A9 /* AppViewModel.swift */; };
 		6D5B151F2701EC9F001C40BF /* CloudStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D5B151E2701EC9F001C40BF /* CloudStorage.swift */; };
-		6D5B15202701EC9F001C40BF /* CloudStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D5B151E2701EC9F001C40BF /* CloudStorage.swift */; };
 		6DAF1E5426EDEAD700DBE06A /* Database.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DAF1E5326EDEAD700DBE06A /* Database.swift */; };
 		6DBA3DCB27119B9500D79FFB /* MavLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DBA3DCA27119B9500D79FFB /* MavLink.swift */; };
-		6DBA3DCC2711C3DF00D79FFB /* MavLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DBA3DCA27119B9500D79FFB /* MavLink.swift */; };
 		6DD7D1AF26F3D46E00735EA2 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DD7D1AE26F3D46E00735EA2 /* MainView.swift */; };
 		6DF2432D26F5F5E600DE6FE8 /* SocketManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DF2432C26F5F5E600DE6FE8 /* SocketManager.swift */; };
 		6DF2433126F5F64600DE6FE8 /* SocketIO in Frameworks */ = {isa = PBXBuildFile; productRef = 6DF2433026F5F64600DE6FE8 /* SocketIO */; };
-		6DF6721727012008007CBD63 /* iNavTelemetryOSXApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DF6721627012008007CBD63 /* iNavTelemetryOSXApp.swift */; };
-		6DF6721E2701200B007CBD63 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6DF6721D2701200B007CBD63 /* Preview Assets.xcassets */; };
-		6DF672232701201E007CBD63 /* SmartPort.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D3F821526ED47FF009B408D /* SmartPort.swift */; };
-		6DF6722427012021007CBD63 /* Msp_v2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D3F821626ED47FF009B408D /* Msp_v2.swift */; };
-		6DF6722527012023007CBD63 /* Msp_v1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D3F821726ED47FF009B408D /* Msp_v1.swift */; };
-		6DF6722627012025007CBD63 /* Custom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D3F821926ED47FF009B408D /* Custom.swift */; };
-		6DF6722727012027007CBD63 /* TelemetryManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D3F821826ED47FF009B408D /* TelemetryManager.swift */; };
-		6DF6722827012029007CBD63 /* AppViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D49B7A226E80515006833A9 /* AppViewModel.swift */; };
-		6DF672292701202C007CBD63 /* SocketManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DF2432C26F5F5E600DE6FE8 /* SocketManager.swift */; };
-		6DF6722A2701202E007CBD63 /* BluetoothManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D06263026EE8C1000FCAC40 /* BluetoothManager.swift */; };
-		6DF6722B27012030007CBD63 /* Database.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DAF1E5326EDEAD700DBE06A /* Database.swift */; };
-		6DF6722C2701203A007CBD63 /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D34746826E4CDBB001F1E59 /* MapView.swift */; };
-		6DF6722D2701203D007CBD63 /* AttitudeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D04DC0426E4EAD2003783F2 /* AttitudeView.swift */; };
-		6DF6722E2701203F007CBD63 /* CompassView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D04DC0726E4EADA003783F2 /* CompassView.swift */; };
-		6DF6722F27012042007CBD63 /* DisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D04DBED26E4D0AA003783F2 /* DisplayView.swift */; };
-		6DF6723027012044007CBD63 /* InstrumentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D04DBFA26E4DC67003783F2 /* InstrumentView.swift */; };
-		6DF6723127012046007CBD63 /* ConnectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D04DC0A26E4EE2C003783F2 /* ConnectionView.swift */; };
-		6DF672322701204D007CBD63 /* Dashboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D34745626E4CD39001F1E59 /* Dashboard.swift */; };
-		6DF6723327012054007CBD63 /* Logbook.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D04DC0D26E4F4BD003783F2 /* Logbook.swift */; };
-		6DF672342701205A007CBD63 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DD7D1AE26F3D46E00735EA2 /* MainView.swift */; };
-		6DF67237270120A0007CBD63 /* SocketIO in Frameworks */ = {isa = PBXBuildFile; productRef = 6DF67236270120A0007CBD63 /* SocketIO */; };
-		6DF672382701240C007CBD63 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6D34745826E4CD3A001F1E59 /* Assets.xcassets */; };
-		6DF6723A27012558007CBD63 /* MapLines.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DF6723927012558007CBD63 /* MapLines.swift */; };
-		6DF6723C270125BB007CBD63 /* MapLines.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DF6723B270125BB007CBD63 /* MapLines.swift */; };
+		6DF6723A27012558007CBD63 /* MapViewLines.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DF6723927012558007CBD63 /* MapViewLines.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -81,18 +56,12 @@
 		6D3F821926ED47FF009B408D /* Custom.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Custom.swift; sourceTree = "<group>"; };
 		6D49B7A226E80515006833A9 /* AppViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppViewModel.swift; sourceTree = "<group>"; };
 		6D5B151C2701EB82001C40BF /* iNavTelemetry.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = iNavTelemetry.entitlements; sourceTree = "<group>"; };
-		6D5B151D2701EC74001C40BF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		6D5B151E2701EC9F001C40BF /* CloudStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudStorage.swift; sourceTree = "<group>"; };
 		6DAF1E5326EDEAD700DBE06A /* Database.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Database.swift; sourceTree = "<group>"; };
 		6DBA3DCA27119B9500D79FFB /* MavLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MavLink.swift; sourceTree = "<group>"; };
 		6DD7D1AE26F3D46E00735EA2 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		6DF2432C26F5F5E600DE6FE8 /* SocketManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocketManager.swift; sourceTree = "<group>"; };
-		6DF6721427012008007CBD63 /* iNavTelemetryOSX.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iNavTelemetryOSX.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		6DF6721627012008007CBD63 /* iNavTelemetryOSXApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iNavTelemetryOSXApp.swift; sourceTree = "<group>"; };
-		6DF6721D2701200B007CBD63 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		6DF6721F2701200B007CBD63 /* iNavTelemetryOSX.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = iNavTelemetryOSX.entitlements; sourceTree = "<group>"; };
-		6DF6723927012558007CBD63 /* MapLines.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapLines.swift; sourceTree = "<group>"; };
-		6DF6723B270125BB007CBD63 /* MapLines.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapLines.swift; sourceTree = "<group>"; };
+		6DF6723927012558007CBD63 /* MapViewLines.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewLines.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -104,14 +73,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		6DF6721127012008007CBD63 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				6DF67237270120A0007CBD63 /* SocketIO in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -119,7 +80,6 @@
 			isa = PBXGroup;
 			children = (
 				6D34745326E4CD39001F1E59 /* iNavTelemetry */,
-				6DF6721527012008007CBD63 /* iNavTelemetryOSX */,
 				6D34745226E4CD39001F1E59 /* Products */,
 				6DF67235270120A0007CBD63 /* Frameworks */,
 			);
@@ -129,7 +89,6 @@
 			isa = PBXGroup;
 			children = (
 				6D34745126E4CD39001F1E59 /* iNavTelemetry.app */,
-				6DF6721427012008007CBD63 /* iNavTelemetryOSX.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -163,7 +122,7 @@
 			isa = PBXGroup;
 			children = (
 				6D34746826E4CDBB001F1E59 /* MapView.swift */,
-				6DF6723927012558007CBD63 /* MapLines.swift */,
+				6DF6723927012558007CBD63 /* MapViewLines.swift */,
 				6D04DC0426E4EAD2003783F2 /* AttitudeView.swift */,
 				6D04DC0726E4EADA003783F2 /* CompassView.swift */,
 				6D04DBED26E4D0AA003783F2 /* DisplayView.swift */,
@@ -207,26 +166,6 @@
 			path = Framework;
 			sourceTree = "<group>";
 		};
-		6DF6721527012008007CBD63 /* iNavTelemetryOSX */ = {
-			isa = PBXGroup;
-			children = (
-				6D5B151D2701EC74001C40BF /* Info.plist */,
-				6DF6721627012008007CBD63 /* iNavTelemetryOSXApp.swift */,
-				6DF6723B270125BB007CBD63 /* MapLines.swift */,
-				6DF6721F2701200B007CBD63 /* iNavTelemetryOSX.entitlements */,
-				6DF6721C2701200B007CBD63 /* Preview Content */,
-			);
-			path = iNavTelemetryOSX;
-			sourceTree = "<group>";
-		};
-		6DF6721C2701200B007CBD63 /* Preview Content */ = {
-			isa = PBXGroup;
-			children = (
-				6DF6721D2701200B007CBD63 /* Preview Assets.xcassets */,
-			);
-			path = "Preview Content";
-			sourceTree = "<group>";
-		};
 		6DF67235270120A0007CBD63 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -257,26 +196,6 @@
 			productReference = 6D34745126E4CD39001F1E59 /* iNavTelemetry.app */;
 			productType = "com.apple.product-type.application";
 		};
-		6DF6721327012008007CBD63 /* iNavTelemetryOSX */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 6DF672222701200B007CBD63 /* Build configuration list for PBXNativeTarget "iNavTelemetryOSX" */;
-			buildPhases = (
-				6DF6721027012008007CBD63 /* Sources */,
-				6DF6721127012008007CBD63 /* Frameworks */,
-				6DF6721227012008007CBD63 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = iNavTelemetryOSX;
-			packageProductDependencies = (
-				6DF67236270120A0007CBD63 /* SocketIO */,
-			);
-			productName = iNavTelemetryOSX;
-			productReference = 6DF6721427012008007CBD63 /* iNavTelemetryOSX.app */;
-			productType = "com.apple.product-type.application";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -288,9 +207,6 @@
 				TargetAttributes = {
 					6D34745026E4CD39001F1E59 = {
 						CreatedOnToolsVersion = 12.4;
-					};
-					6DF6721327012008007CBD63 = {
-						CreatedOnToolsVersion = 13.0;
 					};
 				};
 			};
@@ -311,7 +227,6 @@
 			projectRoot = "";
 			targets = (
 				6D34745026E4CD39001F1E59 /* iNavTelemetry */,
-				6DF6721327012008007CBD63 /* iNavTelemetryOSX */,
 			);
 		};
 /* End PBXProject section */
@@ -326,15 +241,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		6DF6721227012008007CBD63 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				6DF6721E2701200B007CBD63 /* Preview Assets.xcassets in Resources */,
-				6DF672382701240C007CBD63 /* Assets.xcassets in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -344,7 +250,7 @@
 			files = (
 				6D04DC0826E4EADA003783F2 /* CompassView.swift in Sources */,
 				6D3F821E26ED47FF009B408D /* Custom.swift in Sources */,
-				6DF6723A27012558007CBD63 /* MapLines.swift in Sources */,
+				6DF6723A27012558007CBD63 /* MapViewLines.swift in Sources */,
 				6D34745726E4CD39001F1E59 /* Dashboard.swift in Sources */,
 				6D06263126EE8C1000FCAC40 /* BluetoothManager.swift in Sources */,
 				6DF2432D26F5F5E600DE6FE8 /* SocketManager.swift in Sources */,
@@ -364,35 +270,6 @@
 				6D5B151F2701EC9F001C40BF /* CloudStorage.swift in Sources */,
 				6D3F821B26ED47FF009B408D /* Msp_v2.swift in Sources */,
 				6D34745526E4CD39001F1E59 /* iNavTelemetryApp.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		6DF6721027012008007CBD63 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				6DF672232701201E007CBD63 /* SmartPort.swift in Sources */,
-				6DF6723327012054007CBD63 /* Logbook.swift in Sources */,
-				6DF6723C270125BB007CBD63 /* MapLines.swift in Sources */,
-				6DF6722C2701203A007CBD63 /* MapView.swift in Sources */,
-				6DF6722B27012030007CBD63 /* Database.swift in Sources */,
-				6DF6723027012044007CBD63 /* InstrumentView.swift in Sources */,
-				6DF672322701204D007CBD63 /* Dashboard.swift in Sources */,
-				6DF6722F27012042007CBD63 /* DisplayView.swift in Sources */,
-				6DF6722727012027007CBD63 /* TelemetryManager.swift in Sources */,
-				6DF6723127012046007CBD63 /* ConnectionView.swift in Sources */,
-				6DBA3DCC2711C3DF00D79FFB /* MavLink.swift in Sources */,
-				6DF6722827012029007CBD63 /* AppViewModel.swift in Sources */,
-				6DF6722A2701202E007CBD63 /* BluetoothManager.swift in Sources */,
-				6DF6722E2701203F007CBD63 /* CompassView.swift in Sources */,
-				6DF672342701205A007CBD63 /* MainView.swift in Sources */,
-				6DF6722627012025007CBD63 /* Custom.swift in Sources */,
-				6DF6722527012023007CBD63 /* Msp_v1.swift in Sources */,
-				6DF6722427012021007CBD63 /* Msp_v2.swift in Sources */,
-				6DF6722D2701203D007CBD63 /* AttitudeView.swift in Sources */,
-				6D5B15202701EC9F001C40BF /* CloudStorage.swift in Sources */,
-				6DF672292701202C007CBD63 /* SocketManager.swift in Sources */,
-				6DF6721727012008007CBD63 /* iNavTelemetryOSXApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -535,6 +412,7 @@
 				MARKETING_VERSION = 2.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = us.g6.iNavTelemetry;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -560,74 +438,9 @@
 				MARKETING_VERSION = 2.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = us.g6.iNavTelemetry;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Release;
-		};
-		6DF672202701200B007CBD63 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
-				CODE_SIGN_ENTITLEMENTS = iNavTelemetryOSX/iNavTelemetryOSX.entitlements;
-				CODE_SIGN_STYLE = Automatic;
-				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"iNavTelemetryOSX/Preview Content\"";
-				DEVELOPMENT_TEAM = RXDLA8Y5J4;
-				ENABLE_HARDENED_RUNTIME = YES;
-				ENABLE_PREVIEWS = YES;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = iNavTelemetryOSX/Info.plist;
-				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
-				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "To connect with device";
-				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-				);
-				MACOSX_DEPLOYMENT_TARGET = 11.3;
-				MARKETING_VERSION = 1.0.0;
-				PRODUCT_BUNDLE_IDENTIFIER = us.g6.iNavTelemetry;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
-			};
-			name = Debug;
-		};
-		6DF672212701200B007CBD63 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
-				CODE_SIGN_ENTITLEMENTS = iNavTelemetryOSX/iNavTelemetryOSX.entitlements;
-				CODE_SIGN_STYLE = Automatic;
-				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"iNavTelemetryOSX/Preview Content\"";
-				DEVELOPMENT_TEAM = RXDLA8Y5J4;
-				ENABLE_HARDENED_RUNTIME = YES;
-				ENABLE_PREVIEWS = YES;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = iNavTelemetryOSX/Info.plist;
-				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
-				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "To connect with device";
-				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-				);
-				MACOSX_DEPLOYMENT_TARGET = 11.3;
-				MARKETING_VERSION = 1.0.0;
-				PRODUCT_BUNDLE_IDENTIFIER = us.g6.iNavTelemetry;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};
@@ -652,15 +465,6 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		6DF672222701200B007CBD63 /* Build configuration list for PBXNativeTarget "iNavTelemetryOSX" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				6DF672202701200B007CBD63 /* Debug */,
-				6DF672212701200B007CBD63 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
@@ -676,11 +480,6 @@
 
 /* Begin XCSwiftPackageProductDependency section */
 		6DF2433026F5F64600DE6FE8 /* SocketIO */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 6DF2432F26F5F64600DE6FE8 /* XCRemoteSwiftPackageReference "socket" */;
-			productName = SocketIO;
-		};
-		6DF67236270120A0007CBD63 /* SocketIO */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 6DF2432F26F5F64600DE6FE8 /* XCRemoteSwiftPackageReference "socket" */;
 			productName = SocketIO;

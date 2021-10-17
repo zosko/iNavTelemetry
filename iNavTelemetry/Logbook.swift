@@ -20,7 +20,7 @@ struct Logbook: View {
     var body: some View {
         return ZStack(alignment: .topLeading)  {
             MapViewLines(coordinates: coordinates)
-//              .edgesIgnoringSafeArea(.all)
+              .edgesIgnoringSafeArea(.all)
             
             Button(action: {
                 logBookCoordinates = nil

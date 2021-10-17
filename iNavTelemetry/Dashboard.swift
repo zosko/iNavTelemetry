@@ -18,7 +18,18 @@ struct Dashboard: View {
             MapView(viewModel: viewModel)
             DisplayView(viewModel: viewModel, logBookCoordinates: $logBookCoordinates)
             
-            if viewModel.showPeripherals {
+            if viewModel.bluetoothScanning {
+                Text("Searching for bluetooth devices")
+                    .font(.largeTitle)
+                    .bold()
+                    .foregroundColor(.white)
+                    .padding(40)
+                    .background(Color.black
+                                    .opacity(0.5)
+                                    .cornerRadius(20))
+            }
+            
+            if viewModel.showPeripherals && !viewModel.bluetoothScanning {
                 Color.black
                     .opacity(0.5)
                     .edgesIgnoringSafeArea(.all)

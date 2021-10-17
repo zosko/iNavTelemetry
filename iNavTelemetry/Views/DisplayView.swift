@@ -50,14 +50,20 @@ struct DisplayView: View {
                 }
             }
             if viewModel.connected && !viewModel.homePositionAdded {
-                Text("Waiting for satellites")
-                    .font(.largeTitle)
-                    .bold()
-                    .foregroundColor(.white)
-                    .padding(40)
-                    .background(Color.black
-                                    .opacity(0.5)
-                                    .cornerRadius(20))
+                VStack {
+                    Text("Waiting for satellites")
+                        .font(.largeTitle)
+                        .bold()
+                        .foregroundColor(.white)
+                        .padding(40)
+                        .background(Color.black
+                                        .opacity(0.5)
+                                        .cornerRadius(20))
+                    Text("Protocol detected: \(viewModel.telemetry.telemetryType.name)")
+                        .font(.footnote)
+                        .foregroundColor(.white)
+                        .offset(y: -40)
+                }
             }
         }
     }

@@ -14,6 +14,7 @@ struct MapViewLines: UIViewRepresentable {
     func makeUIView(context: Context) -> MKMapView {
         let mapView = MKMapView()
         mapView.mapType = .satellite
+        mapView.isZoomEnabled = true
         mapView.delegate = context.coordinator
         if let firstCoordinate = coordinates.first {
             let span = MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
@@ -25,7 +26,6 @@ struct MapViewLines: UIViewRepresentable {
 
         return mapView
     }
-
     func updateUIView(_ view: MKMapView, context: Context) {}
 
     func makeCoordinator() -> Coordinator {

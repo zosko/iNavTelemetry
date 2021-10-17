@@ -14,13 +14,15 @@ class BluetoothManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
     @Published var dataReceived: Data = Data()
     @Published var peripheralFound : CBPeripheral? = nil
     @Published var connected : Bool = false
- 
-    private var centralManager: CBCentralManager?
-    private var _connectedPeripheral: CBPeripheral? = nil
-    private var timerReconnect: Timer?
+    @Published var isScanning : Bool = false
+    
     var connectedPeripheral: CBPeripheral? { return _connectedPeripheral }
     var writeCharacteristic: CBCharacteristic?
     var writeTypeCharacteristic: CBCharacteristicWriteType = .withoutResponse
+    
+    @Published private var centralManager: CBCentralManager?
+    private var _connectedPeripheral: CBPeripheral? = nil
+    private var timerReconnect: Timer?
     
     //MARK: Init
     override init(){
@@ -36,8 +38,10 @@ class BluetoothManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
         guard let connectedPeriperal = _connectedPeripheral, let manager = centralManager else {
             guard let manager = centralManager else { return }
             manager.scanForPeripherals(withServices: nil, options: [CBCentralManagerScanOptionAllowDuplicatesKey : true])
-            DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+            isScanning = true
+            DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
                 manager.stopScan()
+                self.isScanning = false
             }
             return
         }

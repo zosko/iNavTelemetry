@@ -26,6 +26,7 @@ class AppViewModel: NSObject, ObservableObject {
     @Published var connected = false
     @Published var homePositionAdded = false
     @Published var seconds = 0
+    @Published var bluetoothScanning = false
     
     var selectedProtocol: TelemetryManager.TelemetryType = TelemetryManager.TelemetryType.unknown
     var region = MKCoordinateRegion()
@@ -74,6 +75,9 @@ class AppViewModel: NSObject, ObservableObject {
                 return filtered
             }
             .assign(to: &$logsData)
+        
+        bluetoothManager.$isScanning
+            .assign(to: &$bluetoothScanning)
         
         bluetoothManager.$dataReceived.sink { [unowned self] data in
             guard self.telemetryManager.parse(incomingData: data) else {
