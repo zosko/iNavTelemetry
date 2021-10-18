@@ -16,7 +16,8 @@ class TelemetryManager: NSObject {
         case smartPort
         case msp
         case custom
-        case mavLink
+        case mavLink_v1
+        case mavLink_v2
         
         var name: String {
             switch self {
@@ -28,8 +29,10 @@ class TelemetryManager: NSObject {
                 return "MSP"
             case .custom:
                 return "Custom"
-            case .mavLink:
-                return "MavLink"
+            case .mavLink_v1:
+                return "MavLink V1"
+            case .mavLink_v2:
+                return "MavLink V2"
             }
             
         }
@@ -118,7 +121,7 @@ class TelemetryManager: NSObject {
                 }
             case .custom:
                 return .undefined
-            case .mavLink:
+            case .mavLink_v1, .mavLink_v2:
                 return .undefined
             case .unknown:
                 return .undefined
@@ -134,7 +137,7 @@ class TelemetryManager: NSObject {
                 return (flags == 1 || flags == 5 || flags == 9) ? .armed : .disarmed
             case .custom:
                 return .undefined
-            case .mavLink:
+            case .mavLink_v1, .mavLink_v2:
                 let flags = packet.flight_mode
                 return flags == 128 ? .armed : .disarmed
             case .unknown:
@@ -151,7 +154,8 @@ class TelemetryManager: NSObject {
     private var smartPort = SmartPort()
     private var custom = Custom()
     private var msp = MSP_V1()
-    private var mavLink = MavLink()
+    private var mavLink_v1 = MavLink_v1()
+    private var mavLink_v2 = MavLink_v2()
     private var packet = Packet()
     private var telemetryType: TelemetryType = .unknown
     private var protocolDetector: [TelemetryType] = []
@@ -175,9 +179,7 @@ class TelemetryManager: NSObject {
         case .unknown:
             let hits = detectProtocol(incomingData: incomingData)
             if hits.count > 15 {
-                print(protocolDetector)
                 if let result = mostFrequent(array: protocolDetector) {
-                    print("\(result.value) occurs \(result.count) times")
                     self.telemetryType = result.value
                 }
                 if self.telemetryType == .msp {
@@ -204,9 +206,15 @@ class TelemetryManager: NSObject {
                 return true
             }
             return false
-        case .mavLink:
-            if mavLink.process_incoming_bytes(incomingData: incomingData) {
-                packet = msp.packet
+        case .mavLink_v1:
+            if mavLink_v1.process_incoming_bytes(incomingData: incomingData) {
+                packet = mavLink_v1.packet
+                return true
+            }
+            return false
+        case .mavLink_v2:
+            if mavLink_v2.process_incoming_bytes(incomingData: incomingData) {
+                packet = mavLink_v2.packet
                 return true
             }
             return false
@@ -236,8 +244,12 @@ class TelemetryManager: NSObject {
             protocolDetector.append(.msp)
             receivedUnknown = false
         }
-        if mavLink.process_incoming_bytes(incomingData: incomingData) {
-            protocolDetector.append(.mavLink)
+        if mavLink_v1.process_incoming_bytes(incomingData: incomingData) {
+            protocolDetector.append(.mavLink_v1)
+            receivedUnknown = false
+        }
+        if mavLink_v2.process_incoming_bytes(incomingData: incomingData) {
+            protocolDetector.append(.mavLink_v2)
             receivedUnknown = false
         }
         
@@ -262,7 +274,9 @@ class TelemetryManager: NSObject {
             break
         case .smartPort:
             break
-        case .mavLink:
+        case .mavLink_v1:
+            break
+        case .mavLink_v2:
             break
         case .msp:
             peripheral.writeValue(msp.request(messageID: .MSP_STATUS), for: characteristic, type: writeType)
@@ -278,7 +292,6 @@ class TelemetryManager: NSObject {
         
         if requesting {
             timerRequestMSP = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [self] _ in
-                print("REQUEST MSP")
                 if let manager = self.bluetoothManager,
                    let writeChars = manager.writeCharacteristic,
                    let peripheral = manager.connectedPeripheral {
