@@ -98,7 +98,6 @@ class SmartPort: NSObject {
                     state = .DATA
                     bufferIndex = 0
                 }
-                break
             case .DATA:
                 if data[i] == DATA_STUFF {
                     state = .XOR
@@ -110,16 +109,16 @@ class SmartPort: NSObject {
                     buffer[bufferIndex] = data[i]
                     bufferIndex += 1
                 }
-                break
             case .XOR:
                 buffer[bufferIndex] = data[i] ^ STUFF_MASK
                 bufferIndex += 1
                 state = .DATA
-                break
             }
             
             if bufferIndex == PACKET_SIZE {
                 state = .IDLE
+                
+                isProcessed = true
                 
                 _ = buffer[0] //sensor type
                 let packetType = buffer[1]
@@ -130,29 +129,14 @@ class SmartPort: NSObject {
                     switch dataType {
                     case VFAS_SENSOR, APID_VFAS:
                         packet.voltage = Double(rawData) / 100.0
-                        packet.valid += 1
-                        isProcessed = true
-                        break
                     case GSPEED_SENSOR, APID_GPS_SPEED:
                         packet.speed = Int((Double(rawData) / (1944.0 / 100.0)) / 27.778)
-                        packet.valid += 1
-                        isProcessed = true
-                        break
                     case GALT_SENSOR, APID_GPS_ALTITUDE:
                         packet.alt = Int(Double(rawData) / 100.0)
-                        packet.valid += 1
-                        isProcessed = true
-                        break
                     case DISTANCE_SENSOR:
                         packet.distance = Int(rawData)
-                        packet.valid += 1
-                        isProcessed = true
-                        break
                     case FUEL_SENSOR, APID_FUEL:
                         packet.fuel = Int(rawData)
-                        packet.valid += 1
-                        isProcessed = true
-                        break
                     case GPS_SENSOR, APID_LATLONG:
                         var gpsData = Double((rawData & 0x3FFFFFFF)) / 10000.0 / 60.0
                         if (rawData & 0x40000000 > 0) {
@@ -171,51 +155,24 @@ class SmartPort: NSObject {
                             packet.lat = latitude
                             packet.lng = longitude
                         }
-                        packet.valid += 1
-                        isProcessed = true
-                        break
                     case CURRENT_SENSOR, APID_CURRENT:
                         packet.current = Int(Double(rawData) / 10.0)
-                        packet.valid += 1
-                        isProcessed = true
-                        break
                     case HEADING_SENSOR, APID_GPS_COURSE:
                         packet.heading = Int(Double(rawData) / 100.0)
-                        packet.valid += 1
-                        isProcessed = true
-                        break
                     case RSSI_SENSOR, APID_RSSI:
                         packet.rssi = Int(rawData)
-                        packet.valid += 1
-                        isProcessed = true
-                        break
                     case FLYMODE_SENSOR, APID_T1:
                         packet.flight_mode = Int(rawData)
-                        packet.valid += 1
-                        isProcessed = true
-                        break
                     case GPS_STATE_SENSOR, APID_T2:
                         packet.gps_sats = Int(rawData % 100)
-                        packet.valid += 1
-                        isProcessed = true
-                        break
                     case PITCH_SENSOR, APID_PITCH:
                         let pitch = Int(Double(rawData) / 10.0)
                         packet.pitch = -pitch
-                        packet.valid += 1
-                        isProcessed = true
-                        break
                     case ROLL_SENSOR, APID_ROLL:
                         let roll = Int(Double(rawData) / 10.0)
                         packet.roll = roll
-                        packet.valid += 1
-                        isProcessed = true
-                        break
                     default:
-                        packet.unknown += 1
                         print("type: \(String(format:"%02X", dataType))  data: \(rawData) buffer \(String(format:"%02X,%02X,%02X,%02X,%02X,%02X,%02X,%02X,%02X", buffer[0],buffer[1],buffer[2],buffer[3],buffer[4],buffer[5],buffer[6],buffer[7],buffer[8]))")
-                        isProcessed = false
-                        break
                     }
                 }
             }

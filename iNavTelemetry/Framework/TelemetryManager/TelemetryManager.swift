@@ -82,8 +82,6 @@ class TelemetryManager: NSObject {
         var fuel: Int = 0
         var roll: Int = 0
         var pitch: Int = 0
-        var valid: Int = 0
-        var unknown: Int = 0
     }
     
     struct LogTelemetry: Codable {

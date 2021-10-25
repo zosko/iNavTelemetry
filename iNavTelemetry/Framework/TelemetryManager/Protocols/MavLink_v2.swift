@@ -194,7 +194,6 @@ class MavLink_v2: NSObject {
         }
         else {
             print("not parsed [messageID] \(messageId) [data] \(buffer)")
-            packet.unknown += 1
         }
     }
 

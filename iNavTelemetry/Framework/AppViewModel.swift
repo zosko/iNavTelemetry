@@ -27,11 +27,11 @@ class AppViewModel: NSObject, ObservableObject {
     @Published var homePositionAdded = false
     @Published var seconds = 0
     @Published var bluetoothScanning = false
+    @Published var telemetry = TelemetryManager.InstrumentTelemetry(packet: TelemetryManager.Packet(), telemetryType: .smartPort)
     
     var selectedProtocol: TelemetryManager.TelemetryType = TelemetryManager.TelemetryType.unknown
     var region = MKCoordinateRegion()
     var peripherals : [CBPeripheral] = []
-    var telemetry = TelemetryManager.InstrumentTelemetry(packet: TelemetryManager.Packet(), telemetryType: .smartPort)
     
     @ObservedObject private var bluetoothManager = BluetoothManager()
     @ObservedObject private var socketCommunicator = SocketComunicator()

@@ -129,7 +129,5 @@ class Custom : NSObject{
         
         packet.roll = Int(linearInterpolation(inVal: Double(payload[ind]), inMin: 0, inMax: 200, outMin: -100, outMax: 100))
         ind += 1
-        
-        packet.valid += 1
     }
 }

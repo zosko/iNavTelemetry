@@ -42,7 +42,6 @@ struct DisplayView: View {
                 HStack(alignment: .bottom ,spacing: 1) {
                     InstrumentView(type: .current(packet: viewModel.telemetry))
                     InstrumentView(type: .voltage(packet: viewModel.telemetry))
-                    InstrumentView(type: .packets(packet: viewModel.telemetry))
                     Spacer()
                     ConnectionView(viewModel: viewModel, logBookCoordinates: $logBookCoordinates)
                     CompassView(heading: viewModel.telemetry.packet.heading)

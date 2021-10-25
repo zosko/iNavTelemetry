@@ -23,7 +23,6 @@ struct InstrumentView: View {
         case flytime(seconds: Int)
         case current(packet: TelemetryManager.InstrumentTelemetry)
         case voltage(packet: TelemetryManager.InstrumentTelemetry)
-        case packets(packet: TelemetryManager.InstrumentTelemetry)
         
         var name: String {
             switch self {
@@ -40,7 +39,6 @@ struct InstrumentView: View {
             case .flytime: return "Fly time"
             case .current: return "Current"
             case .voltage: return "Voltage"
-            case .packets: return "Packets"
             }
         }
         
@@ -59,7 +57,6 @@ struct InstrumentView: View {
             case .flytime: return "timer"
             case .current: return "directcurrent"
             case .voltage: return "minus.plus.batteryblock"
-            case .packets: return ""
             }
         }
         var value: String {
@@ -77,7 +74,6 @@ struct InstrumentView: View {
             case .flytime(let seconds): return "\(String(format:"%02ld:%02ld:%02ld",seconds/3600,(seconds/60)%60,seconds%60))"
             case .current(let packet): return "\(packet.packet.current) amp"
             case .voltage(let packet): return "\(packet.packet.voltage)v"
-            case .packets(let packet): return "\(packet.packet.valid) / \(packet.packet.unknown)"
             }
         }
         
@@ -96,7 +92,6 @@ struct InstrumentView: View {
             case .flytime(_): return false
             case .current(let packet): return packet.packet.current > 30
             case .voltage(let packet): return packet.packet.voltage < 7
-            case .packets(let packet): return packet.packet.valid < 1
             }
         }
     }
