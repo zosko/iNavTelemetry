@@ -11,18 +11,23 @@ import Combine
 struct DisplayView: View {
     
     @ObservedObject var viewModel: AppViewModel
-    @Binding var logBookCoordinates: [TelemetryManager.LogTelemetry]?
     
     var body: some View {
         ZStack {
             HStack {
                 VStack(spacing: 1) {
-                    InstrumentView(type: .latitude(packet: viewModel.telemetry))
-                    InstrumentView(type: .longitude(packet: viewModel.telemetry))
-                    InstrumentView(type: .satellites(packet: viewModel.telemetry))
                     InstrumentView(type: .distance(packet: viewModel.telemetry))
                     InstrumentView(type: .altitude(packet: viewModel.telemetry))
                     InstrumentView(type: .speed(packet: viewModel.telemetry))
+                    Spacer()
+                }
+                Spacer()
+                VStack {
+                    HStack(spacing: 1) {
+                        InstrumentView(type: .latitude(packet: viewModel.telemetry))
+                        InstrumentView(type: .satellites(packet: viewModel.telemetry))
+                        InstrumentView(type: .longitude(packet: viewModel.telemetry))
+                    }
                     Spacer()
                 }
                 Spacer()
@@ -33,7 +38,6 @@ struct DisplayView: View {
                         InstrumentView(type: .fuel(packet: viewModel.telemetry))
                     }
                     InstrumentView(type: .flymode(packet: viewModel.telemetry))
-                    InstrumentView(type: .flytime(seconds: viewModel.seconds))
                     Spacer()
                 }
             }
@@ -42,10 +46,11 @@ struct DisplayView: View {
                 HStack(alignment: .bottom ,spacing: 1) {
                     InstrumentView(type: .current(packet: viewModel.telemetry))
                     InstrumentView(type: .voltage(packet: viewModel.telemetry))
+                    InstrumentView(type: .flytime(seconds: viewModel.seconds))
                     Spacer()
-                    ConnectionView(viewModel: viewModel, logBookCoordinates: $logBookCoordinates)
-                    CompassView(heading: viewModel.telemetry.packet.heading)
-                    AttitudeView(roll: viewModel.telemetry.packet.roll, pitch: viewModel.telemetry.packet.pitch)
+                    ConnectionView(viewModel: viewModel)
+                    CompassView(viewModel: viewModel)
+                    AttitudeView(viewModel: viewModel)
                 }
             }
             if viewModel.connected && !viewModel.homePositionAdded {
@@ -70,7 +75,7 @@ struct DisplayView: View {
 
 struct DisplayView_Previews: PreviewProvider {
     static var previews: some View {
-        DisplayView(viewModel: .init(), logBookCoordinates: .constant(nil))
+        DisplayView(viewModel: .init())
             .background(Color.black)
             .previewLayout(.fixed(width: 812, height: 375))
     }

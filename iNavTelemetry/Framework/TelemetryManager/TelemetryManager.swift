@@ -9,7 +9,7 @@
 import CoreBluetooth
 import MapKit
 
-class TelemetryManager: NSObject {
+class TelemetryManager: NSObject, ObservableObject {
     
     enum TelemetryType {
         case unknown
@@ -149,18 +149,22 @@ class TelemetryManager: NSObject {
         }
     }
     
-    private var smartPort = SmartPort()
-    private var custom = Custom()
-    private var msp = MSP_V1()
-    private var mavLink_v1 = MavLink_v1()
-    private var mavLink_v2 = MavLink_v2()
-    private var packet = Packet()
+    private let smartPort = SmartPort()
+    private let custom = Custom()
+    private let msp = MSP_V1()
+    private let mavLink_v1 = MavLink_v1()
+    private let mavLink_v2 = MavLink_v2()
+    private var packet = Packet() {
+        didSet {
+            telemetry = InstrumentTelemetry(packet: packet, telemetryType: telemetryType)
+        }
+    }
     private var telemetryType: TelemetryType = .unknown
     private var protocolDetector: [TelemetryType] = []
     private var timerRequestMSP: Timer?
     private var bluetoothManager: BluetoothManager?
     
-    var telemetry: InstrumentTelemetry { InstrumentTelemetry(packet: packet, telemetryType: telemetryType) }
+    @Published var telemetry: InstrumentTelemetry = .init(packet: .init(), telemetryType: .smartPort)
     
     //MARK: - Internal functions
     func stopTelemetry() {
@@ -289,7 +293,7 @@ class TelemetryManager: NSObject {
         timerRequestMSP = nil
         
         if requesting {
-            timerRequestMSP = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [self] _ in
+            timerRequestMSP = Timer.scheduledTimer(withTimeInterval: 0.3, repeats: true) { [self] _ in
                 if let manager = self.bluetoothManager,
                    let writeChars = manager.writeCharacteristic,
                    let peripheral = manager.connectedPeripheral {

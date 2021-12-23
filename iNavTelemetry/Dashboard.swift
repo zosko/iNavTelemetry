@@ -16,7 +16,7 @@ struct Dashboard: View {
     var body: some View {
         ZStack {
             MapView(viewModel: viewModel)
-            DisplayView(viewModel: viewModel, logBookCoordinates: $logBookCoordinates)
+            DisplayView(viewModel: viewModel)
             
             if viewModel.bluetoothScanning {
                 Text("Searching for bluetooth devices")
@@ -115,7 +115,6 @@ struct Dashboard: View {
                         if !viewModel.logsData.isEmpty {
                             Button {
                                 viewModel.cleanDatabase()
-                                viewModel.showListLogs = false
                             } label: {
                                 Image(systemName: "trash.fill")
                                     .font(.system(size: 40))

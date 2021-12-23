@@ -11,7 +11,6 @@ import Combine
 struct ConnectionView: View {
     
     @ObservedObject var viewModel: AppViewModel
-    @Binding var logBookCoordinates: [TelemetryManager.LogTelemetry]?
     
     var body: some View {
         VStack {
@@ -22,7 +21,6 @@ struct ConnectionView: View {
                 if !viewModel.connected {
                     Button(action: {
                         viewModel.getFlightLogs()
-                        viewModel.showListLogs = true
                     }){
                         Image("log")
                             .resizable()
@@ -48,7 +46,7 @@ struct ConnectionView: View {
 
 struct ConnectionView_Previews: PreviewProvider {
     static var previews: some View {
-        ConnectionView(viewModel: .init(), logBookCoordinates: .constant(nil))
+        ConnectionView(viewModel: .init())
             .previewLayout(.fixed(width: 120, height: 120))
             .background(Color.blue)
     }

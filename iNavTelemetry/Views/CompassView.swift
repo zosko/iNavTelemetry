@@ -9,7 +9,7 @@ import SwiftUI
 
 struct CompassView: View {
     
-    var heading: Int
+    @ObservedObject var viewModel: AppViewModel
     
     var body: some View {
         ZStack {
@@ -19,14 +19,14 @@ struct CompassView: View {
             Image("compass_plane")
                 .resizable()
                 .aspectRatio(contentMode: .fit)
-                .rotationEffect(Angle(degrees: Double(heading)))
+                .rotationEffect(Angle(degrees: Double(viewModel.telemetry.packet.heading)))
         }.frame(width: 120, height: 120, alignment: .center)
     }
 }
 
 struct CompassView_Previews: PreviewProvider {
     static var previews: some View {
-        CompassView(heading: 0)
+        CompassView(viewModel: .init())
             .previewLayout(.fixed(width: 120, height: 120))
     }
 }

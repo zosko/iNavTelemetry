@@ -9,8 +9,7 @@ import SwiftUI
 
 struct AttitudeView: View {
     
-    var roll: Int
-    var pitch: Int
+    @ObservedObject var viewModel: AppViewModel
     
     var body: some View {
         ZStack {
@@ -20,18 +19,18 @@ struct AttitudeView: View {
             Image("horizon_line")
                 .resizable()
                 .aspectRatio(contentMode: .fit)
-                .offset(y:CGFloat(pitch))
+                .offset(y:CGFloat(viewModel.telemetry.packet.pitch))
             Image("horizon_plane")
                 .resizable()
                 .aspectRatio(contentMode: .fit)
-                .rotationEffect(Angle(degrees: Double(roll)))
+                .rotationEffect(Angle(degrees: Double(viewModel.telemetry.packet.roll)))
         }.frame(width: 120, height: 120, alignment: .center)
     }
 }
 
 struct AttitudeView_Previews: PreviewProvider {
     static var previews: some View {
-        AttitudeView(roll: 0, pitch: 0)
+        AttitudeView(viewModel: .init())
             .previewLayout(.fixed(width: 120, height: 120))
     }
 }

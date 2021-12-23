@@ -118,11 +118,11 @@ class SmartPort: NSObject {
             if bufferIndex == PACKET_SIZE {
                 state = .IDLE
                 
-                isProcessed = true
-                
                 _ = buffer[0] //sensor type
                 let packetType = buffer[1]
                 if packetType == DATA_START {
+                    isProcessed = true
+                    
                     let dataType = buffer_get_int16(buffer: buffer, index:3)
                     let rawData = buffer_get_int32(buffer: buffer, index:7)
                     

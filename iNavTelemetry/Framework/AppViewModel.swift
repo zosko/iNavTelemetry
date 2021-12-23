@@ -18,16 +18,16 @@ struct Plane: Identifiable {
 }
 
 class AppViewModel: NSObject, ObservableObject {
-    @Published var mineLocation = [Plane(id: "", coordinate: .init(), mine: true)]
-    @Published var allPlanes = [Plane(id: "", coordinate: .init(), mine: false)]
-    @Published var logsData: [URL] = []
+    @Published private(set) var mineLocation = Plane(id: "", coordinate: .init(), mine: true)
+    @Published private(set) var allPlanes = [Plane(id: "", coordinate: .init(), mine: false)]
+    @Published private(set) var logsData: [URL] = []
+    @Published private(set) var connected = false
+    @Published private(set) var homePositionAdded = false
+    @Published private(set) var seconds = 0
+    @Published private(set) var bluetoothScanning = false
+    @Published private(set) var telemetry = TelemetryManager.InstrumentTelemetry(packet: TelemetryManager.Packet(), telemetryType: .smartPort)
     @Published var showListLogs = false
     @Published var showPeripherals = false
-    @Published var connected = false
-    @Published var homePositionAdded = false
-    @Published var seconds = 0
-    @Published var bluetoothScanning = false
-    @Published var telemetry = TelemetryManager.InstrumentTelemetry(packet: TelemetryManager.Packet(), telemetryType: .smartPort)
     
     var selectedProtocol: TelemetryManager.TelemetryType = TelemetryManager.TelemetryType.unknown
     var region = MKCoordinateRegion()
@@ -48,10 +48,12 @@ class AppViewModel: NSObject, ObservableObject {
         telemetryManager.addBluetoothManager(bluetoothManager: bluetoothManager)
         
         Publishers.CombineLatest(socketCommunicator.$planes, $mineLocation)
-            .map{ $0.0 + $0.1 }
+            .receive(on: DispatchQueue.main)
+            .map{ $0 + [$1] }
             .assign(to: &$allPlanes)
         
         Publishers.CombineLatest(database.$logs,cloudStorage.$logs)
+            .receive(on: DispatchQueue.main)
             .map { localLogs, remoteLogs in
                 let merged = localLogs + remoteLogs
                 let sorted = merged.sorted { first, second in
@@ -77,66 +79,72 @@ class AppViewModel: NSObject, ObservableObject {
             .assign(to: &$logsData)
         
         bluetoothManager.$isScanning
+            .receive(on: DispatchQueue.main)
             .assign(to: &$bluetoothScanning)
         
-        bluetoothManager.$dataReceived.sink { [unowned self] data in
-            guard self.telemetryManager.parse(incomingData: data) else {
-                return
-            }
-            self.telemetry = self.telemetryManager.telemetry
-                        
-            if (self.telemetry.packet.gps_sats > 5 && !self.homePositionAdded) {
-                self.showHomePosition(location: self.telemetry.location)
-            }
-            
-            self.updateLocation(location: self.telemetry.location)
-            
-            let logTelemetry = TelemetryManager.LogTelemetry(lat: self.telemetry.location.latitude,
-                                                             lng: self.telemetry.location.longitude)
-            
-            if self.homePositionAdded {
-                socketCommunicator.sendPlaneData(location: logTelemetry)
-                database.saveTelemetryData(packet: logTelemetry)
-            }
-        }.store(in: &cancellable)
-        
-        bluetoothManager.$peripheralFound.sink { [unowned self] peripheral in
-            guard let device = peripheral, let _ = device.name else { return }
-            
-            if !self.peripherals.contains(device) {
-                self.peripherals.append(device)
-                self.showPeripherals = self.peripherals.count > 0
-            }
-        }.store(in: &cancellable)
-        
-        bluetoothManager.$connected.sink { [unowned self] connected in
-            self.connected = connected
-            
-            if connected {
-                _ = self.telemetryManager.parse(incomingData: Data()) // initial start for MSP only
+        bluetoothManager.$dataReceived
+            .receive(on: DispatchQueue.main)
+            .sink { [unowned self] data in
+                guard self.telemetryManager.parse(incomingData: data) else { return }
+                self.telemetry = self.telemetryManager.telemetry
                 
-                self.homePositionAdded = false
-                self.seconds = 0
-                timerFlying?.invalidate()
-                timerFlying = nil
-                database.startLogging()
-                
-                timerFlying = Timer.scheduledTimer(withTimeInterval: 1, repeats: true){ timer in
-                    self.seconds += 1
+                if (self.telemetry.packet.gps_sats > 5 && !self.homePositionAdded) {
+                    self.showHomePosition(location: self.telemetry.location)
                 }
-            }
-            else{
+                
+                self.updateLocation(location: self.telemetry.location)
+                
                 if self.homePositionAdded {
-                    if let url = database.stopLogging() {
-                        cloudStorage.saveFileToiCloud(url)
+                    let logTelemetry = TelemetryManager.LogTelemetry(lat: self.telemetry.location.latitude,
+                                                                     lng: self.telemetry.location.longitude)
+                    
+                    socketCommunicator.sendPlaneData(location: logTelemetry)
+                    database.saveTelemetryData(packet: logTelemetry)
+                }
+            }.store(in: &cancellable)
+        
+        bluetoothManager.$peripheralFound
+            .receive(on: DispatchQueue.main)
+            .sink { [unowned self] peripheral in
+                guard let device = peripheral,
+                      let name = device.name, !name.isEmpty else { return }
+                
+                if !self.peripherals.contains(device) {
+                    self.peripherals.append(device)
+                    self.showPeripherals = self.peripherals.count > 0
+                }
+            }.store(in: &cancellable)
+        
+        bluetoothManager.$connected
+            .receive(on: DispatchQueue.main)
+            .sink { [unowned self] connected in
+                self.connected = connected
+                
+                if connected {
+                    _ = self.telemetryManager.parse(incomingData: Data()) // initial start for MSP only
+                    
+                    self.homePositionAdded = false
+                    self.seconds = 0
+                    timerFlying?.invalidate()
+                    timerFlying = nil
+                    database.startLogging()
+                    
+                    timerFlying = Timer.scheduledTimer(withTimeInterval: 1, repeats: true){ timer in
+                        self.seconds += 1
                     }
                 }
-                self.homePositionAdded = false
-                timerFlying?.invalidate()
-                timerFlying = nil
-                self.telemetryManager.stopTelemetry()
-            }
-        }.store(in: &cancellable)
+                else{
+                    if self.homePositionAdded {
+                        if let url = database.stopLogging() {
+                            cloudStorage.saveFileToiCloud(url)
+                        }
+                    }
+                    self.homePositionAdded = false
+                    timerFlying?.invalidate()
+                    timerFlying = nil
+                    self.telemetryManager.stopTelemetry()
+                }
+            }.store(in: &cancellable)
     }
     
     //MARK: Internal functions
@@ -150,15 +158,17 @@ class AppViewModel: NSObject, ObservableObject {
             self.region = MKCoordinateRegion(center: location,
                                              span: MKCoordinateSpan(latitudeDelta: 40, longitudeDelta: 40))
         }
-        self.mineLocation[0] = Plane(id:UUID().uuidString, coordinate: location, mine: true)
+        self.mineLocation = Plane(id:UUID().uuidString, coordinate: location, mine: true)
     }
     func getFlightLogs() {
         database.getLogs()
         cloudStorage.getLogs()
+        showListLogs = true
     }
     func cleanDatabase(){
         database.cleanDatabase()
         cloudStorage.cleanDatabase()
+        showListLogs = false
     }
     func searchDevice() {
         peripherals.removeAll()
