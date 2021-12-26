@@ -41,13 +41,18 @@ class TelemetryManager: NSObject, ObservableObject {
     enum BluetoothType : Int {
         case hm10 = 0
         case frskyBuildIn = 1
+        case tbsCrossfire = 2
     }
 
     enum BluetoothUUID : String {
         case hm10Service = "FFE0"
         case hm10Char = "FFE1" //write
+        
         case frskyService = "FFF0"
         case frskyChar = "FFF6" //write
+        
+        case tbsCrossfireService = "180F"
+        case tbsCrossfireChar = "2A19" //write
     }
     
     enum Stabilization : String {

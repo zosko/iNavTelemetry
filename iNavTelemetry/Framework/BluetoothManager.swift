@@ -145,13 +145,18 @@ class BluetoothManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
     func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?) {
         for characteristic in service.characteristics! {
             peripheral.setNotifyValue(true, for: characteristic)
-            
+
             if characteristic.uuid == CBUUID(string: TelemetryManager.BluetoothUUID.frskyChar.rawValue){
                 self.writeCharacteristic = characteristic
                 self.writeTypeCharacteristic = characteristic.properties == .write ? .withResponse : .withoutResponse
             }
             
             if characteristic.uuid == CBUUID(string: TelemetryManager.BluetoothUUID.hm10Char.rawValue){
+                self.writeCharacteristic = characteristic
+                self.writeTypeCharacteristic = characteristic.properties == .write ? .withResponse : .withoutResponse
+            }
+            
+            if characteristic.uuid == CBUUID(string: TelemetryManager.BluetoothUUID.tbsCrossfireChar.rawValue){
                 self.writeCharacteristic = characteristic
                 self.writeTypeCharacteristic = characteristic.properties == .write ? .withResponse : .withoutResponse
             }
