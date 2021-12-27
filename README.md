@@ -24,6 +24,14 @@ https://deadpan-rightful-aunt.glitch.me
 - **Crossfire** (comming soon)
 - **LTM** (by request if need)
 
+# Supported Bluetooths UUIDs
+Bluetooth|Service|Characteristic
+----------|----------|----------
+HM-10|FFE0|FFE1
+Frsky|FFF0|FFF6
+Crossfire|180F|2A19
+
+
 # Setup on iNav flight controller in CLI
 - smartport_fuel_unit = PERCENT
 - frsky_pitch_roll = ON
