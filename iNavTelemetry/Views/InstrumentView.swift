@@ -8,24 +8,59 @@
 import SwiftUI
 
 struct InstrumentView: View {
-    var type: InstrumentType
+    var types: [InstrumentType]
 
+    @State private var currentType: Int = 0
+    
     var body: some View {
         VStack {
-            Text(type.name).bold()
-                .foregroundColor(type.warning ? Color.red : Color.black)
-            Text(type.value).bold()
-                .foregroundColor(type.warning ? Color.red : Color.black)
+            Text(types[currentType].name).bold()
+                .foregroundColor(types[currentType].warning ? Color.red : Color.black)
+            Text(types[currentType].value).bold()
+                .foregroundColor(types[currentType].warning ? Color.red : Color.black)
         }
+        .modifier(IndicatorTap(showIndicator: types.count > 1))
         .frame(width: 100, height: 40, alignment: .center)
         .background(Color.white.opacity(0.5))
         .cornerRadius(5)
+        .onTapGesture {
+            guard types.count > 1 else { return }
+            
+            let nextElement = currentType + 1
+            if nextElement > types.count - 1 {
+                currentType = 0
+            } else {
+                currentType = nextElement
+            }
+        }
+    }
+}
+
+struct IndicatorTap: ViewModifier {
+    var showIndicator: Bool
+    
+    func body(content: Content) -> some View {
+        ZStack {
+            content
+            if showIndicator {
+                HStack {
+                    Image(systemName: "circle.fill")
+                        .font(.caption)
+                        .foregroundColor(.black)
+                    Spacer()
+                    Image(systemName: "circle.fill")
+                        .font(.caption)
+                        .foregroundColor(.black)
+                }
+            }
+        }
     }
 }
 
 struct InstrumentView_Previews: PreviewProvider {
     static var previews: some View {
-        InstrumentView(type: .armed(packet: .init(packet: .init(), telemetryType: .smartPort)))
+        InstrumentView(types: [.armed(packet: .init(packet: .init(), telemetryType: .smartPort)),
+                               .flymode(packet: .init(packet: .init(), telemetryType: .smartPort))])
             .previewLayout(.fixed(width: 100, height: 50))
     }
 }
@@ -36,6 +71,7 @@ enum InstrumentType {
     case satellites(packet: TelemetryManager.InstrumentTelemetry)
     case distance(packet: TelemetryManager.InstrumentTelemetry)
     case altitude(packet: TelemetryManager.InstrumentTelemetry)
+    case galtitude(packet: TelemetryManager.InstrumentTelemetry)
     case speed(packet: TelemetryManager.InstrumentTelemetry)
     case armed(packet: TelemetryManager.InstrumentTelemetry)
     case signal(packet: TelemetryManager.InstrumentTelemetry)
@@ -52,6 +88,7 @@ enum InstrumentType {
         case .satellites: return "Satellites"
         case .distance: return "Distance"
         case .altitude: return "Altitude"
+        case .galtitude: return "GPS Alt"
         case .speed: return "Speed"
         case .armed: return "Engine"
         case .signal: return "Signal"
@@ -70,6 +107,7 @@ enum InstrumentType {
         case .satellites: return "bonjour"
         case .distance: return "shuffle"
         case .altitude: return "mount"
+        case .galtitude: return "mount"
         case .speed: return "speedometer"
         case .armed: return "shield"
         case .signal: return "antenna.radiowaves.left.and.right"
@@ -87,6 +125,7 @@ enum InstrumentType {
         case .satellites(let packet): return "\(packet.packet.gps_sats)"
         case .distance(let packet): return "\(packet.packet.distance)m"
         case .altitude(let packet): return "\(packet.packet.alt)m"
+        case .galtitude(let packet): return "\(packet.packet.galt)m"
         case .speed(let packet): return "\(packet.packet.speed) km/h"
         case .armed(let packet): return "\(packet.engine.rawValue)"
         case .signal(let packet): return "\(packet.packet.rssi)%"
@@ -105,6 +144,7 @@ enum InstrumentType {
         case .satellites(let packet): return packet.packet.gps_sats < 6
         case .distance(let packet): return packet.packet.distance > 500
         case .altitude(let packet): return packet.packet.alt > 300
+        case .galtitude(let packet): return packet.packet.galt > 700
         case .speed(let packet): return packet.packet.speed > 100
         case .armed(let packet): return packet.engine == .armed
         case .signal(let packet): return packet.packet.rssi < 20

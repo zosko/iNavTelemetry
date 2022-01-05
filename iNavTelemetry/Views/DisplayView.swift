@@ -16,37 +16,37 @@ struct DisplayView: View {
         ZStack {
             HStack {
                 VStack(spacing: 1) {
-                    InstrumentView(type: .distance(packet: viewModel.telemetry))
-                    InstrumentView(type: .altitude(packet: viewModel.telemetry))
-                    InstrumentView(type: .speed(packet: viewModel.telemetry))
+                    InstrumentView(types: [.distance(packet: viewModel.telemetry)])
+                    InstrumentView(types: [.altitude(packet: viewModel.telemetry), .galtitude(packet: viewModel.telemetry)])
+                    InstrumentView(types: [.speed(packet: viewModel.telemetry)])
                     Spacer()
                 }
                 Spacer()
                 VStack {
                     HStack(spacing: 1) {
-                        InstrumentView(type: .latitude(packet: viewModel.telemetry))
-                        InstrumentView(type: .satellites(packet: viewModel.telemetry))
-                        InstrumentView(type: .longitude(packet: viewModel.telemetry))
+                        InstrumentView(types: [.latitude(packet: viewModel.telemetry)])
+                        InstrumentView(types: [.satellites(packet: viewModel.telemetry)])
+                        InstrumentView(types: [.longitude(packet: viewModel.telemetry)])
                     }
                     Spacer()
                 }
                 Spacer()
                 VStack(spacing: 1) {
-                    InstrumentView(type: .armed(packet: viewModel.telemetry))
-                    InstrumentView(type: .signal(packet: viewModel.telemetry))
+                    InstrumentView(types: [.armed(packet: viewModel.telemetry)])
+                    InstrumentView(types: [.signal(packet: viewModel.telemetry)])
                     if viewModel.selectedProtocol != TelemetryManager.TelemetryType.msp {
-                        InstrumentView(type: .fuel(packet: viewModel.telemetry))
+                        InstrumentView(types: [.fuel(packet: viewModel.telemetry)])
                     }
-                    InstrumentView(type: .flymode(packet: viewModel.telemetry))
+                    InstrumentView(types: [.flymode(packet: viewModel.telemetry)])
                     Spacer()
                 }
             }
             VStack {
                 Spacer()
                 HStack(alignment: .bottom ,spacing: 1) {
-                    InstrumentView(type: .current(packet: viewModel.telemetry))
-                    InstrumentView(type: .voltage(packet: viewModel.telemetry))
-                    InstrumentView(type: .flytime(seconds: viewModel.seconds))
+                    InstrumentView(types: [.current(packet: viewModel.telemetry)])
+                    InstrumentView(types: [.voltage(packet: viewModel.telemetry)])
+                    InstrumentView(types: [.flytime(seconds: viewModel.seconds)])
                     Spacer()
                     ConnectionView(viewModel: viewModel)
                     CompassView(viewModel: viewModel)

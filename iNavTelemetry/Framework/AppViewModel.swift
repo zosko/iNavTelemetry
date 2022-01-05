@@ -130,7 +130,11 @@ class AppViewModel: NSObject, ObservableObject {
                     database.startLogging()
                     
                     timerFlying = Timer.scheduledTimer(withTimeInterval: 1, repeats: true){ timer in
-                        self.seconds += 1
+                        if self.telemetry.engine == .armed {
+                            self.seconds += 1
+                        } else {
+                            self.seconds = 0
+                        }
                     }
                 }
                 else{
