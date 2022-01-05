@@ -132,6 +132,8 @@ class SmartPort: NSObject {
                     case GSPEED_SENSOR, APID_GPS_SPEED:
                         packet.speed = Int((Double(rawData) / (1944.0 / 100.0)) / 27.778)
                     case GALT_SENSOR, APID_GPS_ALTITUDE:
+                        packet.galt = Int(Double(rawData) / 100.0)
+                    case ALT_SENSOR, APID_ALTITUDE:
                         packet.alt = Int(Double(rawData) / 100.0)
                     case DISTANCE_SENSOR:
                         packet.distance = Int(rawData)

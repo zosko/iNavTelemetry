@@ -76,6 +76,7 @@ class TelemetryManager: NSObject, ObservableObject {
         var lat: Double = 0.0
         var lng: Double = 0.0
         var alt: Int = 0
+        var galt: Int = 0
         var gps_sats: Int = 0
         var distance: Int = 0
         var speed: Int = 0
