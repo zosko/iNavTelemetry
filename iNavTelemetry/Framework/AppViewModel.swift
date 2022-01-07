@@ -21,15 +21,14 @@ class AppViewModel: NSObject, ObservableObject {
     @Published private(set) var mineLocation = Plane(id: "", coordinate: .init(), mine: true)
     @Published private(set) var allPlanes = [Plane(id: "", coordinate: .init(), mine: false)]
     @Published private(set) var logsData: [URL] = []
-    @Published private(set) var connected = false
+    @Published private(set) var bluetootnConnected = false
     @Published private(set) var homePositionAdded = false
     @Published private(set) var seconds = 0
     @Published private(set) var bluetoothScanning = false
-    @Published private(set) var telemetry = TelemetryManager.InstrumentTelemetry(packet: TelemetryManager.Packet(), telemetryType: .smartPort)
+    @Published private(set) var telemetry = TelemetryManager.InstrumentTelemetry(packet: TelemetryManager.Packet(), telemetryType: .unknown)
     @Published var showListLogs = false
     @Published var showPeripherals = false
     
-    var selectedProtocol: TelemetryManager.TelemetryType = TelemetryManager.TelemetryType.unknown
     var region = MKCoordinateRegion()
     var peripherals : [CBPeripheral] = []
     
@@ -118,7 +117,7 @@ class AppViewModel: NSObject, ObservableObject {
         bluetoothManager.$connected
             .receive(on: DispatchQueue.main)
             .sink { [unowned self] connected in
-                self.connected = connected
+                self.bluetootnConnected = connected
                 
                 if connected {
                     _ = self.telemetryManager.parse(incomingData: Data()) // initial start for MSP only

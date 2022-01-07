@@ -21,18 +21,12 @@ class TelemetryManager: NSObject, ObservableObject {
         
         var name: String {
             switch self {
-            case .unknown:
-                return "Unknown"
-            case .smartPort:
-                return "S.Port"
-            case .msp:
-                return "MSP"
-            case .custom:
-                return "Custom"
-            case .mavLink_v1:
-                return "MavLink V1"
-            case .mavLink_v2:
-                return "MavLink V2"
+            case .unknown: return "Unknown"
+            case .smartPort: return "S.Port"
+            case .msp: return "MSP"
+            case .custom: return "Custom"
+            case .mavLink_v1: return "MavLink V1"
+            case .mavLink_v2: return "MavLink V2"
             }
             
         }
@@ -103,7 +97,7 @@ class TelemetryManager: NSObject, ObservableObject {
     struct InstrumentTelemetry {
         var packet: Packet
         
-        var telemetryType: TelemetryType = .smartPort
+        var telemetryType: TelemetryType = .unknown
         var location: CLLocationCoordinate2D {
             .init(latitude: packet.lat, longitude: packet.lng)
         }
@@ -165,12 +159,12 @@ class TelemetryManager: NSObject, ObservableObject {
             telemetry = InstrumentTelemetry(packet: packet, telemetryType: telemetryType)
         }
     }
-    private var telemetryType: TelemetryType = .unknown
+    @Published private(set) var telemetryType: TelemetryType = .unknown
     private var protocolDetector: [TelemetryType] = []
     private var timerRequestMSP: Timer?
     private var bluetoothManager: BluetoothManager?
     
-    @Published var telemetry: InstrumentTelemetry = .init(packet: .init(), telemetryType: .smartPort)
+    @Published var telemetry: InstrumentTelemetry = .init(packet: .init(), telemetryType: .unknown)
     
     //MARK: - Internal functions
     func stopTelemetry() {
@@ -241,23 +235,23 @@ class TelemetryManager: NSObject, ObservableObject {
         }
         
         if custom.process_incoming_bytes(incomingData: incomingData) {
-            protocolDetector.append(.custom)
+            if custom.packet.rssi != 0 { protocolDetector.append(.custom) }
             receivedUnknown = false
         }
         if smartPort.process_incoming_bytes(incomingData: incomingData) {
-            protocolDetector.append(.smartPort)
+            if smartPort.packet.rssi != 0 { protocolDetector.append(.smartPort) }
             receivedUnknown = false
         }
         if msp.process_incoming_bytes(incomingData: incomingData) {
-            protocolDetector.append(.msp)
+            if msp.packet.rssi != 0 { protocolDetector.append(.msp) }
             receivedUnknown = false
         }
         if mavLink_v1.process_incoming_bytes(incomingData: incomingData) {
-            protocolDetector.append(.mavLink_v1)
+            if mavLink_v1.packet.rssi != 0 { protocolDetector.append(.mavLink_v1) }
             receivedUnknown = false
         }
         if mavLink_v2.process_incoming_bytes(incomingData: incomingData) {
-            protocolDetector.append(.mavLink_v2)
+            if mavLink_v2.packet.rssi != 0 { protocolDetector.append(.mavLink_v2) }
             receivedUnknown = false
         }
         
@@ -276,15 +270,7 @@ class TelemetryManager: NSObject, ObservableObject {
     }
     private func requestTelemetry(peripheral: CBPeripheral, characteristic: CBCharacteristic, writeType: CBCharacteristicWriteType) {
         switch telemetryType {
-        case .unknown:
-            break
-        case .custom:
-            break
-        case .smartPort:
-            break
-        case .mavLink_v1:
-            break
-        case .mavLink_v2:
+        case .unknown, .custom, .smartPort, .mavLink_v1, .mavLink_v2:
             break
         case .msp:
             peripheral.writeValue(msp.request(messageID: .MSP_STATUS), for: characteristic, type: writeType)

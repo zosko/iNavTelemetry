@@ -44,11 +44,11 @@ struct IndicatorTap: ViewModifier {
             content
             if showIndicator {
                 HStack {
-                    Image(systemName: "circle.fill")
+                    Image(systemName: "arrow.left")
                         .font(.caption)
                         .foregroundColor(.black)
                     Spacer()
-                    Image(systemName: "circle.fill")
+                    Image(systemName: "arrow.right")
                         .font(.caption)
                         .foregroundColor(.black)
                 }

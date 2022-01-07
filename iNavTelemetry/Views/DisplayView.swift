@@ -34,7 +34,7 @@ struct DisplayView: View {
                 VStack(spacing: 1) {
                     InstrumentView(types: [.armed(packet: viewModel.telemetry)])
                     InstrumentView(types: [.signal(packet: viewModel.telemetry)])
-                    if viewModel.selectedProtocol != TelemetryManager.TelemetryType.msp {
+                    if viewModel.telemetry.telemetryType != .msp {
                         InstrumentView(types: [.fuel(packet: viewModel.telemetry)])
                     }
                     InstrumentView(types: [.flymode(packet: viewModel.telemetry)])
@@ -53,7 +53,32 @@ struct DisplayView: View {
                     AttitudeView(viewModel: viewModel)
                 }
             }
-            if viewModel.connected && !viewModel.homePositionAdded {
+            
+            if viewModel.bluetootnConnected &&
+                viewModel.telemetry.telemetryType == .unknown {
+                Text("Detecting protocol")
+                    .font(.largeTitle)
+                    .bold()
+                    .foregroundColor(.white)
+                    .padding(40)
+                    .background(Color.black
+                                    .opacity(0.5)
+                                    .cornerRadius(20))
+                Button {
+                    print("stop telemetry")
+                } label: {
+                    Image(systemName: "xmark.circle.fill")
+                        .font(.system(size: 30))
+                        .foregroundColor(.white)
+                }
+                .buttonStyle(PlainButtonStyle())
+                .offset(x:155, y:-40)
+            }
+            
+            if viewModel.bluetootnConnected &&
+                !viewModel.homePositionAdded &&
+                viewModel.telemetry.telemetryType != .unknown {
+                
                 VStack {
                     Text("Waiting for satellites")
                         .font(.largeTitle)

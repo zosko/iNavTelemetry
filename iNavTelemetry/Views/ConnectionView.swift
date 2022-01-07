@@ -18,7 +18,7 @@ struct ConnectionView: View {
             HStack {
                 Spacer()
                 
-                if !viewModel.connected {
+                if !viewModel.bluetootnConnected {
                     Button(action: {
                         viewModel.getFlightLogs()
                     }){
@@ -32,7 +32,7 @@ struct ConnectionView: View {
                 Button(action: {
                     viewModel.searchDevice()
                 }){
-                    Image(viewModel.connected ? "power_on" : "power_off")
+                    Image(viewModel.bluetootnConnected ? "power_on" : "power_off")
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .frame(width:60, height:60)
