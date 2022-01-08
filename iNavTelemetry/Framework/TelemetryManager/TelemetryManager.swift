@@ -243,7 +243,7 @@ class TelemetryManager: NSObject, ObservableObject {
             receivedUnknown = false
         }
         if msp.process_incoming_bytes(incomingData: incomingData) {
-            if msp.packet.rssi != 0 { protocolDetector.append(.msp) }
+            if msp.packet.flight_mode != 0 { protocolDetector.append(.msp) }
             receivedUnknown = false
         }
         if mavLink_v1.process_incoming_bytes(incomingData: incomingData) {

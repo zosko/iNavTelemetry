@@ -143,25 +143,33 @@ class BluetoothManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
         }
     }
     func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?) {
+        guard !self.connected else { return }
+        
         for characteristic in service.characteristics! {
-            peripheral.setNotifyValue(true, for: characteristic)
-
             if characteristic.uuid == CBUUID(string: TelemetryManager.BluetoothUUID.frskyChar.rawValue){
+                peripheral.setNotifyValue(true, for: characteristic)
                 self.writeCharacteristic = characteristic
                 self.writeTypeCharacteristic = characteristic.properties == .write ? .withResponse : .withoutResponse
+                print("frsky bluetooth: \(characteristic.uuid)")
+                self.connected = true
             }
             
             if characteristic.uuid == CBUUID(string: TelemetryManager.BluetoothUUID.hm10Char.rawValue){
+                peripheral.setNotifyValue(true, for: characteristic)
                 self.writeCharacteristic = characteristic
                 self.writeTypeCharacteristic = characteristic.properties == .write ? .withResponse : .withoutResponse
+                print("hm10 bluetooth: \(characteristic.uuid)")
+                self.connected = true
             }
             
             if characteristic.uuid == CBUUID(string: TelemetryManager.BluetoothUUID.tbsCrossfireChar.rawValue){
+                peripheral.setNotifyValue(true, for: characteristic)
                 self.writeCharacteristic = characteristic
                 self.writeTypeCharacteristic = characteristic.properties == .write ? .withResponse : .withoutResponse
+                print("tbsCrossfire bluetooth: \(characteristic.uuid)")
+                self.connected = true
             }
 
         }
-        self.connected = true
     }
 }
