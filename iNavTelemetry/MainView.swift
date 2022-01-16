@@ -9,7 +9,7 @@ import SwiftUI
 
 struct MainView: View {
     
-    @State private var logBookCoordinates: [TelemetryManager.LogTelemetry]? = nil
+    @State private var logBookCoordinates: [LogTelemetry]? = nil
     
     var body: some View {
         ZStack {

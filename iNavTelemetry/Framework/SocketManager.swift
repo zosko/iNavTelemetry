@@ -7,55 +7,84 @@
 //
 
 import SwiftUI
-import SocketIO
 import Combine
 
-class SocketComunicator: NSObject, ObservableObject {
+final class SocketComunicator: NSObject, ObservableObject {
+    @Published private(set) var planes: [Plane] = []
     
-    let manager = SocketManager(socketURL: URL(string: "https://deadpan-rightful-aunt.glitch.me")!, config: [.log(false), .compress])
+    private var webSocket: URLSessionWebSocketTask?
+    private let uniqUUID = UUID().uuidString
     
-    @Published var planes: [Plane] = []
-        
+    // MARK: - Initialization
     override init() {
         super.init()
+        let session = URLSession(configuration: .default, delegate: nil, delegateQueue: .main)
         
-        manager.defaultSocket.on(clientEvent: .connect) {_, _ in
-            print("socket connected")
+        if let url = URL(string: "ws://localhost:8080") {
+            webSocket = session.webSocketTask(with: url)
+            webSocket?.resume()
+            
+            receive()
+            ping()
         }
-        manager.defaultSocket.on(clientEvent: .error) {data, _ in
-            print("socket disconnect")
-        }
-        manager.defaultSocket.on(clientEvent: .statusChange) {data, _ in
-            print("socket status: \(data)")
-        }
-        manager.defaultSocket.on(clientEvent: .disconnect) {_, _ in
-            print("socket disconnect")
-        }
-        manager.defaultSocket.on("planesLocation") { [unowned self] data, _ in
-            do {
-                let jsonData = try JSONSerialization.data(withJSONObject: data[0])
-                let decoder = JSONDecoder()
-                
-                let allPlanes = try decoder.decode([TelemetryManager.LogTelemetry].self, from: jsonData)
-                self.planes = allPlanes.map {
-                    Plane(id: $0.id, coordinate: $0.location, mine: $0.id == manager.defaultSocket.sid)
-                }.filter{
-                    return $0.id != manager.defaultSocket.sid
-                }
-            } catch {
-                print(error)
-            }
-        }
-        
-        manager.defaultSocket.connect()
     }
     
-    func sendPlaneData(location: TelemetryManager.LogTelemetry){
-        if let uniqID = manager.defaultSocket.sid {
-            manager.defaultSocket.emit("planeLocation",["lat":location.lat,
-                                                        "lng":location.lng,
-                                                        "id": uniqID
-            ])
+    // MARK: - Private methods
+    private func ping() {
+        webSocket?.sendPing { error in
+            if let error = error {
+                self.webSocket = nil
+                print("WebSocket ping error: \(error)")
+            }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 10) {
+                self.ping()
+            }
         }
+    }
+    private func close() {
+        webSocket?.cancel(with: .goingAway, reason: nil)
+    }
+    private func receive() {
+        webSocket?.receive { result in
+            switch result {
+            case let .success(message):
+                switch message {
+                case let .data(data):
+                    print("WebSocket data: \(data)")
+                case let .string(string):
+                    if let jsonData = string.data(using: .utf8),
+                       let allPlanes = try? JSONDecoder().decode([LogTelemetry].self,
+                                                                 from: jsonData) {
+                        self.planes = allPlanes.map {
+                            Plane(id: $0.id, coordinate: $0.location, mine: $0.id == self.uniqUUID)
+                        }.filter{
+                            return $0.id != self.uniqUUID
+                        }
+                    } else {
+                        print("WebSocket JSONDecoder problem")
+                    }
+                default:
+                    break
+                }
+                self.receive()
+            case let .failure(error):
+                print("WebSocket receive error: \(error)")
+                self.webSocket = nil
+            }
+        }
+    }
+    func send(_ data: Data) {
+        webSocket?.send(.data(data)) { error in
+            if let error = error {
+                print("WebSocket send error: \(error)")
+            }
+        }
+    }
+    
+    // MARK: - Internal methods
+    func sendPlaneData(location: LogTelemetry){
+        let dataToSend = LogTelemetry(id: self.uniqUUID, lat: location.lat, lng: location.lng)
+        guard let data = try? JSONEncoder().encode(dataToSend) else { return }
+        self.send(data)
     }
 }

@@ -3,10 +3,11 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 52;
+	objectVersion = 50;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6D02C82727941C2A009D7047 /* TelemetryTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D02C82627941C2A009D7047 /* TelemetryTypes.swift */; };
 		6D04DBEE26E4D0AA003783F2 /* DisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D04DBED26E4D0AA003783F2 /* DisplayView.swift */; };
 		6D04DBFB26E4DC67003783F2 /* InstrumentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D04DBFA26E4DC67003783F2 /* InstrumentView.swift */; };
 		6D04DC0526E4EAD2003783F2 /* AttitudeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D04DC0426E4EAD2003783F2 /* AttitudeView.swift */; };
@@ -31,11 +32,11 @@
 		6DD7D1AF26F3D46E00735EA2 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DD7D1AE26F3D46E00735EA2 /* MainView.swift */; };
 		6DDD9052271E1AC00031E328 /* MavLink_v1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DDD9051271E1ABF0031E328 /* MavLink_v1.swift */; };
 		6DF2432D26F5F5E600DE6FE8 /* SocketManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DF2432C26F5F5E600DE6FE8 /* SocketManager.swift */; };
-		6DF2433126F5F64600DE6FE8 /* SocketIO in Frameworks */ = {isa = PBXBuildFile; productRef = 6DF2433026F5F64600DE6FE8 /* SocketIO */; };
 		6DF6723A27012558007CBD63 /* MapViewLines.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DF6723927012558007CBD63 /* MapViewLines.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		6D02C82627941C2A009D7047 /* TelemetryTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TelemetryTypes.swift; sourceTree = "<group>"; };
 		6D04DBED26E4D0AA003783F2 /* DisplayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayView.swift; sourceTree = "<group>"; };
 		6D04DBFA26E4DC67003783F2 /* InstrumentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstrumentView.swift; sourceTree = "<group>"; };
 		6D04DC0426E4EAD2003783F2 /* AttitudeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttitudeView.swift; sourceTree = "<group>"; };
@@ -71,7 +72,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6DF2433126F5F64600DE6FE8 /* SocketIO in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -139,6 +139,7 @@
 			children = (
 				6DAF1E5726EDF57400DBE06A /* Protocols */,
 				6D3F821826ED47FF009B408D /* TelemetryManager.swift */,
+				6D02C82627941C2A009D7047 /* TelemetryTypes.swift */,
 			);
 			path = TelemetryManager;
 			sourceTree = "<group>";
@@ -193,7 +194,6 @@
 			);
 			name = iNavTelemetry;
 			packageProductDependencies = (
-				6DF2433026F5F64600DE6FE8 /* SocketIO */,
 			);
 			productName = iNavTelemetry;
 			productReference = 6D34745126E4CD39001F1E59 /* iNavTelemetry.app */;
@@ -223,7 +223,6 @@
 			);
 			mainGroup = 6D34744826E4CD39001F1E59;
 			packageReferences = (
-				6DF2432F26F5F64600DE6FE8 /* XCRemoteSwiftPackageReference "socket" */,
 			);
 			productRefGroup = 6D34745226E4CD39001F1E59 /* Products */;
 			projectDirPath = "";
@@ -266,6 +265,7 @@
 				6D3F821D26ED47FF009B408D /* TelemetryManager.swift in Sources */,
 				6D04DBEE26E4D0AA003783F2 /* DisplayView.swift in Sources */,
 				6D3F821A26ED47FF009B408D /* SmartPort.swift in Sources */,
+				6D02C82727941C2A009D7047 /* TelemetryTypes.swift in Sources */,
 				6D04DC0E26E4F4BD003783F2 /* Logbook.swift in Sources */,
 				6D04DC0526E4EAD2003783F2 /* AttitudeView.swift in Sources */,
 				6D04DBFB26E4DC67003783F2 /* InstrumentView.swift in Sources */,
@@ -470,25 +470,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCRemoteSwiftPackageReference section */
-		6DF2432F26F5F64600DE6FE8 /* XCRemoteSwiftPackageReference "socket" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/socketio/socket.io-client-swift";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 16.0.1;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		6DF2433026F5F64600DE6FE8 /* SocketIO */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 6DF2432F26F5F64600DE6FE8 /* XCRemoteSwiftPackageReference "socket" */;
-			productName = SocketIO;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 6D34744926E4CD39001F1E59 /* Project object */;
 }

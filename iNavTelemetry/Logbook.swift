@@ -10,7 +10,7 @@ import MapKit
 
 struct Logbook: View {
     
-    @Binding var logBookCoordinates: [TelemetryManager.LogTelemetry]?
+    @Binding var logBookCoordinates: [LogTelemetry]?
     
     private var coordinates: [CLLocationCoordinate2D] {
         guard let logBook = logBookCoordinates else { return [] }

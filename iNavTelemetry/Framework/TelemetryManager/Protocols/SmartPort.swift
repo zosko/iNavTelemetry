@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-class SmartPort: NSObject {
+final class SmartPort {
     
     enum State : Int {
         case IDLE = 0
@@ -77,18 +77,18 @@ class SmartPort: NSObject {
     private var newLongitude = false
     private var latitude : Double = 0.0
     private var longitude : Double = 0.0
-    var packet = TelemetryManager.Packet()
+    var packet = Packet()
     
-    //MARK: Helpers
-    private func buffer_get_int16(buffer: [UInt8], index : Int) -> UInt16{
+    // MARK: - Private methods
+    private func buffer_get_int16(buffer: [UInt8], index : Int) -> UInt16 {
         return UInt16(buffer[index]) << 8 | UInt16(buffer[index - 1])
     }
     private func buffer_get_int32(buffer: [UInt8], index : Int) -> Int32 {
         return Int32(buffer[index]) << 24 | Int32(buffer[index - 1]) << 16 | Int32(buffer[index - 2]) << 8 | Int32(buffer[index - 3])
     }
     
-    //MARK: Telemetry functions
-    func process_incoming_bytes(incomingData: Data) -> Bool{
+    // MARK: - Internal methods
+    func process_incoming_bytes(incomingData: Data) -> Bool {
         let data: [UInt8] = incomingData.map{ $0 }
         var isProcessed = false
         for i in 0 ..< data.count {

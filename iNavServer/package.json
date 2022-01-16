@@ -8,7 +8,7 @@
   },
   "dependencies": {
     "express": "^4.17.1",
-    "socket.io": "^2.3.0"
+    "ws": "^8.4.2"
   },
   "engines": {
     "node": "12.x"

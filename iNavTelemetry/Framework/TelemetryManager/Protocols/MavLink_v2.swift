@@ -8,7 +8,20 @@
 import SwiftUI
 import CoreLocation
 
-class MavLink_v2: NSObject {
+final class MavLink_v2 {
+    
+    enum State {
+        case IDLE
+        case LENGTH
+        case INCOMPATIBILITY
+        case COMPATIBILITY
+        case INDEX
+        case SYSTEM_ID
+        case COMPONENT_ID
+        case MESSAGE_ID
+        case PAYLOAD
+        case CRC
+    }
     
     private var crc = CRCMAVLink()
     private var state = State.IDLE
@@ -26,20 +39,7 @@ class MavLink_v2: NSObject {
     private var crcLow: UInt8 = 0
     private var crcHigh: UInt8 = 0
     private var gotRadioStatus = false
-
-    enum State {
-        case IDLE
-        case LENGTH
-        case INCOMPATIBILITY
-        case COMPATIBILITY
-        case INDEX
-        case SYSTEM_ID
-        case COMPONENT_ID
-        case MESSAGE_ID
-        case PAYLOAD
-        case CRC
-    }
-
+    
     private let PACKET_MARKER = 0xFD
     
     private let MAVLINK_MSG_ID_HEARTBEAT: UInt8 = 0
@@ -52,7 +52,7 @@ class MavLink_v2: NSObject {
     private let MAVLINK_MSG_ID_VFR_HUD: UInt8 = 74
     private let MAVLINK_MSG_ID_RADIO_STATUS: UInt8 = 109
 
-    var packet = TelemetryManager.Packet()
+    var packet = Packet()
     var newLatitude = false
     var newLongitude = false
     var originLatitude = 0.0
@@ -60,18 +60,7 @@ class MavLink_v2: NSObject {
     var latitude = 0.0
     var longitude = 0.0
 
-    //MARK: Helpers
-    private func rad2deg(_ number: Double) -> Double {
-        return number * 180 / .pi
-    }
-    private func buffer_get_int16(buffer: [UInt8], index : Int) -> UInt16{
-        return UInt16(buffer[index]) << 8 | UInt16(buffer[index - 1])
-    }
-    private func buffer_get_int32(buffer: [UInt8], index : Int) -> Int32 {
-        return Int32(buffer[index]) << 24 | Int32(buffer[index - 1]) << 16 | Int32(buffer[index - 2]) << 8 | Int32(buffer[index - 3])
-    }
-
-    //MARK: Telemetry functions
+    // MARK: - Internal methods
     func process_incoming_bytes(incomingData: Data) -> Bool{
         let data: [UInt8] = incomingData.map{ $0 }
         var isProcessed = false
@@ -142,6 +131,16 @@ class MavLink_v2: NSObject {
         return isProcessed
     }
 
+    // MARK: - Private methods
+    private func rad2deg(_ number: Double) -> Double {
+        return number * 180 / .pi
+    }
+    private func buffer_get_int16(buffer: [UInt8], index : Int) -> UInt16{
+        return UInt16(buffer[index]) << 8 | UInt16(buffer[index - 1])
+    }
+    private func buffer_get_int32(buffer: [UInt8], index : Int) -> Int32 {
+        return Int32(buffer[index]) << 24 | Int32(buffer[index - 1]) << 16 | Int32(buffer[index - 2]) << 8 | Int32(buffer[index - 3])
+    }
     private func processPacket() {
         if (messageId == MAVLINK_MSG_ID_SYS_STATUS) {
             packet.voltage = Double(buffer_get_int16(buffer: buffer, index: 15)) / 1000.0
@@ -196,8 +195,7 @@ class MavLink_v2: NSObject {
             print("not parsed [messageID] \(messageId) [data] \(buffer)")
         }
     }
-
-    private func gpsCoordinate(){
+    private func gpsCoordinate() {
         if (originLatitude > 0 && originLongitude > 0 && latitude > 0 && longitude > 0) {
             let coordinate0 = CLLocation(latitude: originLatitude, longitude: originLongitude)
             let coordinate1 = CLLocation(latitude: latitude, longitude: longitude)
@@ -212,7 +210,6 @@ class MavLink_v2: NSObject {
             newLongitude = false
         }
     }
-
     private func checkCrc() -> Bool {
         crc.start_checksum()
         crc.update_checksum(Int(packetLength))

@@ -9,15 +9,55 @@ import SwiftUI
 
 struct InstrumentView: View {
     var types: [InstrumentType]
-
+    var telemetry: InstrumentTelemetry
     @State private var currentType: Int = 0
+    
+    var value: String {
+        switch types[currentType] {
+        case .latitude: return "\(telemetry.location.latitude)"
+        case .longitude: return "\(telemetry.location.longitude)"
+        case .satellites: return "\(telemetry.packet.gps_sats)"
+        case .distance: return "\(telemetry.packet.distance)m"
+        case .altitude: return "\(telemetry.packet.alt)m"
+        case .galtitude: return "\(telemetry.packet.galt)m"
+        case .speed: return "\(telemetry.packet.speed) km/h"
+        case .armed: return "\(telemetry.engine.rawValue)"
+        case .signal: return "\(telemetry.packet.rssi)%"
+        case .fuel: return "\(telemetry.packet.fuel)%"
+        case .flymode: return "\(telemetry.stabilization)"
+        case .flytime: return "missing"//"\(String(format:"%02ld:%02ld:%02ld",seconds/3600,(seconds/60)%60,seconds%60))"
+        case .current: return "\(telemetry.packet.current) amp"
+        case .voltage: return "\(telemetry.packet.voltage)v"
+        }
+    }
+    
+    var warning: Bool {
+        switch types[currentType] {
+        case .latitude: return telemetry.location.latitude == 0
+        case .longitude: return telemetry.location.longitude == 0
+        case .satellites: return telemetry.packet.gps_sats < 6
+        case .distance: return telemetry.packet.distance > 500
+        case .altitude: return telemetry.packet.alt > 300
+        case .galtitude: return telemetry.packet.galt > 700
+        case .speed: return telemetry.packet.speed > 100
+        case .armed: return telemetry.engine == .armed
+        case .signal: return telemetry.packet.rssi < 20
+        case .fuel: return telemetry.packet.fuel < 20
+        case .flymode: return telemetry.stabilization == .manual
+        case .flytime: return false
+        case .current: return telemetry.packet.current > 30
+        case .voltage: return telemetry.packet.voltage < 7
+        }
+    }
     
     var body: some View {
         VStack {
-            Text(types[currentType].name).bold()
-                .foregroundColor(types[currentType].warning ? Color.red : Color.black)
-            Text(types[currentType].value).bold()
-                .foregroundColor(types[currentType].warning ? Color.red : Color.black)
+            Text(types[currentType].name)
+                .bold()
+                .foregroundColor(warning ? Color.red : Color.black)
+            Text(value)
+                .bold()
+                .foregroundColor(warning ? Color.red : Color.black)
         }
         .modifier(IndicatorTap(showIndicator: types.count > 1))
         .frame(width: 100, height: 40, alignment: .center)
@@ -59,27 +99,27 @@ struct IndicatorTap: ViewModifier {
 
 struct InstrumentView_Previews: PreviewProvider {
     static var previews: some View {
-        InstrumentView(types: [.armed(packet: .init(packet: .init(), telemetryType: .smartPort)),
-                               .flymode(packet: .init(packet: .init(), telemetryType: .smartPort))])
+        InstrumentView(types: [.armed, .distance],
+                       telemetry: InstrumentTelemetry(packet: .init(), telemetryType: .smartPort))
             .previewLayout(.fixed(width: 100, height: 50))
     }
 }
 
 enum InstrumentType {
-    case latitude(packet: TelemetryManager.InstrumentTelemetry)
-    case longitude(packet: TelemetryManager.InstrumentTelemetry)
-    case satellites(packet: TelemetryManager.InstrumentTelemetry)
-    case distance(packet: TelemetryManager.InstrumentTelemetry)
-    case altitude(packet: TelemetryManager.InstrumentTelemetry)
-    case galtitude(packet: TelemetryManager.InstrumentTelemetry)
-    case speed(packet: TelemetryManager.InstrumentTelemetry)
-    case armed(packet: TelemetryManager.InstrumentTelemetry)
-    case signal(packet: TelemetryManager.InstrumentTelemetry)
-    case fuel(packet: TelemetryManager.InstrumentTelemetry)
-    case flymode(packet: TelemetryManager.InstrumentTelemetry)
-    case flytime(seconds: Int)
-    case current(packet: TelemetryManager.InstrumentTelemetry)
-    case voltage(packet: TelemetryManager.InstrumentTelemetry)
+    case latitude
+    case longitude
+    case satellites
+    case distance
+    case altitude
+    case galtitude
+    case speed
+    case armed
+    case signal
+    case fuel
+    case flymode
+    case flytime
+    case current
+    case voltage
     
     var name: String {
         switch self {
@@ -116,43 +156,6 @@ enum InstrumentType {
         case .flytime: return "timer"
         case .current: return "directcurrent"
         case .voltage: return "minus.plus.batteryblock"
-        }
-    }
-    var value: String {
-        switch self {
-        case .latitude(let packet): return "\(packet.location.latitude)"
-        case .longitude(let packet): return "\(packet.location.longitude)"
-        case .satellites(let packet): return "\(packet.packet.gps_sats)"
-        case .distance(let packet): return "\(packet.packet.distance)m"
-        case .altitude(let packet): return "\(packet.packet.alt)m"
-        case .galtitude(let packet): return "\(packet.packet.galt)m"
-        case .speed(let packet): return "\(packet.packet.speed) km/h"
-        case .armed(let packet): return "\(packet.engine.rawValue)"
-        case .signal(let packet): return "\(packet.packet.rssi)%"
-        case .fuel(let packet): return "\(packet.packet.fuel)%"
-        case .flymode(let packet): return "\(packet.stabilization)"
-        case .flytime(let seconds): return "\(String(format:"%02ld:%02ld:%02ld",seconds/3600,(seconds/60)%60,seconds%60))"
-        case .current(let packet): return "\(packet.packet.current) amp"
-        case .voltage(let packet): return "\(packet.packet.voltage)v"
-        }
-    }
-    
-    var warning: Bool {
-        switch self {
-        case .latitude(let packet): return packet.location.latitude == 0
-        case .longitude(let packet): return packet.location.longitude == 0
-        case .satellites(let packet): return packet.packet.gps_sats < 6
-        case .distance(let packet): return packet.packet.distance > 500
-        case .altitude(let packet): return packet.packet.alt > 300
-        case .galtitude(let packet): return packet.packet.galt > 700
-        case .speed(let packet): return packet.packet.speed > 100
-        case .armed(let packet): return packet.engine == .armed
-        case .signal(let packet): return packet.packet.rssi < 20
-        case .fuel(let packet): return packet.packet.fuel < 20
-        case .flymode(let packet): return packet.stabilization == .manual
-        case .flytime(_): return false
-        case .current(let packet): return packet.packet.current > 30
-        case .voltage(let packet): return packet.packet.voltage < 7
         }
     }
 }

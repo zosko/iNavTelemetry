@@ -8,35 +8,15 @@
 
 import SwiftUI
 
-class Custom : NSObject{
+final class Custom {
     private var rcv_buffer : [UInt8] = []
     private var buffer_index : Int = 0
     private var found_header : Bool = false
     private var rcv_length : UInt8 = 0
     
-    var packet = TelemetryManager.Packet()
+    var packet = Packet()
     
-    //MARK: Helpers
-    private func buffer_get_int16(buffer: [UInt8], index : Int) -> UInt16{
-        return UInt16(buffer[index]) << 8 | UInt16(buffer[index + 1])
-    }
-    private func buffer_get_int32(buffer: [UInt8], index : Int) -> UInt32 {
-        return UInt32(buffer[index]) << 24 | UInt32(buffer[index + 1]) << 16 | UInt32(buffer[index + 2]) << 8 | UInt32(buffer[index + 3])
-    }
-    private func buffer_get_float16(buffer: [UInt8], scale : Double, index : Int) -> Double{
-        return Double(buffer_get_int16(buffer: buffer, index: index)) / scale
-    }
-    private func buffer_get_float32(buffer: [UInt8], scale : Double, index : Int) -> Double{
-        return (Double)(buffer_get_int32(buffer: buffer, index: index)) / scale
-    }
-    private func linearInterpolation(inVal:Double, inMin:Double, inMax:Double, outMin:Double, outMax:Double) -> Double{
-        if (inMin == 0 && inMax == 0) {
-            return 0.0;
-        }
-        return (inVal - inMin) / (inMax - inMin) * (outMax - outMin) + outMin;
-    }
-    
-    //MARK: Telemetry functions
+    // MARK: Internal methods
     func process_incoming_bytes(incomingData: Data) -> Bool{
         let bytes: [UInt8] = incomingData.map{ $0 }
         let START_FLAG : UInt8 = 0xFE
@@ -85,7 +65,27 @@ class Custom : NSObject{
         }
         return false
     }
-    private func readPacket(payload : [UInt8]){
+    
+    // MARK: Private methods
+    private func buffer_get_int16(buffer: [UInt8], index : Int) -> UInt16 {
+        return UInt16(buffer[index]) << 8 | UInt16(buffer[index + 1])
+    }
+    private func buffer_get_int32(buffer: [UInt8], index : Int) -> UInt32 {
+        return UInt32(buffer[index]) << 24 | UInt32(buffer[index + 1]) << 16 | UInt32(buffer[index + 2]) << 8 | UInt32(buffer[index + 3])
+    }
+    private func buffer_get_float16(buffer: [UInt8], scale : Double, index : Int) -> Double {
+        return Double(buffer_get_int16(buffer: buffer, index: index)) / scale
+    }
+    private func buffer_get_float32(buffer: [UInt8], scale : Double, index : Int) -> Double {
+        return (Double)(buffer_get_int32(buffer: buffer, index: index)) / scale
+    }
+    private func linearInterpolation(inVal:Double, inMin:Double, inMax:Double, outMin:Double, outMax:Double) -> Double{
+        if (inMin == 0 && inMax == 0) {
+            return 0.0;
+        }
+        return (inVal - inMin) / (inMax - inMin) * (outMax - outMin) + outMin;
+    }
+    private func readPacket(payload : [UInt8]) {
         var ind : Int = 0
 
         packet.lat = buffer_get_float32(buffer: payload, scale:1e7, index:ind)

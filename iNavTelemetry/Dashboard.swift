@@ -9,7 +9,7 @@ import SwiftUI
 
 struct Dashboard: View {
     
-    @Binding var logBookCoordinates: [TelemetryManager.LogTelemetry]?
+    @Binding var logBookCoordinates: [LogTelemetry]?
     
     @StateObject private var viewModel = AppViewModel()
     
@@ -38,18 +38,18 @@ struct Dashboard: View {
                     Spacer()
                     ScrollView(showsIndicators: false) {
                         ForEach(viewModel.peripherals, id:\.self) { peripheral in
-                            let name = peripheral.name ?? "no-name"
-                            Button {
-                                viewModel.connectTo(peripheral)
-                            } label: {
-                                Text(name)
-                                    .foregroundColor(.white)
-                                    .font(.title)
-                                    .bold()
+                            if let name = peripheral.name, !name.isEmpty {
+                                Button {
+                                    viewModel.connectTo(peripheral)
+                                } label: {
+                                    Text(name)
+                                        .foregroundColor(.white)
+                                        .font(.title)
+                                        .bold()
+                                }
+                                .padding(.bottom, 20)
+                                .buttonStyle(PlainButtonStyle())
                             }
-                            .padding(.bottom, 20)
-                            .buttonStyle(PlainButtonStyle())
-                            
                         }
                     }
                     Spacer()
@@ -79,26 +79,25 @@ struct Dashboard: View {
                     }
                     ScrollView(showsIndicators: false) {
                         ForEach(viewModel.logsData, id:\.self) { log in
-                            let timestamp = Double(log.pathComponents.last!)!
-                            let name = Database.toName(timestamp: timestamp)
-                            
-                            Button {
-                                do {
-                                    let jsonData = try Data(contentsOf: log)
-                                    let logData = try JSONDecoder().decode([TelemetryManager.LogTelemetry].self, from: jsonData)
+                            if let pathName = log.pathComponents.last,
+                               let timestamp = Double(pathName),
+                               let name = Database.toName(timestamp: timestamp){
+                                
+                                Button {
+                                    guard let jsonData = try? Data(contentsOf: log),
+                                          let logData = try? JSONDecoder().decode([LogTelemetry].self,
+                                                                                  from: jsonData) else { return }
                                     viewModel.showListLogs = false
                                     logBookCoordinates = logData
-                                } catch {
-                                    print(error)
+                                } label: {
+                                    Text(name)
+                                        .foregroundColor(.white)
+                                        .font(.title)
+                                        .bold()
                                 }
-                            } label: {
-                                Text(name)
-                                    .foregroundColor(.white)
-                                    .font(.title)
-                                    .bold()
+                                .padding(.bottom, 20)
+                                .buttonStyle(PlainButtonStyle())
                             }
-                            .padding(.bottom, 20)
-                            .buttonStyle(PlainButtonStyle())
                         }
                     }
                     Spacer()

@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-class MSP_V2: NSObject {
+final class MSP_V2 {
     
     enum MSP_Request_Replies: Int16 {
         case MSP_STATUS                 = 101
@@ -56,9 +56,10 @@ class MSP_V2: NSObject {
       let current_set: UInt8
     }
     
-    var packet = TelemetryManager.Packet()
+    var packet = Packet()
     
-    func request(messageID: MSP_Request_Replies) -> Data{
+    // MARK: - Internal methods
+    func request(messageID: MSP_Request_Replies) -> Data {
         let flag: UInt8 = 0
         var crc: UInt8 = 0
         var tmp_buf: [UInt8] = [UInt8](repeating: 0, count: 2)
@@ -90,36 +91,6 @@ class MSP_V2: NSObject {
         
         return Data(bytes: buffer, count: buffer.count)
     }
-    
-    private func dataToStruct<T>(buffer: [UInt8], structType: T.Type) -> T {
-        let dataPayload = Data(bytes: buffer, count: buffer.count)
-        let converted:T = dataPayload.withUnsafeBytes { $0.load(as: structType.self) }
-        return converted
-    }
-    
-    private func buffer_get_int16(buffer: [UInt8], index : Int) -> Int16{
-        return Int16(buffer[index]) << 8 | Int16(buffer[index - 1])
-    }
-    
-    private func buffer_get_int32(buffer: [UInt8], index : Int) -> Int32 {
-        return Int32(buffer[index]) << 24 | Int32(buffer[index - 1]) << 16 | Int32(buffer[index - 2]) << 8 | Int32(buffer[index - 3])
-    }
-    
-    private func crc8_dvb_s2(crc: UInt8, a: UInt8) -> UInt8 {
-        var newCRC = crc
-        newCRC ^= a
-        
-        for _ in 0 ..< 8 {
-            if ((newCRC & 0x80) != 0) {
-                newCRC = (newCRC << 1) ^ 0xD5;
-            } else {
-                newCRC = newCRC << 1;
-            }
-        }
-        
-        return newCRC
-    }
-    
     func process_incoming_bytes(incomingData: Data) -> Bool {
         guard incomingData.count > 8 else { return false }
         
@@ -206,5 +177,32 @@ class MSP_V2: NSObject {
             }
         }
         return false
+    }
+    
+    // MARK: Private methods
+    private func dataToStruct<T>(buffer: [UInt8], structType: T.Type) -> T {
+        let dataPayload = Data(bytes: buffer, count: buffer.count)
+        let converted:T = dataPayload.withUnsafeBytes { $0.load(as: structType.self) }
+        return converted
+    }
+    private func buffer_get_int16(buffer: [UInt8], index : Int) -> Int16{
+        return Int16(buffer[index]) << 8 | Int16(buffer[index - 1])
+    }
+    private func buffer_get_int32(buffer: [UInt8], index : Int) -> Int32 {
+        return Int32(buffer[index]) << 24 | Int32(buffer[index - 1]) << 16 | Int32(buffer[index - 2]) << 8 | Int32(buffer[index - 3])
+    }
+    private func crc8_dvb_s2(crc: UInt8, a: UInt8) -> UInt8 {
+        var newCRC = crc
+        newCRC ^= a
+        
+        for _ in 0 ..< 8 {
+            if ((newCRC & 0x80) != 0) {
+                newCRC = (newCRC << 1) ^ 0xD5;
+            } else {
+                newCRC = newCRC << 1;
+            }
+        }
+        
+        return newCRC
     }
 }

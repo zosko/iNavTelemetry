@@ -2,38 +2,45 @@ var express = require("express");
 var app = express();
 var http = require("http");
 var server = http.createServer(app);
-var path = require('path');
+var webSocket = require('ws');
 var database = {};
-const { Server } = require("socket.io");
-const io = new Server(server);
+var wss = new webSocket.Server({ server });
 
-server.listen(3000);
-app.use(express.static(path.join(__dirname, 'public')))
 app.get('/', function(req, res){
-  res.sendFile('public/index.html', { root : __dirname })
+  res.sendFile('index.html', { root : __dirname })
 })
 
-io.sockets.on("connection", function(socket) {
-  setInterval(function(){ 
-    var planes = Object.keys(database).map(key => database[key]);
-    socket.emit("planesLocation", planes); 
-  }, 2000);
-  
-  //send to everyone -> io.sockets.emit('planes',plane);
-  //send to everyone except for sender -> socket.broadcast.emit('planes',plane); 
-  
-  // socket.id
-  // socket.username
-  // socket.roomnum
-  
-  socket.on("planeLocation", function(plane) {
-    database[socket.id] = {lat : plane.lat,
-                           lng : plane.lng,
-                           id: plane.id};
+wss.on('connection', function connection(ws) {
+  ws.isAlive = true;
+
+  ws.on('pong', () => {
+    ws.isAlive = true;
   });
-  socket.on("disconnect", function() {
-    //remove plane from database
-    delete database[socket.id];
+
+  ws.on('message', function message(data) {
+    const plane = JSON.parse(data.toString());
+    ws.id = plane.id
+    database[plane.id] = { id: plane.id, lat : plane.lat, lng : plane.lng };
   });
 });
+      
+setInterval( function() { 
+  wss.clients.forEach(function each(client) {
+    var planes = Object.keys(database).map(key => database[key]);
+    client.send(JSON.stringify(planes));
+  });
+}, 2000);
 
+setInterval( function() { 
+  wss.clients.forEach(function each(ws) {
+    if (ws.isAlive == false) {
+      delete database[ws.id]
+      ws.terminate();
+    } else {
+      ws.isAlive = false;
+      ws.ping();  
+    }
+  });
+}, 30000);
+
+server.listen(8080);

@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-class MSP_V1: NSObject {
+final class MSP_V1 {
     
     enum MSP_Request_Replies: UInt8 {
         case MSP_STATUS                 = 101
@@ -56,8 +56,9 @@ class MSP_V1: NSObject {
       let current_set: UInt8
     }
     
-    var packet = TelemetryManager.Packet()
+    var packet = Packet()
     
+    // MARK: Internal methods
     func request(messageID: MSP_Request_Replies) -> Data{
         var buffer : [UInt8] = [UInt8](repeating: 0, count: 6)
         buffer[0] = 36 // "$"
@@ -140,16 +141,15 @@ class MSP_V1: NSObject {
         return false
     }
     
+    // MARK: - Private methods
     private func dataToStruct<T>(buffer: [UInt8], structType: T.Type) -> T {
         let dataPayload = Data(bytes: buffer, count: buffer.count)
         let converted:T = dataPayload.withUnsafeBytes { $0.load(as: structType.self) }
         return converted
     }
-    
-    private func buffer_get_int16(buffer: [UInt8], index : Int) -> Int16{
+    private func buffer_get_int16(buffer: [UInt8], index : Int) -> Int16 {
         return Int16(buffer[index]) << 8 | Int16(buffer[index - 1])
     }
-    
     private func buffer_get_int32(buffer: [UInt8], index : Int) -> Int32 {
         return Int32(buffer[index]) << 24 | Int32(buffer[index - 1]) << 16 | Int32(buffer[index - 2]) << 8 | Int32(buffer[index - 3])
     }

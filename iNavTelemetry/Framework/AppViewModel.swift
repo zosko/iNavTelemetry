@@ -17,7 +17,7 @@ struct Plane: Identifiable {
     let mine: Bool
 }
 
-class AppViewModel: NSObject, ObservableObject {
+class AppViewModel: ObservableObject {
     @Published private(set) var mineLocation = Plane(id: "", coordinate: .init(), mine: true)
     @Published private(set) var allPlanes = [Plane(id: "", coordinate: .init(), mine: false)]
     @Published private(set) var logsData: [URL] = []
@@ -25,11 +25,11 @@ class AppViewModel: NSObject, ObservableObject {
     @Published private(set) var homePositionAdded = false
     @Published private(set) var seconds = 0
     @Published private(set) var bluetoothScanning = false
-    @Published private(set) var telemetry = TelemetryManager.InstrumentTelemetry(packet: TelemetryManager.Packet(), telemetryType: .unknown)
+    @Published private(set) var telemetry = InstrumentTelemetry(packet: Packet(), telemetryType: .unknown)
     @Published var showListLogs = false
     @Published var showPeripherals = false
     
-    var region = MKCoordinateRegion()
+    var region = MKCoordinateRegion(center: .init(), span: .init(latitudeDelta: 100, longitudeDelta: 100))
     var peripherals : [CBPeripheral] = []
     
     @ObservedObject private var bluetoothManager = BluetoothManager()
@@ -41,18 +41,14 @@ class AppViewModel: NSObject, ObservableObject {
     private var telemetryManager = TelemetryManager()
     private var timerFlying: Timer?
     
-    override init(){
-        super.init()
-        self.region.span = MKCoordinateSpan(latitudeDelta: 100, longitudeDelta: 100)
+    init(){
         telemetryManager.addBluetoothManager(bluetoothManager: bluetoothManager)
         
         Publishers.CombineLatest(socketCommunicator.$planes, $mineLocation)
-            .receive(on: DispatchQueue.main)
             .map{ $0 + [$1] }
             .assign(to: &$allPlanes)
         
         Publishers.CombineLatest(database.$logs,cloudStorage.$logs)
-            .receive(on: DispatchQueue.main)
             .map { localLogs, remoteLogs in
                 let merged = localLogs + remoteLogs
                 let sorted = merged.sorted { first, second in
@@ -78,11 +74,10 @@ class AppViewModel: NSObject, ObservableObject {
             .assign(to: &$logsData)
         
         bluetoothManager.$isScanning
-            .receive(on: DispatchQueue.main)
             .assign(to: &$bluetoothScanning)
         
         bluetoothManager.$dataReceived
-            .receive(on: DispatchQueue.main)
+            .compactMap({ $0 })
             .sink { [unowned self] data in
                 guard self.telemetryManager.parse(incomingData: data) else { return }
                 self.telemetry = self.telemetryManager.telemetry
@@ -94,28 +89,26 @@ class AppViewModel: NSObject, ObservableObject {
                 self.updateLocation(location: self.telemetry.location)
                 
                 if self.homePositionAdded {
-                    let logTelemetry = TelemetryManager.LogTelemetry(lat: self.telemetry.location.latitude,
-                                                                     lng: self.telemetry.location.longitude)
+                    let logTelemetry = LogTelemetry(lat: self.telemetry.location.latitude,
+                                                    lng: self.telemetry.location.longitude)
                     
                     socketCommunicator.sendPlaneData(location: logTelemetry)
                     database.saveTelemetryData(packet: logTelemetry)
                 }
             }.store(in: &cancellable)
         
-        bluetoothManager.$peripheralFound
-            .receive(on: DispatchQueue.main)
+        bluetoothManager.$listPeripherals
+            .compactMap({ $0 })
             .sink { [unowned self] peripheral in
-                guard let device = peripheral,
-                      let name = device.name, !name.isEmpty else { return }
+                guard let name = peripheral.name, !name.isEmpty else { return }
                 
-                if !self.peripherals.contains(device) {
-                    self.peripherals.append(device)
+                if !self.peripherals.contains(peripheral) {
+                    self.peripherals.append(peripheral)
                     self.showPeripherals = self.peripherals.count > 0
                 }
             }.store(in: &cancellable)
         
         bluetoothManager.$connected
-            .receive(on: DispatchQueue.main)
             .sink { [unowned self] connected in
                 self.bluetootnConnected = connected
                 
@@ -150,7 +143,10 @@ class AppViewModel: NSObject, ObservableObject {
             }.store(in: &cancellable)
     }
     
-    //MARK: Internal functions
+    // MARK: - Private methods
+    
+    
+    // MARK: - Internal functions
     func showHomePosition(location: CLLocationCoordinate2D) {
         homePositionAdded = true
         self.region = MKCoordinateRegion(center: location,

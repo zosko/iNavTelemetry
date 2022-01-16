@@ -7,81 +7,72 @@
 
 import Foundation
 
-class CloudStorage: NSObject, ObservableObject {
+final class CloudStorage: ObservableObject {
     
-    @Published var logs: [URL] = []
+    @Published private(set) var logs: [URL] = []
     
-    override init() {
-        super.init()
+    private var iCloudAvailable: Bool {
+        guard let _ = FileManager.default.ubiquityIdentityToken else { return false }
+        return true
+    }
+    
+    // MARK: - Initialization
+    init() {
         createDirectory()
     }
     
-    private func isICloudContainerAvailable() -> Bool {
-        return FileManager.default.ubiquityIdentityToken == nil ? false : true
+    // MARK: - Private Methods
+    private func pathCloudStorage() -> URL? {
+        guard let url = FileManager.default.url(forUbiquityContainerIdentifier: nil) else {
+            return nil
+        }
+        return url.appendingPathComponent("Documents")
     }
     private func createDirectory(){
-        if isICloudContainerAvailable() {
-            if let iCloudDocumentsURL = FileManager.default.url(forUbiquityContainerIdentifier: nil)?.appendingPathComponent("Documents") {
-                if (!FileManager.default.fileExists(atPath: iCloudDocumentsURL.path, isDirectory: nil)) {
-                    do {
-                        try FileManager.default.createDirectory(at: iCloudDocumentsURL, withIntermediateDirectories: true, attributes: nil)
-                    }
-                    catch {
-                        print("Error in creating document folder")
-                    }
-                }
-            }
-        }
-        else {
-            print("Not logged into iCloud")
-        }
+        guard iCloudAvailable else { return }
+        guard let iCloudDocumentsURL = pathCloudStorage(),
+              FileManager.default.fileExists(atPath: iCloudDocumentsURL.path, isDirectory: nil),
+              let _ = try? FileManager.default.createDirectory(at: iCloudDocumentsURL, withIntermediateDirectories: true, attributes: nil) else {
+                  print("Error in creating document folder")
+                  return
+              }
     }
     
+    // MARK: - Internal Methods
     func saveFileToiCloud(_ fileURL: URL) {
-        if isICloudContainerAvailable() {
-            guard let iCloudDocumentsURL = FileManager.default.url(forUbiquityContainerIdentifier: nil)?.appendingPathComponent("Documents").appendingPathComponent(fileURL.lastPathComponent) else { return }
-            var isDir: ObjCBool = false
-            if !FileManager.default.fileExists(atPath: iCloudDocumentsURL.path, isDirectory: &isDir) {
-                do {
-                    try FileManager.default.copyItem(at: fileURL, to: iCloudDocumentsURL)
-                }
-                catch {
-                    print("Error in copy item")
-                }
-            }
-        }
-        else {
-            print("Not logged into iCloud")
+        guard iCloudAvailable else { return }
+        guard let cloudStorage = pathCloudStorage() else { return }
+        let iCloudDocumentsURL = cloudStorage.appendingPathComponent(fileURL.lastPathComponent)
+        
+        var isDir: ObjCBool = false
+        if !FileManager.default.fileExists(atPath: iCloudDocumentsURL.path, isDirectory: &isDir) {
+            guard let _ = try? FileManager.default.copyItem(at: fileURL, to: iCloudDocumentsURL) else { return }
         }
     }
     func getLogs() {
-        if isICloudContainerAvailable() {
-            guard let documentsUrl = FileManager.default.url(forUbiquityContainerIdentifier: nil)?.appendingPathComponent("Documents") else { return }
-            
-            let directoryContents = try! FileManager.default.contentsOfDirectory(at: documentsUrl, includingPropertiesForKeys: nil, options: [.skipsHiddenFiles])
-            self.logs = directoryContents
-                .filter { url in
-                    let nameFile = url.lastPathComponent
-                    return !nameFile.isEmpty && nameFile.rangeOfCharacter(from: CharacterSet.decimalDigits.inverted) == nil
+        guard iCloudAvailable else { return }
+        
+        guard let cloudStorage = pathCloudStorage(),
+              let directoryContents = try? FileManager.default.contentsOfDirectory(at: cloudStorage, includingPropertiesForKeys: nil, options: [.skipsHiddenFiles]) else { return }
+        
+        self.logs = directoryContents
+            .filter {
+                let nameOfFile = $0.lastPathComponent
+                if let _ = nameOfFile.rangeOfCharacter(from: .decimalDigits.inverted), !nameOfFile.isEmpty {
+                    return false
                 }
-                .sorted{ Int($0.lastPathComponent)! > Int($1.lastPathComponent)! }
-        }
-        else {
-            print("Not logged into iCloud")
-        }
+                return true
+            }
+            .sorted {
+                if let first = Int($0.lastPathComponent),
+                   let second = Int($1.lastPathComponent) {
+                    return first > second
+                }
+                return false
+            }
     }
     func cleanDatabase() {
-        if isICloudContainerAvailable() {
-            for logs in self.logs {
-                do{
-                    try FileManager.default.removeItem(atPath: logs.path)
-                }catch{
-                    print(error)
-                }
-            }
-        }
-        else {
-            print("Not logged into iCloud")
-        }
+        guard iCloudAvailable else { return }
+        logs.forEach { guard let _ = try? FileManager.default.removeItem(atPath: $0.path) else { return } }
     }
 }
