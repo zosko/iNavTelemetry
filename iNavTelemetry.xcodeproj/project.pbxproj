@@ -26,6 +26,7 @@
 		6D3F821D26ED47FF009B408D /* TelemetryManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D3F821826ED47FF009B408D /* TelemetryManager.swift */; };
 		6D3F821E26ED47FF009B408D /* Custom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D3F821926ED47FF009B408D /* Custom.swift */; };
 		6D49B7A326E80515006833A9 /* AppViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D49B7A226E80515006833A9 /* AppViewModel.swift */; };
+		6D4E9AED2794E81D00EBF7B5 /* iNavTelemetryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D4E9AEC2794E81D00EBF7B5 /* iNavTelemetryTests.swift */; };
 		6D5B151F2701EC9F001C40BF /* CloudStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D5B151E2701EC9F001C40BF /* CloudStorage.swift */; };
 		6DAF1E5426EDEAD700DBE06A /* Database.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DAF1E5326EDEAD700DBE06A /* Database.swift */; };
 		6DBA3DCB27119B9500D79FFB /* MavLink_v2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DBA3DCA27119B9500D79FFB /* MavLink_v2.swift */; };
@@ -34,6 +35,16 @@
 		6DF2432D26F5F5E600DE6FE8 /* SocketManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DF2432C26F5F5E600DE6FE8 /* SocketManager.swift */; };
 		6DF6723A27012558007CBD63 /* MapViewLines.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DF6723927012558007CBD63 /* MapViewLines.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		6D4E9AEE2794E81D00EBF7B5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6D34744926E4CD39001F1E59 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 6D34745026E4CD39001F1E59;
+			remoteInfo = iNavTelemetry;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		6D02C82627941C2A009D7047 /* TelemetryTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TelemetryTypes.swift; sourceTree = "<group>"; };
@@ -57,6 +68,8 @@
 		6D3F821826ED47FF009B408D /* TelemetryManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TelemetryManager.swift; sourceTree = "<group>"; };
 		6D3F821926ED47FF009B408D /* Custom.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Custom.swift; sourceTree = "<group>"; };
 		6D49B7A226E80515006833A9 /* AppViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppViewModel.swift; sourceTree = "<group>"; };
+		6D4E9AEA2794E81D00EBF7B5 /* iNavTelemetryTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = iNavTelemetryTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		6D4E9AEC2794E81D00EBF7B5 /* iNavTelemetryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iNavTelemetryTests.swift; sourceTree = "<group>"; };
 		6D5B151C2701EB82001C40BF /* iNavTelemetry.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = iNavTelemetry.entitlements; sourceTree = "<group>"; };
 		6D5B151E2701EC9F001C40BF /* CloudStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudStorage.swift; sourceTree = "<group>"; };
 		6DAF1E5326EDEAD700DBE06A /* Database.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Database.swift; sourceTree = "<group>"; };
@@ -75,6 +88,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		6D4E9AE72794E81D00EBF7B5 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -82,6 +102,7 @@
 			isa = PBXGroup;
 			children = (
 				6D34745326E4CD39001F1E59 /* iNavTelemetry */,
+				6D4E9AEB2794E81D00EBF7B5 /* iNavTelemetryTests */,
 				6D34745226E4CD39001F1E59 /* Products */,
 				6DF67235270120A0007CBD63 /* Frameworks */,
 			);
@@ -91,6 +112,7 @@
 			isa = PBXGroup;
 			children = (
 				6D34745126E4CD39001F1E59 /* iNavTelemetry.app */,
+				6D4E9AEA2794E81D00EBF7B5 /* iNavTelemetryTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -142,6 +164,14 @@
 				6D02C82627941C2A009D7047 /* TelemetryTypes.swift */,
 			);
 			path = TelemetryManager;
+			sourceTree = "<group>";
+		};
+		6D4E9AEB2794E81D00EBF7B5 /* iNavTelemetryTests */ = {
+			isa = PBXGroup;
+			children = (
+				6D4E9AEC2794E81D00EBF7B5 /* iNavTelemetryTests.swift */,
+			);
+			path = iNavTelemetryTests;
 			sourceTree = "<group>";
 		};
 		6DAF1E5726EDF57400DBE06A /* Protocols */ = {
@@ -199,17 +229,39 @@
 			productReference = 6D34745126E4CD39001F1E59 /* iNavTelemetry.app */;
 			productType = "com.apple.product-type.application";
 		};
+		6D4E9AE92794E81D00EBF7B5 /* iNavTelemetryTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6D4E9AF02794E81D00EBF7B5 /* Build configuration list for PBXNativeTarget "iNavTelemetryTests" */;
+			buildPhases = (
+				6D4E9AE62794E81D00EBF7B5 /* Sources */,
+				6D4E9AE72794E81D00EBF7B5 /* Frameworks */,
+				6D4E9AE82794E81D00EBF7B5 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				6D4E9AEF2794E81D00EBF7B5 /* PBXTargetDependency */,
+			);
+			name = iNavTelemetryTests;
+			productName = iNavTelemetryTests;
+			productReference = 6D4E9AEA2794E81D00EBF7B5 /* iNavTelemetryTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
 		6D34744926E4CD39001F1E59 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1300;
+				LastSwiftUpdateCheck = 1320;
 				LastUpgradeCheck = 1240;
 				TargetAttributes = {
 					6D34745026E4CD39001F1E59 = {
 						CreatedOnToolsVersion = 12.4;
+					};
+					6D4E9AE92794E81D00EBF7B5 = {
+						CreatedOnToolsVersion = 13.2;
+						TestTargetID = 6D34745026E4CD39001F1E59;
 					};
 				};
 			};
@@ -229,6 +281,7 @@
 			projectRoot = "";
 			targets = (
 				6D34745026E4CD39001F1E59 /* iNavTelemetry */,
+				6D4E9AE92794E81D00EBF7B5 /* iNavTelemetryTests */,
 			);
 		};
 /* End PBXProject section */
@@ -240,6 +293,13 @@
 			files = (
 				6D34745C26E4CD3A001F1E59 /* Preview Assets.xcassets in Resources */,
 				6D34745926E4CD3A001F1E59 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6D4E9AE82794E81D00EBF7B5 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -277,7 +337,23 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		6D4E9AE62794E81D00EBF7B5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6D4E9AED2794E81D00EBF7B5 /* iNavTelemetryTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		6D4E9AEF2794E81D00EBF7B5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 6D34745026E4CD39001F1E59 /* iNavTelemetry */;
+			targetProxy = 6D4E9AEE2794E81D00EBF7B5 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		6D34745E26E4CD3A001F1E59 /* Debug */ = {
@@ -448,6 +524,44 @@
 			};
 			name = Release;
 		};
+		6D4E9AF12794E81D00EBF7B5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = us.g6.iNavTelemetry.iNavTelemetryTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/iNavTelemetry.app/iNavTelemetry";
+			};
+			name = Debug;
+		};
+		6D4E9AF22794E81D00EBF7B5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = us.g6.iNavTelemetry.iNavTelemetryTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/iNavTelemetry.app/iNavTelemetry";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -465,6 +579,15 @@
 			buildConfigurations = (
 				6D34746126E4CD3A001F1E59 /* Debug */,
 				6D34746226E4CD3A001F1E59 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		6D4E9AF02794E81D00EBF7B5 /* Build configuration list for PBXNativeTarget "iNavTelemetryTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6D4E9AF12794E81D00EBF7B5 /* Debug */,
+				6D4E9AF22794E81D00EBF7B5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
