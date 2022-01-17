@@ -1,4 +1,4 @@
-name: iOS workflow
+name: CI
 
 on:
   push:
@@ -7,19 +7,15 @@ on:
     branches: [ main ]
 
 jobs:
-  build-and-test:
-    name: Build and Test
+  build:
     runs-on: macos-latest
 
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+        
+      - name: Select Xcode
+        run: sudo xcode-select -switch /Applications/Xcode_12.app
 
-      - name: Clean
-        run: xcodebuild clean -scheme iNavTelemetry -project iNavTelemetry.xcodeproj
-
-      - name: Build
-        run: xcodebuild build-for-testing -scheme iNavTelemetry -project iNavTelemetry.xcodeproj -destination "generic/platform=iOS Simulator"
-      
-      - name: Test
-        run: xcodebuild test-without-building -scheme iNavTelemetry -project iNavTelemetry.xcodeproj -destination "platform=iOS Simulator,name=iPhone 13,OS=15.2"
+      - name: Build and Test
+        run: xcodebuild clean build test -scheme iNavTelemetry -project iNavTelemetry.xcodeproj -sdk iphonesimulator -destination "platform=iOS Simulator,name=iPhone 11" ONLY_ACTIVE_ARCH=NO CODE_SIGNING_REQUIRED=NO
