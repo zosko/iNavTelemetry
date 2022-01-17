@@ -35,8 +35,10 @@ struct Logbook: View {
     }
 }
 
+#if !DO_NOT_UNIT_TEST
 struct Logbook_Previews: PreviewProvider {
     static var previews: some View {
         Logbook(logBookCoordinates: .constant(nil))
     }
 }
+#endif

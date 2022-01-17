@@ -44,6 +44,7 @@ struct ConnectionView: View {
     }
 }
 
+#if !DO_NOT_UNIT_TEST
 struct ConnectionView_Previews: PreviewProvider {
     static var previews: some View {
         ConnectionView(viewModel: .init())
@@ -51,3 +52,4 @@ struct ConnectionView_Previews: PreviewProvider {
             .background(Color.blue)
     }
 }
+#endif

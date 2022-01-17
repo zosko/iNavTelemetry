@@ -24,9 +24,11 @@ struct CompassView: View {
     }
 }
 
+#if !DO_NOT_UNIT_TEST
 struct CompassView_Previews: PreviewProvider {
     static var previews: some View {
         CompassView(viewModel: .init())
             .previewLayout(.fixed(width: 120, height: 120))
     }
 }
+#endif

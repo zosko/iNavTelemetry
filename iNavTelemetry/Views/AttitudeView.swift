@@ -28,9 +28,11 @@ struct AttitudeView: View {
     }
 }
 
+#if !DO_NOT_UNIT_TEST
 struct AttitudeView_Previews: PreviewProvider {
     static var previews: some View {
         AttitudeView(viewModel: .init())
             .previewLayout(.fixed(width: 120, height: 120))
     }
 }
+#endif

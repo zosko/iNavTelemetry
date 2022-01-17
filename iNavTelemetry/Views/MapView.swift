@@ -26,8 +26,10 @@ struct MapView: View {
     }
 }
 
+#if !DO_NOT_UNIT_TEST
 struct MapView_Previews: PreviewProvider {
     static var previews: some View {
         MapView(viewModel: .init())
     }
 }
+#endif

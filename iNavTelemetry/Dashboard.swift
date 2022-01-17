@@ -128,9 +128,11 @@ struct Dashboard: View {
     }
 }
 
+#if !DO_NOT_UNIT_TEST
 struct Dashboard_Previews: PreviewProvider {
     static var previews: some View {
         Dashboard(logBookCoordinates: .constant(nil))
             .previewLayout(.fixed(width: 812, height: 375))
     }
 }
+#endif

@@ -22,8 +22,10 @@ struct MainView: View {
     }
 }
 
+#if !DO_NOT_UNIT_TEST
 struct MainView_Previews: PreviewProvider {
     static var previews: some View {
         MainView()
     }
 }
+#endif

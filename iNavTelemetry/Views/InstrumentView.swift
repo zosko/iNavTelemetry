@@ -97,6 +97,7 @@ struct IndicatorTap: ViewModifier {
     }
 }
 
+#if !DO_NOT_UNIT_TEST
 struct InstrumentView_Previews: PreviewProvider {
     static var previews: some View {
         InstrumentView(types: [.armed, .distance],
@@ -104,58 +105,4 @@ struct InstrumentView_Previews: PreviewProvider {
             .previewLayout(.fixed(width: 100, height: 50))
     }
 }
-
-enum InstrumentType {
-    case latitude
-    case longitude
-    case satellites
-    case distance
-    case altitude
-    case galtitude
-    case speed
-    case armed
-    case signal
-    case fuel
-    case flymode
-    case flytime
-    case current
-    case voltage
-    
-    var name: String {
-        switch self {
-        case .latitude: return "Latitude"
-        case .longitude: return "Longitude"
-        case .satellites: return "Satellites"
-        case .distance: return "Distance"
-        case .altitude: return "Altitude"
-        case .galtitude: return "GPS Alt"
-        case .speed: return "Speed"
-        case .armed: return "Engine"
-        case .signal: return "Signal"
-        case .fuel: return "Fuel"
-        case .flymode: return "Fly mode"
-        case .flytime: return "Fly time"
-        case .current: return "Current"
-        case .voltage: return "Voltage"
-        }
-    }
-    
-    var imageName: String {
-        switch self {
-        case .latitude: return "network"
-        case .longitude: return "network"
-        case .satellites: return "bonjour"
-        case .distance: return "shuffle"
-        case .altitude: return "mount"
-        case .galtitude: return "mount"
-        case .speed: return "speedometer"
-        case .armed: return "shield"
-        case .signal: return "antenna.radiowaves.left.and.right"
-        case .fuel: return "fuelpump"
-        case .flymode: return "airplane.circle"
-        case .flytime: return "timer"
-        case .current: return "directcurrent"
-        case .voltage: return "minus.plus.batteryblock"
-        }
-    }
-}
+#endif

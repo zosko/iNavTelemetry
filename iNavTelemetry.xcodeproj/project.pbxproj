@@ -25,8 +25,8 @@
 		6D3F821C26ED47FF009B408D /* Msp_v1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D3F821726ED47FF009B408D /* Msp_v1.swift */; };
 		6D3F821D26ED47FF009B408D /* TelemetryManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D3F821826ED47FF009B408D /* TelemetryManager.swift */; };
 		6D3F821E26ED47FF009B408D /* Custom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D3F821926ED47FF009B408D /* Custom.swift */; };
+		6D46055B27958B510017EC5A /* TelemetryTypesSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D46055A27958B510017EC5A /* TelemetryTypesSpec.swift */; };
 		6D49B7A326E80515006833A9 /* AppViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D49B7A226E80515006833A9 /* AppViewModel.swift */; };
-		6D4E9AED2794E81D00EBF7B5 /* iNavTelemetryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D4E9AEC2794E81D00EBF7B5 /* iNavTelemetryTests.swift */; };
 		6D5B151F2701EC9F001C40BF /* CloudStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D5B151E2701EC9F001C40BF /* CloudStorage.swift */; };
 		6DAF1E5426EDEAD700DBE06A /* Database.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DAF1E5326EDEAD700DBE06A /* Database.swift */; };
 		6DBA3DCB27119B9500D79FFB /* MavLink_v2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DBA3DCA27119B9500D79FFB /* MavLink_v2.swift */; };
@@ -67,9 +67,9 @@
 		6D3F821726ED47FF009B408D /* Msp_v1.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Msp_v1.swift; sourceTree = "<group>"; };
 		6D3F821826ED47FF009B408D /* TelemetryManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TelemetryManager.swift; sourceTree = "<group>"; };
 		6D3F821926ED47FF009B408D /* Custom.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Custom.swift; sourceTree = "<group>"; };
+		6D46055A27958B510017EC5A /* TelemetryTypesSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TelemetryTypesSpec.swift; sourceTree = "<group>"; };
 		6D49B7A226E80515006833A9 /* AppViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppViewModel.swift; sourceTree = "<group>"; };
 		6D4E9AEA2794E81D00EBF7B5 /* iNavTelemetryTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = iNavTelemetryTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		6D4E9AEC2794E81D00EBF7B5 /* iNavTelemetryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iNavTelemetryTests.swift; sourceTree = "<group>"; };
 		6D5B151C2701EB82001C40BF /* iNavTelemetry.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = iNavTelemetry.entitlements; sourceTree = "<group>"; };
 		6D5B151E2701EC9F001C40BF /* CloudStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudStorage.swift; sourceTree = "<group>"; };
 		6DAF1E5326EDEAD700DBE06A /* Database.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Database.swift; sourceTree = "<group>"; };
@@ -169,7 +169,7 @@
 		6D4E9AEB2794E81D00EBF7B5 /* iNavTelemetryTests */ = {
 			isa = PBXGroup;
 			children = (
-				6D4E9AEC2794E81D00EBF7B5 /* iNavTelemetryTests.swift */,
+				6D46055A27958B510017EC5A /* TelemetryTypesSpec.swift */,
 			);
 			path = iNavTelemetryTests;
 			sourceTree = "<group>";
@@ -341,7 +341,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6D4E9AED2794E81D00EBF7B5 /* iNavTelemetryTests.swift in Sources */,
+				6D46055B27958B510017EC5A /* TelemetryTypesSpec.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -524,6 +524,112 @@
 			};
 			name = Release;
 		};
+		6D46055D2795C71C0017EC5A /* Testing */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = "";
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = NO;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DO_NOT_UNIT_TEST;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Testing;
+		};
+		6D46055E2795C71C0017EC5A /* Testing */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = iNavTelemetry/iNavTelemetry.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"iNavTelemetry/Preview Content\"";
+				DEVELOPMENT_TEAM = RXDLA8Y5J4;
+				ENABLE_PREVIEWS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = "";
+				INFOPLIST_FILE = iNavTelemetry/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 2.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = us.g6.iNavTelemetry;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Testing;
+		};
+		6D46055F2795C71C0017EC5A /* Testing */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = RXDLA8Y5J4;
+				GCC_PREPROCESSOR_DEFINITIONS = "";
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = us.g6.iNavTelemetry.iNavTelemetryTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/iNavTelemetry.app/iNavTelemetry";
+			};
+			name = Testing;
+		};
 		6D4E9AF12794E81D00EBF7B5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -532,6 +638,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = RXDLA8Y5J4;
+				GCC_PREPROCESSOR_DEFINITIONS = "";
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 1.0;
@@ -571,6 +678,7 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				6D34745E26E4CD3A001F1E59 /* Debug */,
+				6D46055D2795C71C0017EC5A /* Testing */,
 				6D34745F26E4CD3A001F1E59 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
@@ -580,6 +688,7 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				6D34746126E4CD3A001F1E59 /* Debug */,
+				6D46055E2795C71C0017EC5A /* Testing */,
 				6D34746226E4CD3A001F1E59 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
@@ -589,6 +698,7 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				6D4E9AF12794E81D00EBF7B5 /* Debug */,
+				6D46055F2795C71C0017EC5A /* Testing */,
 				6D4E9AF22794E81D00EBF7B5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
