@@ -14,6 +14,11 @@ jobs:
     steps:
       - name: Code Climate
         uses: paambaati/codeclimate-action@v3.0.0
+        env:
+          CC_TEST_REPORTER_ID: 31c967e76b811073f1a8ceae857dfab681f0b153fbd56ae68760c914fff86c63
+        with:
+          coverageCommand: npm run coverage
+          debug: true
       
       - name: Checkout
         uses: actions/checkout@v2
