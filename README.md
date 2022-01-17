@@ -3,6 +3,8 @@
 <a href="https://www.buymeacoffee.com/bosko" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Beer" style="height: auto !important;width: auto !important;" ></a>
 </p>
 
+[![iOS workflow](https://github.com/zosko/iNavTelemetry/actions/workflows/ios.yml/badge.svg)](https://github.com/zosko/iNavTelemetry/actions/workflows/ios.yml)
+
 **Thanks for supporters:** gdanas87, Jeremy
 
 # Available on AppStore 
