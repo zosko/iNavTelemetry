@@ -8,7 +8,6 @@ on:
 
 jobs:
   build-and-test:
-    name: Build and Test
     runs-on: macos-latest
 
     steps:
@@ -25,4 +24,4 @@ jobs:
         run: xcodebuild build-for-testing -scheme iNavTelemetry -project iNavTelemetry.xcodeproj -destination "generic/platform=iOS Simulator"
       
       - name: Test
-        run: xcodebuild test-without-building -scheme iNavTelemetry -project iNavTelemetry.xcodeproj -sdk iphonesimulator -destination "platform=iOS Simulator,name=iPhone 11"
+        run: xcodebuild test-without-building -scheme iNavTelemetry -project iNavTelemetry.xcodeproj -sdk iphonesimulator -destination "platform=iOS Simulator,name=iPhone 11" ONLY_ACTIVE_ARCH=NO CODE_SIGNING_REQUIRED=NO
