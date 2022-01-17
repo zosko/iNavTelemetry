@@ -12,6 +12,9 @@ jobs:
     runs-on: macos-latest
 
     steps:
+      - name: Node
+        uses: actions/setup-node@master
+        
       - name: Code Climate
         uses: paambaati/codeclimate-action@v3.0.0
         env:
