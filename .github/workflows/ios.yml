@@ -12,6 +12,9 @@ jobs:
     runs-on: macos-latest
 
     steps:
+      - name: Code Climate
+        uses: paambaati/codeclimate-action@v3.0.0
+      
       - name: Checkout
         uses: actions/checkout@v2
 
