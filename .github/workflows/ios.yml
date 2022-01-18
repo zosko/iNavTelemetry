@@ -31,7 +31,7 @@ jobs:
         run: xcodebuild build-for-testing -scheme iNavTelemetry -project iNavTelemetry.xcodeproj -destination "generic/platform=iOS Simulator"
       
       - name: Test
-        run: xcodebuild test-without-building -scheme iNavTelemetry -project iNavTelemetry.xcodeproj -destination "platform=iOS Simulator,name=iPhone 13" -derivedDataPath Build/ -enableCodeCoverage YES
+        run: xcodebuild test -scheme iNavTelemetry -project iNavTelemetry.xcodeproj -destination "platform=iOS Simulator,name=iPhone 13" -derivedDataPath Build/ -enableCodeCoverage YES
 
       - name: Upload CodeCoverage
         run: |
