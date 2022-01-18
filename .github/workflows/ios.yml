@@ -14,7 +14,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
     
-      - name: Code Climate
+      - name: Get Code Climate Test Report
         env:
           CC_TEST_REPORTER_ID: 31c967e76b811073f1a8ceae857dfab681f0b153fbd56ae68760c914fff86c63
         run: |
@@ -34,13 +34,16 @@ jobs:
         run: xcodebuild build-for-testing -scheme iNavTelemetry -project iNavTelemetry.xcodeproj -destination "generic/platform=iOS Simulator"
       
       - name: Test
-        run: xcodebuild test -scheme iNavTelemetry -project iNavTelemetry.xcodeproj -destination "platform=iOS Simulator,name=iPhone 13" -resultBundlePath coverage/result.xcresult
-
+        run: xcodebuild test -scheme iNavTelemetry -project iNavTelemetry.xcodeproj -destination "platform=iOS Simulator,name=iPhone 13" -resultBundlePath result.xcresult
+        
+      - name: List folder
+        run: ls -la
+       
       - name: Generate Report
-        run: xcrun xccov view --report coverage/result.xcresult --json > coverage/coverage.json
+        run: xcrun xccov view --report result.xcresult --json > coverage.json
 
       - name: Convert Report to Cobertura
-        run: xcc generate coverage/coverage.json . cobertura-xml 
+        run: xcc generate coverage.json . cobertura-xml 
 
       - name: Upload Code Coverage
         run: ./cc-test-reporter after-build -t cobertura -r 31c967e76b811073f1a8ceae857dfab681f0b153fbd56ae68760c914fff86c63
