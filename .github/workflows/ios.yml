@@ -21,7 +21,7 @@ jobs:
           curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-0.6.3-darwin-amd64 > ./cc-test-reporter
           chmod +x ./cc-test-reporter
           
-      - name: Brew install Xcodecoverageconverter
+      - name: Brew Install Xcodecoverageconverter
         run: brew install twittemb/formulae/Xcodecoverageconverter
           
       - name: Prepare Code Coverage
@@ -36,8 +36,11 @@ jobs:
       - name: Test
         run: xcodebuild test -scheme iNavTelemetry -project iNavTelemetry.xcodeproj -destination "platform=iOS Simulator,name=iPhone 13" -resultBundlePath coverage/result.xcresult
 
-      - name: Upload CodeCoverage
-        run: |
-          xcrun xccov view --report coverage/result.xcresult --json > coverage/coverage.json
-          xcc generate coverage/coverage.json . cobertura-xml 
-          ./cc-test-reporter after-build -t cobertura -r 31c967e76b811073f1a8ceae857dfab681f0b153fbd56ae68760c914fff86c63
+      - name: Generate Report
+        run: xcrun xccov view --report coverage/result.xcresult --json > coverage/coverage.json
+
+      - name: Convert Report to Cobertura
+        run: xcc generate coverage/coverage.json . cobertura-xml 
+
+      - name: Upload Code Coverage
+        run: ./cc-test-reporter after-build -t cobertura -r 31c967e76b811073f1a8ceae857dfab681f0b153fbd56ae68760c914fff86c63
