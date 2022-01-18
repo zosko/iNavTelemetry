@@ -12,16 +12,16 @@ jobs:
     runs-on: macos-latest
 
     steps:
-      - name: Node
-        uses: actions/setup-node@master
-        
+      - name: Test Reporter
+        run: curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-darwin-amd64 > ./cc-test-reporter
+      
       - name: Code Climate
         uses: paambaati/codeclimate-action@v3.0.0
         env:
           CC_TEST_REPORTER_ID: 31c967e76b811073f1a8ceae857dfab681f0b153fbd56ae68760c914fff86c63
-        with:
-          coverageCommand: npm run coverage
-          debug: true
+      
+      - name: Prepare CodeCoverage
+        run: ./cc-test-reporter before-build
       
       - name: Checkout
         uses: actions/checkout@v2
@@ -34,3 +34,6 @@ jobs:
       
       - name: Test
         run: xcodebuild test-without-building -scheme iNavTelemetry -project iNavTelemetry.xcodeproj -destination "platform=iOS Simulator,name=iPhone 13"
+
+      - name: Upload CodeCoverage
+        run: ./cc-test-reporter after-build --debug -t cobertura --exit-code $?
