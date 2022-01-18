@@ -34,10 +34,7 @@ jobs:
         run: xcodebuild build-for-testing -scheme iNavTelemetry -project iNavTelemetry.xcodeproj -destination "generic/platform=iOS Simulator"
       
       - name: Test
-        run: xcodebuild test -scheme iNavTelemetry -project iNavTelemetry.xcodeproj -destination "platform=iOS Simulator,name=iPhone 13" -resultBundlePath result.xcresult
-        
-      - name: List folder
-        run: ls -la
+        run: xcodebuild test -scheme iNavTelemetry -project iNavTelemetry.xcodeproj -destination "platform=iOS Simulator,name=iPhone 13" -enableCodeCoverage YES -resultBundlePath result.xcresult
        
       - name: Generate Report
         run: xcrun xccov view --report result.xcresult --json > coverage.json
