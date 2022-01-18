@@ -31,11 +31,11 @@ jobs:
         run: xcodebuild build-for-testing -scheme iNavTelemetry -project iNavTelemetry.xcodeproj -destination "generic/platform=iOS Simulator"
       
       - name: Test
-        run: xcodebuild test-without-building -scheme iNavTelemetry -project iNavTelemetry.xcodeproj -destination "platform=iOS Simulator,name=iPhone 13"
+        run: xcodebuild test-without-building -scheme iNavTelemetry -project iNavTelemetry.xcodeproj -destination "platform=iOS Simulator,name=iPhone 13" -derivedDataPath Build/ -enableCodeCoverage YES
 
       - name: Upload CodeCoverage
         run: |
-          ./cc-test-reporter format-coverage -t lcov -o coverage/codeclimate.json coverage/lcov.info
-          ./cc-test-reporter upload-coverage
+          xcrun xccov view --report Build/Logs/Test/*.xccovreport --json > coverage.json
+          ./cc-test-reporter after-build --coverage-input-type xccov
         
 
