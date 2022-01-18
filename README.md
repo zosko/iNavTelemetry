@@ -4,6 +4,8 @@
 </p>
 
 [![iOS workflow](https://github.com/zosko/iNavTelemetry/actions/workflows/ios.yml/badge.svg)](https://github.com/zosko/iNavTelemetry/actions/workflows/ios.yml)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/9ce1d346b8e094b8e242/test_coverage)](https://codeclimate.com/github/zosko/iNavTelemetry/test_coverage)
+[![Maintainability](https://api.codeclimate.com/v1/badges/9ce1d346b8e094b8e242/maintainability)](https://codeclimate.com/github/zosko/iNavTelemetry/maintainability)
 
 **Thanks for supporters:** gdanas87, Jeremy
 
