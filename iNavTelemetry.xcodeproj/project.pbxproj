@@ -25,6 +25,14 @@
 		6D3F821C26ED47FF009B408D /* Msp_v1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D3F821726ED47FF009B408D /* Msp_v1.swift */; };
 		6D3F821D26ED47FF009B408D /* TelemetryManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D3F821826ED47FF009B408D /* TelemetryManager.swift */; };
 		6D3F821E26ED47FF009B408D /* Custom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D3F821926ED47FF009B408D /* Custom.swift */; };
+		6D458C57279830F500B05E4A /* TelemetryData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D458C56279830F500B05E4A /* TelemetryData.swift */; };
+		6D458C592798312D00B05E4A /* TelemetryDataSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D458C582798312D00B05E4A /* TelemetryDataSpec.swift */; };
+		6D458C5B279832D400B05E4A /* TelemetryManagerSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D458C5A279832D400B05E4A /* TelemetryManagerSpec.swift */; };
+		6D458C5D279835D100B05E4A /* SmartPortSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D458C5C279835D100B05E4A /* SmartPortSpec.swift */; };
+		6D458C5F2798365B00B05E4A /* MavLinkv2Spec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D458C5E2798365B00B05E4A /* MavLinkv2Spec.swift */; };
+		6D458C612798369700B05E4A /* MavLinkv1Spec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D458C602798369700B05E4A /* MavLinkv1Spec.swift */; };
+		6D458C63279836EB00B05E4A /* MSPv1Spec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D458C62279836EB00B05E4A /* MSPv1Spec.swift */; };
+		6D458C6527983A3800B05E4A /* MSPv2Spec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D458C6427983A3800B05E4A /* MSPv2Spec.swift */; };
 		6D46055B27958B510017EC5A /* TelemetryTypesSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D46055A27958B510017EC5A /* TelemetryTypesSpec.swift */; };
 		6D49B7A326E80515006833A9 /* AppViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D49B7A226E80515006833A9 /* AppViewModel.swift */; };
 		6D5B151F2701EC9F001C40BF /* CloudStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D5B151E2701EC9F001C40BF /* CloudStorage.swift */; };
@@ -67,6 +75,14 @@
 		6D3F821726ED47FF009B408D /* Msp_v1.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Msp_v1.swift; sourceTree = "<group>"; };
 		6D3F821826ED47FF009B408D /* TelemetryManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TelemetryManager.swift; sourceTree = "<group>"; };
 		6D3F821926ED47FF009B408D /* Custom.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Custom.swift; sourceTree = "<group>"; };
+		6D458C56279830F500B05E4A /* TelemetryData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TelemetryData.swift; sourceTree = "<group>"; };
+		6D458C582798312D00B05E4A /* TelemetryDataSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TelemetryDataSpec.swift; sourceTree = "<group>"; };
+		6D458C5A279832D400B05E4A /* TelemetryManagerSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TelemetryManagerSpec.swift; sourceTree = "<group>"; };
+		6D458C5C279835D100B05E4A /* SmartPortSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmartPortSpec.swift; sourceTree = "<group>"; };
+		6D458C5E2798365B00B05E4A /* MavLinkv2Spec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MavLinkv2Spec.swift; sourceTree = "<group>"; };
+		6D458C602798369700B05E4A /* MavLinkv1Spec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MavLinkv1Spec.swift; sourceTree = "<group>"; };
+		6D458C62279836EB00B05E4A /* MSPv1Spec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MSPv1Spec.swift; sourceTree = "<group>"; };
+		6D458C6427983A3800B05E4A /* MSPv2Spec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MSPv2Spec.swift; sourceTree = "<group>"; };
 		6D46055A27958B510017EC5A /* TelemetryTypesSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TelemetryTypesSpec.swift; sourceTree = "<group>"; };
 		6D49B7A226E80515006833A9 /* AppViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppViewModel.swift; sourceTree = "<group>"; };
 		6D4E9AEA2794E81D00EBF7B5 /* iNavTelemetryTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = iNavTelemetryTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -162,6 +178,7 @@
 				6DAF1E5726EDF57400DBE06A /* Protocols */,
 				6D3F821826ED47FF009B408D /* TelemetryManager.swift */,
 				6D02C82627941C2A009D7047 /* TelemetryTypes.swift */,
+				6D458C56279830F500B05E4A /* TelemetryData.swift */,
 			);
 			path = TelemetryManager;
 			sourceTree = "<group>";
@@ -170,6 +187,13 @@
 			isa = PBXGroup;
 			children = (
 				6D46055A27958B510017EC5A /* TelemetryTypesSpec.swift */,
+				6D458C582798312D00B05E4A /* TelemetryDataSpec.swift */,
+				6D458C5A279832D400B05E4A /* TelemetryManagerSpec.swift */,
+				6D458C5C279835D100B05E4A /* SmartPortSpec.swift */,
+				6D458C5E2798365B00B05E4A /* MavLinkv2Spec.swift */,
+				6D458C602798369700B05E4A /* MavLinkv1Spec.swift */,
+				6D458C62279836EB00B05E4A /* MSPv1Spec.swift */,
+				6D458C6427983A3800B05E4A /* MSPv2Spec.swift */,
 			);
 			path = iNavTelemetryTests;
 			sourceTree = "<group>";
@@ -330,6 +354,7 @@
 				6D04DC0526E4EAD2003783F2 /* AttitudeView.swift in Sources */,
 				6D04DBFB26E4DC67003783F2 /* InstrumentView.swift in Sources */,
 				6D34746926E4CDBB001F1E59 /* MapView.swift in Sources */,
+				6D458C57279830F500B05E4A /* TelemetryData.swift in Sources */,
 				6D3F821C26ED47FF009B408D /* Msp_v1.swift in Sources */,
 				6D5B151F2701EC9F001C40BF /* CloudStorage.swift in Sources */,
 				6D3F821B26ED47FF009B408D /* Msp_v2.swift in Sources */,
@@ -341,6 +366,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6D458C612798369700B05E4A /* MavLinkv1Spec.swift in Sources */,
+				6D458C5B279832D400B05E4A /* TelemetryManagerSpec.swift in Sources */,
+				6D458C5D279835D100B05E4A /* SmartPortSpec.swift in Sources */,
+				6D458C63279836EB00B05E4A /* MSPv1Spec.swift in Sources */,
+				6D458C592798312D00B05E4A /* TelemetryDataSpec.swift in Sources */,
+				6D458C6527983A3800B05E4A /* MSPv2Spec.swift in Sources */,
+				6D458C5F2798365B00B05E4A /* MavLinkv2Spec.swift in Sources */,
 				6D46055B27958B510017EC5A /* TelemetryTypesSpec.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

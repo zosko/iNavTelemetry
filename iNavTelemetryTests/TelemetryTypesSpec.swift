@@ -6,8 +6,6 @@
 //
 
 import XCTest
-import CoreLocation
-
 @testable import iNavTelemetry
 
 class TelemetryTypesSpec: XCTestCase {
@@ -32,107 +30,48 @@ class TelemetryTypesSpec: XCTestCase {
         XCTAssertEqual(BluetoothType.tbsCrossfire.uuidChar, "2A19")
     }
     
-    func testLogTelemetry() throws {
-        let log = LogTelemetry(id: "", lat: 11, lng: 22)
-        XCTAssertEqual(CLLocationCoordinate2D(latitude: 11, longitude: 22), log.location)
+    func testInstrumentType() throws {        
+        XCTAssertEqual(InstrumentType.latitude.name,"Latitude")
+        XCTAssertEqual(InstrumentType.latitude.imageName,"network")
+        
+        XCTAssertEqual(InstrumentType.longitude.name,"Longitude")
+        XCTAssertEqual(InstrumentType.longitude.imageName,"network")
+        
+        XCTAssertEqual(InstrumentType.satellites.name,"Satellites")
+        XCTAssertEqual(InstrumentType.satellites.imageName,"bonjour")
+        
+        XCTAssertEqual(InstrumentType.distance.name,"Distance")
+        XCTAssertEqual(InstrumentType.distance.imageName,"shuffle")
+        
+        XCTAssertEqual(InstrumentType.altitude.name,"Altitude")
+        XCTAssertEqual(InstrumentType.altitude.imageName,"mount")
+        
+        XCTAssertEqual(InstrumentType.galtitude.name,"GPS Alt")
+        XCTAssertEqual(InstrumentType.galtitude.imageName,"mount")
+        
+        XCTAssertEqual(InstrumentType.speed.name,"Speed")
+        XCTAssertEqual(InstrumentType.speed.imageName,"speedometer")
+        
+        XCTAssertEqual(InstrumentType.armed.name,"Engine")
+        XCTAssertEqual(InstrumentType.armed.imageName,"shield")
+        
+        XCTAssertEqual(InstrumentType.signal.name,"Signal")
+        XCTAssertEqual(InstrumentType.signal.imageName,"antenna.radiowaves.left.and.right")
+        
+        XCTAssertEqual(InstrumentType.fuel.name,"Fuel")
+        XCTAssertEqual(InstrumentType.fuel.imageName,"fuelpump")
+        
+        XCTAssertEqual(InstrumentType.flymode.name,"Fly mode")
+        XCTAssertEqual(InstrumentType.flymode.imageName,"airplane.circle")
+        
+        XCTAssertEqual(InstrumentType.flytime.name,"Fly time")
+        XCTAssertEqual(InstrumentType.flytime.imageName,"timer")
+        
+        XCTAssertEqual(InstrumentType.current.name,"Current")
+        XCTAssertEqual(InstrumentType.current.imageName,"directcurrent")
+        
+        XCTAssertEqual(InstrumentType.voltage.name,"Voltage")
+        XCTAssertEqual(InstrumentType.voltage.imageName,"minus.plus.batteryblock")
     }
     
-    func testInstrumentTelemetry() throws {
-        var packet = Packet()
-        packet.flight_mode = 00040
-        
-        var instrumentTelemetry = InstrumentTelemetry(packet: packet, telemetryType: .smartPort)
-        XCTAssertEqual(instrumentTelemetry.stabilization, .manual)
-        XCTAssertEqual(instrumentTelemetry.engine, .disarmed)
-        XCTAssertEqual(instrumentTelemetry.stabilization.name, "Manual")
-        XCTAssertEqual(instrumentTelemetry.engine.name, "Disarmed")
-        
-        packet.flight_mode = 00020
-        instrumentTelemetry = InstrumentTelemetry(packet: packet, telemetryType: .smartPort)
-        XCTAssertEqual(instrumentTelemetry.stabilization, .horizon)
-        XCTAssertEqual(instrumentTelemetry.engine, .disarmed)
-        XCTAssertEqual(instrumentTelemetry.stabilization.name, "Horizon")
-        XCTAssertEqual(instrumentTelemetry.engine.name, "Disarmed")
-        
-        packet.flight_mode = 00015
-        instrumentTelemetry = InstrumentTelemetry(packet: packet, telemetryType: .smartPort)
-        XCTAssertEqual(instrumentTelemetry.stabilization, .angle)
-        XCTAssertEqual(instrumentTelemetry.engine, .armed)
-        XCTAssertEqual(instrumentTelemetry.stabilization.name, "Angle")
-        XCTAssertEqual(instrumentTelemetry.engine.name, "Armed")
-        
-        packet.flight_mode = 1
-        instrumentTelemetry = InstrumentTelemetry(packet: packet, telemetryType: .msp)
-        XCTAssertEqual(instrumentTelemetry.stabilization, .manual)
-        XCTAssertEqual(instrumentTelemetry.engine, .armed)
-        XCTAssertEqual(instrumentTelemetry.stabilization.name, "Manual")
-        XCTAssertEqual(instrumentTelemetry.engine.name, "Armed")
-        
-        packet.flight_mode = 4
-        instrumentTelemetry = InstrumentTelemetry(packet: packet, telemetryType: .msp)
-        XCTAssertEqual(instrumentTelemetry.stabilization, .angle)
-        XCTAssertEqual(instrumentTelemetry.engine, .disarmed)
-        XCTAssertEqual(instrumentTelemetry.stabilization.name, "Angle")
-        XCTAssertEqual(instrumentTelemetry.engine.name, "Disarmed")
-        
-        packet.flight_mode = 5
-        instrumentTelemetry = InstrumentTelemetry(packet: packet, telemetryType: .msp)
-        XCTAssertEqual(instrumentTelemetry.stabilization, .angle)
-        XCTAssertEqual(instrumentTelemetry.engine, .armed)
-        XCTAssertEqual(instrumentTelemetry.stabilization.name, "Angle")
-        XCTAssertEqual(instrumentTelemetry.engine.name, "Armed")
-        
-        packet.flight_mode = 8
-        instrumentTelemetry = InstrumentTelemetry(packet: packet, telemetryType: .msp)
-        XCTAssertEqual(instrumentTelemetry.stabilization, .horizon)
-        XCTAssertEqual(instrumentTelemetry.engine, .disarmed)
-        XCTAssertEqual(instrumentTelemetry.stabilization.name, "Horizon")
-        XCTAssertEqual(instrumentTelemetry.engine.name, "Disarmed")
-        
-        packet.flight_mode = 9
-        instrumentTelemetry = InstrumentTelemetry(packet: packet, telemetryType: .msp)
-        XCTAssertEqual(instrumentTelemetry.stabilization, .horizon)
-        XCTAssertEqual(instrumentTelemetry.engine, .armed)
-        XCTAssertEqual(instrumentTelemetry.stabilization.name, "Horizon")
-        XCTAssertEqual(instrumentTelemetry.engine.name, "Armed")
-        
-        packet.flight_mode = 0
-        instrumentTelemetry = InstrumentTelemetry(packet: packet, telemetryType: .mavLink_v1)
-        XCTAssertEqual(instrumentTelemetry.stabilization, .undefined)
-        XCTAssertEqual(instrumentTelemetry.engine, .disarmed)
-        XCTAssertEqual(instrumentTelemetry.stabilization.name, "Undefined")
-        XCTAssertEqual(instrumentTelemetry.engine.name, "Disarmed")
-        
-        instrumentTelemetry = InstrumentTelemetry(packet: packet, telemetryType: .mavLink_v2)
-        XCTAssertEqual(instrumentTelemetry.stabilization, .undefined)
-        XCTAssertEqual(instrumentTelemetry.engine, .disarmed)
-        XCTAssertEqual(instrumentTelemetry.stabilization.name, "Undefined")
-        XCTAssertEqual(instrumentTelemetry.engine.name, "Disarmed")
-        
-        packet.flight_mode = 128
-        instrumentTelemetry = InstrumentTelemetry(packet: packet, telemetryType: .mavLink_v1)
-        XCTAssertEqual(instrumentTelemetry.stabilization, .undefined)
-        XCTAssertEqual(instrumentTelemetry.engine, .armed)
-        XCTAssertEqual(instrumentTelemetry.stabilization.name, "Undefined")
-        XCTAssertEqual(instrumentTelemetry.engine.name, "Armed")
-        
-        instrumentTelemetry = InstrumentTelemetry(packet: packet, telemetryType: .mavLink_v2)
-        XCTAssertEqual(instrumentTelemetry.stabilization, .undefined)
-        XCTAssertEqual(instrumentTelemetry.engine, .armed)
-        XCTAssertEqual(instrumentTelemetry.stabilization.name, "Undefined")
-        XCTAssertEqual(instrumentTelemetry.engine.name, "Armed")
-        
-        instrumentTelemetry = InstrumentTelemetry(packet: packet, telemetryType: .custom)
-        XCTAssertEqual(instrumentTelemetry.stabilization, .undefined)
-        XCTAssertEqual(instrumentTelemetry.engine, .undefined)
-        XCTAssertEqual(instrumentTelemetry.stabilization.name, "Undefined")
-        XCTAssertEqual(instrumentTelemetry.engine.name, "Undefined")
-    }
-
-}
-
-extension CLLocationCoordinate2D: Equatable {}
-
-public func ==(lhs: CLLocationCoordinate2D, rhs: CLLocationCoordinate2D) -> Bool {
-    return lhs.latitude == rhs.latitude && lhs.longitude == rhs.longitude
 }
