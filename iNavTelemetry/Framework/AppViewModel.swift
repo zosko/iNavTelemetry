@@ -132,7 +132,7 @@ class AppViewModel: ObservableObject {
                 else{
                     if self.homePositionAdded {
                         if let url = database.stopLogging() {
-                            cloudStorage.saveFileToiCloud(url)
+                            cloudStorage.save(file:url)
                         }
                     }
                     self.homePositionAdded = false
@@ -161,12 +161,12 @@ class AppViewModel: ObservableObject {
     }
     func getFlightLogs() {
         database.getLogs()
-        cloudStorage.getLogs()
+        cloudStorage.fetch()
         showListLogs = true
     }
     func cleanDatabase(){
         database.cleanDatabase()
-        cloudStorage.cleanDatabase()
+        cloudStorage.clear()
         showListLogs = false
     }
     func searchDevice() {
