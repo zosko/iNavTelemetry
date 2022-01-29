@@ -63,7 +63,7 @@ class LocalStorageSpec: XCTestCase {
         
         XCTAssertEqual(storage.logs, [])
         
-        XCTAssertEqual(LocalStorage.toName(timestamp: 0), "1970 Jan 1 [01:00]")
+        XCTAssertTrue(LocalStorage.toName(timestamp: 0).contains("1970 Jan 1 "))
         
     }
 }
