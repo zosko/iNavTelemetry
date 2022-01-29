@@ -10,7 +10,7 @@ import Combine
 
 final class CloudStorage: ObservableObject {
     
-    @Published var logs: [URL] = []
+    @Published private(set) var logs: [URL] = []
 
     private let cloudProtocol: FileManagerProtocol
 

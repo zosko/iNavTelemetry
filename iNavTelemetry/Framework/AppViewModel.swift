@@ -36,7 +36,7 @@ class AppViewModel: ObservableObject {
     @ObservedObject private var socketCommunicator = SocketComunicator()
     
     private var cloudStorage = CloudStorage()
-    private var database = Database()
+    private var localStorage = LocalStorage()
     private var cancellable: [AnyCancellable] = []
     private var telemetryManager = TelemetryManager()
     private var timerFlying: Timer?
@@ -48,7 +48,7 @@ class AppViewModel: ObservableObject {
             .map{ $0 + [$1] }
             .assign(to: &$allPlanes)
         
-        Publishers.CombineLatest(database.$logs,cloudStorage.$logs)
+        Publishers.CombineLatest(localStorage.$logs,cloudStorage.$logs)
             .map { localLogs, remoteLogs in
                 let merged = localLogs + remoteLogs
                 let sorted = merged.sorted { first, second in
@@ -93,7 +93,7 @@ class AppViewModel: ObservableObject {
                                                     lng: self.telemetry.location.longitude)
                     
                     socketCommunicator.sendPlaneData(location: logTelemetry)
-                    database.saveTelemetryData(packet: logTelemetry)
+                    localStorage.save(packet: logTelemetry)
                 }
             }.store(in: &cancellable)
         
@@ -119,7 +119,7 @@ class AppViewModel: ObservableObject {
                     self.seconds = 0
                     timerFlying?.invalidate()
                     timerFlying = nil
-                    database.startLogging()
+                    localStorage.start()
                     
                     timerFlying = Timer.scheduledTimer(withTimeInterval: 1, repeats: true){ timer in
                         if self.telemetry.engine == .armed {
@@ -130,10 +130,8 @@ class AppViewModel: ObservableObject {
                     }
                 }
                 else{
-                    if self.homePositionAdded {
-                        if let url = database.stopLogging() {
-                            cloudStorage.save(file:url)
-                        }
+                    if let url = localStorage.stop() {
+                        cloudStorage.save(file:url)
                     }
                     self.homePositionAdded = false
                     timerFlying?.invalidate()
@@ -142,9 +140,6 @@ class AppViewModel: ObservableObject {
                 }
             }.store(in: &cancellable)
     }
-    
-    // MARK: - Private methods
-    
     
     // MARK: - Internal functions
     func showHomePosition(location: CLLocationCoordinate2D) {
@@ -160,12 +155,12 @@ class AppViewModel: ObservableObject {
         self.mineLocation = Plane(id:UUID().uuidString, coordinate: location, mine: true)
     }
     func getFlightLogs() {
-        database.getLogs()
+        localStorage.fetch()
         cloudStorage.fetch()
         showListLogs = true
     }
     func cleanDatabase(){
-        database.cleanDatabase()
+        localStorage.clear()
         cloudStorage.clear()
         showListLogs = false
     }

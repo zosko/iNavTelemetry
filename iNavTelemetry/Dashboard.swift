@@ -81,7 +81,7 @@ struct Dashboard: View {
                         ForEach(viewModel.logsData, id:\.self) { log in
                             if let pathName = log.pathComponents.last,
                                let timestamp = Double(pathName),
-                               let name = Database.toName(timestamp: timestamp){
+                               let name = LocalStorage.toName(timestamp: timestamp){
                                 
                                 Button {
                                     guard let jsonData = try? Data(contentsOf: log),

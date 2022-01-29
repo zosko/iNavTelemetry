@@ -40,7 +40,9 @@
 		6D46055B27958B510017EC5A /* TelemetryTypesSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D46055A27958B510017EC5A /* TelemetryTypesSpec.swift */; };
 		6D49B7A326E80515006833A9 /* AppViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D49B7A226E80515006833A9 /* AppViewModel.swift */; };
 		6D5B151F2701EC9F001C40BF /* CloudStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D5B151E2701EC9F001C40BF /* CloudStorage.swift */; };
-		6DAF1E5426EDEAD700DBE06A /* Database.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DAF1E5326EDEAD700DBE06A /* Database.swift */; };
+		6D80B9DB27A0AC50005A3614 /* DataLoggerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D80B9DA27A0AC50005A3614 /* DataLoggerManager.swift */; };
+		6D80B9DD27A0ACDA005A3614 /* LocalStorageSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D80B9DC27A0ACDA005A3614 /* LocalStorageSpec.swift */; };
+		6DAF1E5426EDEAD700DBE06A /* LocalStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DAF1E5326EDEAD700DBE06A /* LocalStorage.swift */; };
 		6DBA3DCB27119B9500D79FFB /* MavLink_v2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DBA3DCA27119B9500D79FFB /* MavLink_v2.swift */; };
 		6DD7D1AF26F3D46E00735EA2 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DD7D1AE26F3D46E00735EA2 /* MainView.swift */; };
 		6DDD9052271E1AC00031E328 /* MavLink_v1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DDD9051271E1ABF0031E328 /* MavLink_v1.swift */; };
@@ -96,7 +98,9 @@
 		6D4E9AEA2794E81D00EBF7B5 /* iNavTelemetryTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = iNavTelemetryTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		6D5B151C2701EB82001C40BF /* iNavTelemetry.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = iNavTelemetry.entitlements; sourceTree = "<group>"; };
 		6D5B151E2701EC9F001C40BF /* CloudStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudStorage.swift; sourceTree = "<group>"; };
-		6DAF1E5326EDEAD700DBE06A /* Database.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Database.swift; sourceTree = "<group>"; };
+		6D80B9DA27A0AC50005A3614 /* DataLoggerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataLoggerManager.swift; sourceTree = "<group>"; };
+		6D80B9DC27A0ACDA005A3614 /* LocalStorageSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalStorageSpec.swift; sourceTree = "<group>"; };
+		6DAF1E5326EDEAD700DBE06A /* LocalStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalStorage.swift; sourceTree = "<group>"; };
 		6DBA3DCA27119B9500D79FFB /* MavLink_v2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MavLink_v2.swift; sourceTree = "<group>"; };
 		6DD7D1AE26F3D46E00735EA2 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		6DDD9051271E1ABF0031E328 /* MavLink_v1.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MavLink_v1.swift; sourceTree = "<group>"; };
@@ -222,8 +226,18 @@
 				6D458C6427983A3800B05E4A /* MSPv2Spec.swift */,
 				6D3FEF48279F504C0034EEBC /* CloudStorageSpec.swift */,
 				6D3FEF50279F7B7B0034EEBC /* SocketCommunicatorSpec.swift */,
+				6D80B9DC27A0ACDA005A3614 /* LocalStorageSpec.swift */,
 			);
 			path = iNavTelemetryTests;
+			sourceTree = "<group>";
+		};
+		6D80B9D927A0AC17005A3614 /* LocalStorage */ = {
+			isa = PBXGroup;
+			children = (
+				6DAF1E5326EDEAD700DBE06A /* LocalStorage.swift */,
+				6D80B9DA27A0AC50005A3614 /* DataLoggerManager.swift */,
+			);
+			path = LocalStorage;
 			sourceTree = "<group>";
 		};
 		6DAF1E5726EDF57400DBE06A /* Protocols */ = {
@@ -242,12 +256,12 @@
 		6DF1F27526E5F5FE00DCACA4 /* Framework */ = {
 			isa = PBXGroup;
 			children = (
+				6D80B9D927A0AC17005A3614 /* LocalStorage */,
 				6D3FEF4D279F7B210034EEBC /* SocketComunicator */,
 				6D3FEF4A279F6BB20034EEBC /* CloudStorage */,
 				6D3F821426ED47FF009B408D /* TelemetryManager */,
 				6D49B7A226E80515006833A9 /* AppViewModel.swift */,
 				6D06263026EE8C1000FCAC40 /* BluetoothManager.swift */,
-				6DAF1E5326EDEAD700DBE06A /* Database.swift */,
 			);
 			path = Framework;
 			sourceTree = "<group>";
@@ -373,7 +387,7 @@
 				6DDD9052271E1AC00031E328 /* MavLink_v1.swift in Sources */,
 				6D04DC0B26E4EE2C003783F2 /* ConnectionView.swift in Sources */,
 				6D49B7A326E80515006833A9 /* AppViewModel.swift in Sources */,
-				6DAF1E5426EDEAD700DBE06A /* Database.swift in Sources */,
+				6DAF1E5426EDEAD700DBE06A /* LocalStorage.swift in Sources */,
 				6DBA3DCB27119B9500D79FFB /* MavLink_v2.swift in Sources */,
 				6D3F821D26ED47FF009B408D /* TelemetryManager.swift in Sources */,
 				6D3FEF4F279F7B440034EEBC /* SocketComunicator.swift in Sources */,
@@ -389,6 +403,7 @@
 				6D5B151F2701EC9F001C40BF /* CloudStorage.swift in Sources */,
 				6D3F821B26ED47FF009B408D /* Msp_v2.swift in Sources */,
 				6D34745526E4CD39001F1E59 /* iNavTelemetryApp.swift in Sources */,
+				6D80B9DB27A0AC50005A3614 /* DataLoggerManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -402,6 +417,7 @@
 				6D458C5D279835D100B05E4A /* SmartPortSpec.swift in Sources */,
 				6D458C63279836EB00B05E4A /* MSPv1Spec.swift in Sources */,
 				6D458C592798312D00B05E4A /* TelemetryDataSpec.swift in Sources */,
+				6D80B9DD27A0ACDA005A3614 /* LocalStorageSpec.swift in Sources */,
 				6D3FEF49279F504C0034EEBC /* CloudStorageSpec.swift in Sources */,
 				6D458C6527983A3800B05E4A /* MSPv2Spec.swift in Sources */,
 				6D458C5F2798365B00B05E4A /* MavLinkv2Spec.swift in Sources */,
