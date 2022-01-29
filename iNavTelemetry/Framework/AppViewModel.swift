@@ -152,7 +152,7 @@ class AppViewModel: ObservableObject {
             self.region = MKCoordinateRegion(center: location,
                                              span: MKCoordinateSpan(latitudeDelta: 40, longitudeDelta: 40))
         }
-        self.mineLocation = Plane(id:UUID().uuidString, coordinate: location, mine: true)
+        self.mineLocation = Plane(id:"", coordinate: location, mine: true)
     }
     func getFlightLogs() {
         localStorage.fetch()
