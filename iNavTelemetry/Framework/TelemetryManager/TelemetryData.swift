@@ -27,6 +27,12 @@ struct Packet {
     var pitch: Int = 0
 }
 
+struct Plane: Identifiable {
+    let id: String
+    let coordinate: CLLocationCoordinate2D
+    let mine: Bool
+}
+
 struct LogTelemetry: Codable {
     var id: String = ""
     var lat: Double = 0.0

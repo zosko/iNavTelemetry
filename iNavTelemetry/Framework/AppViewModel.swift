@@ -11,26 +11,57 @@ import SwiftUI
 import CoreBluetooth
 import MapKit
 
-struct Plane: Identifiable {
-    let id: String
-    let coordinate: CLLocationCoordinate2D
-    let mine: Bool
-}
-
 class AppViewModel: ObservableObject {
     @Published private(set) var mineLocation = Plane(id: "", coordinate: .init(), mine: true)
     @Published private(set) var allPlanes = [Plane(id: "", coordinate: .init(), mine: false)]
-    @Published private(set) var logsData: [URL] = []
-    @Published private(set) var bluetootnConnected = false
+    @Published private(set) var logsData: [URL] = [] {
+        didSet {
+            showListLogs = logsData.count > 0
+        }
+    }
+    @Published private(set) var connected = false {
+        didSet {
+            if connected {
+                _ = self.telemetryManager.parse(incomingData: Data()) // initial start for MSP only
+                
+                self.homePositionAdded = false
+                self.seconds = 0
+                timerFlying?.invalidate()
+                timerFlying = nil
+                localStorage.start()
+                
+                timerFlying = Timer.scheduledTimer(withTimeInterval: 1, repeats: true){ timer in
+                    if self.telemetry.engine == .armed {
+                        self.seconds += 1
+                    } else {
+                        self.seconds = 0
+                    }
+                }
+            }
+            else{
+                if let url = localStorage.stop() {
+                    cloudStorage.save(file:url)
+                }
+                self.homePositionAdded = false
+                timerFlying?.invalidate()
+                timerFlying = nil
+                self.telemetryManager.stopTelemetry()
+            }
+        }
+    }
     @Published private(set) var homePositionAdded = false
     @Published private(set) var seconds = 0
     @Published private(set) var bluetoothScanning = false
     @Published private(set) var telemetry = InstrumentTelemetry(packet: Packet(), telemetryType: .unknown)
-    @Published var showListLogs = false
-    @Published var showPeripherals = false
+    @Published private(set) var showListLogs = false
+    @Published private(set) var showPeripherals = false
+    @Published private(set) var peripherals: [CBPeripheral] = [] {
+        didSet {
+            showPeripherals = peripherals.count > 0
+        }
+    }
     
     var region = MKCoordinateRegion(center: .init(), span: .init(latitudeDelta: 100, longitudeDelta: 100))
-    var peripherals : [CBPeripheral] = []
     
     @ObservedObject private var bluetoothManager = BluetoothManager()
     @ObservedObject private var socketCommunicator = SocketComunicator()
@@ -76,6 +107,9 @@ class AppViewModel: ObservableObject {
         bluetoothManager.$isScanning
             .assign(to: &$bluetoothScanning)
         
+        bluetoothManager.$connected
+            .assign(to: &$connected)
+        
         bluetoothManager.$dataReceived
             .compactMap({ $0 })
             .sink { [unowned self] data in
@@ -96,49 +130,6 @@ class AppViewModel: ObservableObject {
                     localStorage.save(packet: logTelemetry)
                 }
             }.store(in: &cancellable)
-        
-        bluetoothManager.$listPeripherals
-            .compactMap({ $0 })
-            .sink { [unowned self] peripheral in
-                guard let name = peripheral.name, !name.isEmpty else { return }
-                
-                if !self.peripherals.contains(peripheral) {
-                    self.peripherals.append(peripheral)
-                    self.showPeripherals = self.peripherals.count > 0
-                }
-            }.store(in: &cancellable)
-        
-        bluetoothManager.$connected
-            .sink { [unowned self] connected in
-                self.bluetootnConnected = connected
-                
-                if connected {
-                    _ = self.telemetryManager.parse(incomingData: Data()) // initial start for MSP only
-                    
-                    self.homePositionAdded = false
-                    self.seconds = 0
-                    timerFlying?.invalidate()
-                    timerFlying = nil
-                    localStorage.start()
-                    
-                    timerFlying = Timer.scheduledTimer(withTimeInterval: 1, repeats: true){ timer in
-                        if self.telemetry.engine == .armed {
-                            self.seconds += 1
-                        } else {
-                            self.seconds = 0
-                        }
-                    }
-                }
-                else{
-                    if let url = localStorage.stop() {
-                        cloudStorage.save(file:url)
-                    }
-                    self.homePositionAdded = false
-                    timerFlying?.invalidate()
-                    timerFlying = nil
-                    self.telemetryManager.stopTelemetry()
-                }
-            }.store(in: &cancellable)
     }
     
     // MARK: - Internal functions
@@ -157,19 +148,22 @@ class AppViewModel: ObservableObject {
     func getFlightLogs() {
         localStorage.fetch()
         cloudStorage.fetch()
-        showListLogs = true
     }
     func cleanDatabase(){
         localStorage.clear()
         cloudStorage.clear()
-        showListLogs = false
     }
     func searchDevice() {
-        peripherals.removeAll()
         bluetoothManager.search()
     }
     func connectTo(_ periperal: CBPeripheral) {
         bluetoothManager.connect(periperal)
-        showPeripherals = false
+        closeBluetoothScreen()
+    }
+    func closeBluetoothScreen() {
+        peripherals.removeAll()
+    }
+    func closeLogsDataScreen() {
+        logsData.removeAll()
     }
 }
