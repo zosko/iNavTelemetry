@@ -87,13 +87,7 @@ final class TelemetryManager: ObservableObject {
     // MARK: - Private functions
     private func detectProtocol(incomingData: Data) -> [TelemetryType] {
         var receivedUnknown = true
-        if let manager = self.bluetoothManager,
-           let writeChars = manager.writeCharacteristic,
-           let peripheral = manager.peripheral {
-            peripheral.writeValue(msp.request(messageID: .MSP_STATUS),
-                                  for: writeChars,
-                                  type: manager.writeTypeCharacteristic)
-        }
+        requestMSPTelemetry()
         
         if custom.process_incoming_bytes(incomingData: incomingData) {
             if custom.packet.rssi != 0 { protocolDetector.append(.custom) }
@@ -129,17 +123,16 @@ final class TelemetryManager: ObservableObject {
         }
         return nil
     }
-    private func requestTelemetry(peripheral: CBPeripheral, characteristic: CBCharacteristic, writeType: CBCharacteristicWriteType) {
-        switch telemetryType {
-        case .unknown, .custom, .smartPort, .mavLink_v1, .mavLink_v2:
-            break
-        case .msp:
-            peripheral.writeValue(msp.request(messageID: .MSP_STATUS), for: characteristic, type: writeType)
-            peripheral.writeValue(msp.request(messageID: .MSP_RAW_GPS), for: characteristic, type: writeType)
-            peripheral.writeValue(msp.request(messageID: .MSP_COMP_GPS), for: characteristic, type: writeType)
-            peripheral.writeValue(msp.request(messageID: .MSP_ATTITUDE), for: characteristic, type: writeType)
-            peripheral.writeValue(msp.request(messageID: .MSP_ANALOG), for: characteristic, type: writeType)
+    private func requestMSPTelemetry() {
+        guard let manager = self.bluetoothManager else {
+            print("Bluetooth Manager error")
+            return
         }
+        manager.write(msp.request(messageID: .MSP_STATUS))
+        manager.write(msp.request(messageID: .MSP_RAW_GPS))
+        manager.write(msp.request(messageID: .MSP_COMP_GPS))
+        manager.write(msp.request(messageID: .MSP_ATTITUDE))
+        manager.write(msp.request(messageID: .MSP_ANALOG))
     }
     private func mspRequest(requesting: Bool) {
         timerRequestMSP?.invalidate()
@@ -147,13 +140,7 @@ final class TelemetryManager: ObservableObject {
         
         if requesting {
             timerRequestMSP = Timer.scheduledTimer(withTimeInterval: 0.3, repeats: true) { [self] _ in
-                if let manager = self.bluetoothManager,
-                   let writeChars = manager.writeCharacteristic,
-                   let peripheral = manager.peripheral {
-                    requestTelemetry(peripheral: peripheral,
-                                     characteristic: writeChars,
-                                     writeType: manager.writeTypeCharacteristic)
-                }
+                requestMSPTelemetry()
             }
         }
     }

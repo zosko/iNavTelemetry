@@ -54,7 +54,7 @@ struct Dashboard: View {
                     }
                     Spacer()
                     Button {
-                        viewModel.showPeripherals = false
+                        viewModel.closeBluetoothScreen()
                     } label: {
                         Image(systemName: "xmark.circle.fill")
                             .font(.system(size: 40))
@@ -87,7 +87,7 @@ struct Dashboard: View {
                                     guard let jsonData = try? Data(contentsOf: log),
                                           let logData = try? JSONDecoder().decode([LogTelemetry].self,
                                                                                   from: jsonData) else { return }
-                                    viewModel.showListLogs = false
+                                    viewModel.closeLogsDataScreen()
                                     logBookCoordinates = logData
                                 } label: {
                                     Text(name)
@@ -103,7 +103,7 @@ struct Dashboard: View {
                     Spacer()
                     HStack {
                         Button {
-                            viewModel.showListLogs = false
+                            viewModel.closeLogsDataScreen()
                         } label: {
                             Image(systemName: "xmark.circle.fill")
                                 .font(.system(size: 40))

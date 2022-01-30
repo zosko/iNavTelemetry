@@ -1,60 +1,84 @@
 //
-//  BluetoothManager.swift
+//  BluetoothCommunicator.swift
 //  iNavTelemetry
 //
-//  Created by Bosko Petreski on 9/12/21.
+//  Created by Bosko Petreski on 30.1.22.
 //
 
 import Foundation
-import CoreBluetooth
 import Combine
+import CoreBluetooth
 
-final class BluetoothManager: NSObject, ObservableObject {
+protocol BluetoothProtocol {
+    var dataReceived: Published<Data?>.Publisher { get }
+    var isScanning: Published<Bool>.Publisher { get }
+    var connected: Published<Bool>.Publisher { get }
     
-    @Published private(set) var dataReceived: Data?
-    @Published private(set) var connected : Bool = false
-    @Published private(set) var isScanning : Bool = false
-    @Published private(set) var listPeripherals: CBPeripheral?
-    @Published private(set) var peripheral: CBPeripheral? {
+    func search() -> AnyPublisher<[CBPeripheral], Never>
+    func connect(_ periperal: CBPeripheral)
+    func disconnect(_ peripheral: CBPeripheral)
+    func write(data: Data)
+}
+
+final class BluetoothCommunicator: NSObject, BluetoothProtocol {
+    var isScanning: Published<Bool>.Publisher { $_isScanning }
+    var dataReceived: Published<Data?>.Publisher { $_dataReceived }
+    var connected: Published<Bool>.Publisher { $_connected }
+    
+    @Published private var _connected: Bool = false
+    @Published private var _dataReceived: Data?
+    @Published private var _isScanning: Bool = false
+    
+    private var peripheral: CBPeripheral? {
         didSet {
-            connected = peripheral?.state == .connected
+            _connected = peripheral?.state == .connected
         }
     }
-    private(set) var writeCharacteristic: CBCharacteristic?
-    private(set) var writeTypeCharacteristic: CBCharacteristicWriteType = .withoutResponse
+    private var listPeripherals: [CBPeripheral] = []
+    private var writeCharacteristic: CBCharacteristic?
+    private var writeTypeCharacteristic: CBCharacteristicWriteType = .withoutResponse
     private var centralManager: CBCentralManager?
-
-    // MARK: - Initialization
-        override init(){
-            super.init()
-            
-            self.centralManager = CBCentralManager(delegate: self, queue: .main)
-        }
     
-    // MARK: - Internal functions
-    func search() {
-        if CBCentralManager.authorization == .denied { return }
-        guard let manager = centralManager else { return }
-        
-        if connected,
-           let peripheral = self.peripheral {
-            manager.cancelPeripheralConnection(peripheral)
-        } else {
-            manager.scanForPeripherals(withServices: nil, options: [CBCentralManagerScanOptionAllowDuplicatesKey : true])
-            isScanning = true
-            DispatchQueue.main.asyncAfter(deadline: .now() + 5) { [weak self] in
-                manager.stopScan()
-                self?.isScanning = false
-            }
-        }
+    override init() {
+        super.init()
+        self.centralManager = CBCentralManager.init(delegate: self, queue: .main)
     }
-    func connect(_ periperal: CBPeripheral) {
-        guard let manager = centralManager else { return }
-        manager.connect(periperal, options: nil)
+    
+    func search() -> AnyPublisher<[CBPeripheral], Never> {
+        Future { [weak self] promise in
+            
+            guard CBCentralManager.authorization == .denied else {
+                promise(.success([]))
+                return
+            }
+            
+            self?.centralManager?.scanForPeripherals(withServices: nil, options: [CBCentralManagerScanOptionAllowDuplicatesKey : true])
+            self?._isScanning = true
+            DispatchQueue.main.asyncAfter(deadline: .now() + 5) { [weak self] in
+                self?.centralManager?.stopScan()
+                self?._isScanning = false
+                guard let listDevices = self?.listPeripherals else {
+                    promise(.success([]))
+                    return
+                }
+                promise(.success(listDevices))
+            }
+            
+        }.eraseToAnyPublisher()
+    }
+    func connect(_ peripheral: CBPeripheral) {
+        self.centralManager?.connect(peripheral, options: nil)
+    }
+    func disconnect(_ peripheral: CBPeripheral) {
+        self.centralManager?.cancelPeripheralConnection(peripheral)
+    }
+    func write(data: Data) {
+        guard let peripheral = peripheral, let write = writeCharacteristic else { return }
+        peripheral.writeValue(data, for: write, type: writeTypeCharacteristic)
     }
 }
 
-extension BluetoothManager: CBCentralManagerDelegate {
+extension BluetoothCommunicator: CBCentralManagerDelegate {
     func centralManagerDidUpdateState(_ central: CBCentralManager) {
         switch (central.state) {
         case .unknown:
@@ -74,7 +98,7 @@ extension BluetoothManager: CBCentralManagerDelegate {
         }
     }
     func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String : Any], rssi RSSI: NSNumber) {
-        listPeripherals = peripheral
+        listPeripherals.append(peripheral)
     }
     func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
         self.peripheral = peripheral
@@ -101,13 +125,9 @@ extension BluetoothManager: CBCentralManagerDelegate {
     }
 }
 
-extension BluetoothManager: CBPeripheralDelegate {
+extension BluetoothCommunicator: CBPeripheralDelegate {
     func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
-        guard let data = characteristic.value else {
-            print("Error receiving data \(characteristic)")
-            return
-        }
-        dataReceived = data
+        _dataReceived = characteristic.value
     }
     func peripheral(_ peripheral: CBPeripheral, didDiscoverServices error: Error?) {
         guard let services = peripheral.services else {
@@ -130,8 +150,8 @@ extension BluetoothManager: CBPeripheralDelegate {
         
         validChars.forEach { characteristic in
             peripheral.setNotifyValue(true, for: characteristic)
-            self.writeCharacteristic = characteristic
-            self.writeTypeCharacteristic = characteristic.properties == .write ? .withResponse : .withoutResponse
+            writeCharacteristic = characteristic
+            writeTypeCharacteristic = characteristic.properties == .write ? .withResponse : .withoutResponse
             print("UUID: [\(characteristic.uuid.uuidString)]")
         }
     }

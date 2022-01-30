@@ -54,7 +54,7 @@ struct DisplayView: View {
                 }
             }
             
-            if viewModel.bluetootnConnected &&
+            if viewModel.connected &&
                 viewModel.telemetry.telemetryType == .unknown {
                 Text("Detecting protocol")
                     .font(.largeTitle)
@@ -75,7 +75,7 @@ struct DisplayView: View {
                 .offset(x:155, y:-40)
             }
             
-            if viewModel.bluetootnConnected &&
+            if viewModel.connected &&
                 !viewModel.homePositionAdded &&
                 viewModel.telemetry.telemetryType != .unknown {
                 

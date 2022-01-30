@@ -15,6 +15,8 @@
 		6D04DC0B26E4EE2C003783F2 /* ConnectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D04DC0A26E4EE2C003783F2 /* ConnectionView.swift */; };
 		6D04DC0E26E4F4BD003783F2 /* Logbook.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D04DC0D26E4F4BD003783F2 /* Logbook.swift */; };
 		6D06263126EE8C1000FCAC40 /* BluetoothManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D06263026EE8C1000FCAC40 /* BluetoothManager.swift */; };
+		6D1082C027A6CD6C00725B45 /* BluetoothCommunicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D1082BF27A6CD6C00725B45 /* BluetoothCommunicator.swift */; };
+		6D1082C227A6DD4A00725B45 /* BluetoothManagerSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D1082C127A6DD4A00725B45 /* BluetoothManagerSpec.swift */; };
 		6D34745526E4CD39001F1E59 /* iNavTelemetryApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D34745426E4CD39001F1E59 /* iNavTelemetryApp.swift */; };
 		6D34745726E4CD39001F1E59 /* Dashboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D34745626E4CD39001F1E59 /* Dashboard.swift */; };
 		6D34745926E4CD3A001F1E59 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6D34745826E4CD3A001F1E59 /* Assets.xcassets */; };
@@ -69,6 +71,8 @@
 		6D04DC0A26E4EE2C003783F2 /* ConnectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionView.swift; sourceTree = "<group>"; };
 		6D04DC0D26E4F4BD003783F2 /* Logbook.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logbook.swift; sourceTree = "<group>"; };
 		6D06263026EE8C1000FCAC40 /* BluetoothManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BluetoothManager.swift; sourceTree = "<group>"; };
+		6D1082BF27A6CD6C00725B45 /* BluetoothCommunicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BluetoothCommunicator.swift; sourceTree = "<group>"; };
+		6D1082C127A6DD4A00725B45 /* BluetoothManagerSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BluetoothManagerSpec.swift; sourceTree = "<group>"; };
 		6D34745126E4CD39001F1E59 /* iNavTelemetry.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iNavTelemetry.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6D34745426E4CD39001F1E59 /* iNavTelemetryApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iNavTelemetryApp.swift; sourceTree = "<group>"; };
 		6D34745626E4CD39001F1E59 /* Dashboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dashboard.swift; sourceTree = "<group>"; };
@@ -126,6 +130,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6D1082BE27A6CD4F00725B45 /* BluetoothCommunicator */ = {
+			isa = PBXGroup;
+			children = (
+				6D06263026EE8C1000FCAC40 /* BluetoothManager.swift */,
+				6D1082BF27A6CD6C00725B45 /* BluetoothCommunicator.swift */,
+			);
+			path = BluetoothCommunicator;
+			sourceTree = "<group>";
+		};
 		6D34744826E4CD39001F1E59 = {
 			isa = PBXGroup;
 			children = (
@@ -227,6 +240,7 @@
 				6D3FEF48279F504C0034EEBC /* CloudStorageSpec.swift */,
 				6D3FEF50279F7B7B0034EEBC /* SocketCommunicatorSpec.swift */,
 				6D80B9DC27A0ACDA005A3614 /* LocalStorageSpec.swift */,
+				6D1082C127A6DD4A00725B45 /* BluetoothManagerSpec.swift */,
 			);
 			path = iNavTelemetryTests;
 			sourceTree = "<group>";
@@ -256,12 +270,12 @@
 		6DF1F27526E5F5FE00DCACA4 /* Framework */ = {
 			isa = PBXGroup;
 			children = (
+				6D1082BE27A6CD4F00725B45 /* BluetoothCommunicator */,
 				6D80B9D927A0AC17005A3614 /* LocalStorage */,
 				6D3FEF4D279F7B210034EEBC /* SocketComunicator */,
 				6D3FEF4A279F6BB20034EEBC /* CloudStorage */,
 				6D3F821426ED47FF009B408D /* TelemetryManager */,
 				6D49B7A226E80515006833A9 /* AppViewModel.swift */,
-				6D06263026EE8C1000FCAC40 /* BluetoothManager.swift */,
 			);
 			path = Framework;
 			sourceTree = "<group>";
@@ -393,6 +407,7 @@
 				6D3FEF4F279F7B440034EEBC /* SocketComunicator.swift in Sources */,
 				6D04DBEE26E4D0AA003783F2 /* DisplayView.swift in Sources */,
 				6D3F821A26ED47FF009B408D /* SmartPort.swift in Sources */,
+				6D1082C027A6CD6C00725B45 /* BluetoothCommunicator.swift in Sources */,
 				6D02C82727941C2A009D7047 /* TelemetryTypes.swift in Sources */,
 				6D04DC0E26E4F4BD003783F2 /* Logbook.swift in Sources */,
 				6D04DC0526E4EAD2003783F2 /* AttitudeView.swift in Sources */,
@@ -419,6 +434,7 @@
 				6D458C592798312D00B05E4A /* TelemetryDataSpec.swift in Sources */,
 				6D80B9DD27A0ACDA005A3614 /* LocalStorageSpec.swift in Sources */,
 				6D3FEF49279F504C0034EEBC /* CloudStorageSpec.swift in Sources */,
+				6D1082C227A6DD4A00725B45 /* BluetoothManagerSpec.swift in Sources */,
 				6D458C6527983A3800B05E4A /* MSPv2Spec.swift in Sources */,
 				6D458C5F2798365B00B05E4A /* MavLinkv2Spec.swift in Sources */,
 				6D46055B27958B510017EC5A /* TelemetryTypesSpec.swift in Sources */,
