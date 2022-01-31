@@ -52,7 +52,23 @@ class AppViewModel: ObservableObject {
     @Published private(set) var homePositionAdded = false
     @Published private(set) var seconds = 0
     @Published private(set) var bluetoothScanning = false
-    @Published private(set) var telemetry = InstrumentTelemetry(packet: Packet(), telemetryType: .unknown)
+    @Published private(set) var telemetry = InstrumentTelemetry(packet: Packet(), telemetryType: .unknown) {
+        didSet {
+            if (self.telemetry.packet.gps_sats > 5 && !self.homePositionAdded) {
+                self.showHomePosition(location: self.telemetry.location)
+            }
+            
+            self.updateLocation(location: self.telemetry.location)
+            
+            if self.homePositionAdded {
+                let logTelemetry = LogTelemetry(lat: self.telemetry.location.latitude,
+                                                lng: self.telemetry.location.longitude)
+                
+                socketCommunicator.sendPlaneData(location: logTelemetry)
+                localStorage.save(packet: logTelemetry)
+            }
+        }
+    }
     @Published private(set) var showListLogs = false
     @Published private(set) var showPeripherals = false
     @Published private(set) var peripherals: [CBPeripheral] = [] {
@@ -79,31 +95,6 @@ class AppViewModel: ObservableObject {
             .map{ $0 + [$1] }
             .assign(to: &$allPlanes)
         
-        Publishers.CombineLatest(localStorage.$logs,cloudStorage.$logs)
-            .map { localLogs, remoteLogs in
-                let merged = localLogs + remoteLogs
-                let sorted = merged.sorted { first, second in
-                    return Int(first.lastPathComponent)! > Int(second.lastPathComponent)!
-                }
-                var filtered: [URL] = []
-                var prevFileName = ""
-                sorted.forEach { url in
-                    
-                    if prevFileName.isEmpty {
-                        prevFileName = url.lastPathComponent
-                        filtered.append(url)
-                    }
-                    else {
-                        if url.lastPathComponent != prevFileName {
-                            filtered.append(url)
-                        }
-                        prevFileName = url.lastPathComponent
-                    }
-                }
-                return filtered
-            }
-            .assign(to: &$logsData)
-        
         bluetoothManager.$isScanning
             .assign(to: &$bluetoothScanning)
         
@@ -115,20 +106,6 @@ class AppViewModel: ObservableObject {
             .sink { [unowned self] data in
                 guard self.telemetryManager.parse(incomingData: data) else { return }
                 self.telemetry = self.telemetryManager.telemetry
-                
-                if (self.telemetry.packet.gps_sats > 5 && !self.homePositionAdded) {
-                    self.showHomePosition(location: self.telemetry.location)
-                }
-                
-                self.updateLocation(location: self.telemetry.location)
-                
-                if self.homePositionAdded {
-                    let logTelemetry = LogTelemetry(lat: self.telemetry.location.latitude,
-                                                    lng: self.telemetry.location.longitude)
-                    
-                    socketCommunicator.sendPlaneData(location: logTelemetry)
-                    localStorage.save(packet: logTelemetry)
-                }
             }.store(in: &cancellable)
     }
     
@@ -147,7 +124,10 @@ class AppViewModel: ObservableObject {
     }
     func getFlightLogs() {
         localStorage.fetch()
-        cloudStorage.fetch()
+            .combineLatest(cloudStorage.fetch())
+            .map({ $0 + $1 })
+            .map({ $0.uniqued().sortFiles() })
+            .assign(to: &$logsData)
     }
     func cleanDatabase(){
         localStorage.clear()
@@ -155,6 +135,7 @@ class AppViewModel: ObservableObject {
     }
     func searchDevice() {
         bluetoothManager.search()
+            .assign(to: &$peripherals)
     }
     func connectTo(_ periperal: CBPeripheral) {
         bluetoothManager.connect(periperal)
@@ -165,5 +146,26 @@ class AppViewModel: ObservableObject {
     }
     func closeLogsDataScreen() {
         logsData.removeAll()
+    }
+}
+
+extension Sequence where Iterator.Element == URL {
+    func uniqued() -> [Element] {
+        var filtered = Set<Element>()
+        
+        var prevFileName = ""
+        forEach { url in
+            if prevFileName.isEmpty {
+                prevFileName = url.lastPathComponent
+                filtered.insert(url)
+            }
+            else {
+                if url.lastPathComponent != prevFileName {
+                    filtered.insert(url)
+                }
+                prevFileName = url.lastPathComponent
+            }
+        }
+        return Array(filtered)
     }
 }

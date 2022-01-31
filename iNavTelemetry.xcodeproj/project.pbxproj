@@ -46,6 +46,7 @@
 		6D80B9DD27A0ACDA005A3614 /* LocalStorageSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D80B9DC27A0ACDA005A3614 /* LocalStorageSpec.swift */; };
 		6DAF1E5426EDEAD700DBE06A /* LocalStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DAF1E5326EDEAD700DBE06A /* LocalStorage.swift */; };
 		6DBA3DCB27119B9500D79FFB /* MavLink_v2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DBA3DCA27119B9500D79FFB /* MavLink_v2.swift */; };
+		6DC2C2AE27A890A900384701 /* AppViewModelSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DC2C2AD27A890A900384701 /* AppViewModelSpec.swift */; };
 		6DD7D1AF26F3D46E00735EA2 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DD7D1AE26F3D46E00735EA2 /* MainView.swift */; };
 		6DDD9052271E1AC00031E328 /* MavLink_v1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DDD9051271E1ABF0031E328 /* MavLink_v1.swift */; };
 		6DF2432D26F5F5E600DE6FE8 /* SocketManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DF2432C26F5F5E600DE6FE8 /* SocketManager.swift */; };
@@ -106,6 +107,7 @@
 		6D80B9DC27A0ACDA005A3614 /* LocalStorageSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalStorageSpec.swift; sourceTree = "<group>"; };
 		6DAF1E5326EDEAD700DBE06A /* LocalStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalStorage.swift; sourceTree = "<group>"; };
 		6DBA3DCA27119B9500D79FFB /* MavLink_v2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MavLink_v2.swift; sourceTree = "<group>"; };
+		6DC2C2AD27A890A900384701 /* AppViewModelSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppViewModelSpec.swift; sourceTree = "<group>"; };
 		6DD7D1AE26F3D46E00735EA2 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		6DDD9051271E1ABF0031E328 /* MavLink_v1.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MavLink_v1.swift; sourceTree = "<group>"; };
 		6DF2432C26F5F5E600DE6FE8 /* SocketManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocketManager.swift; sourceTree = "<group>"; };
@@ -241,6 +243,7 @@
 				6D3FEF50279F7B7B0034EEBC /* SocketCommunicatorSpec.swift */,
 				6D80B9DC27A0ACDA005A3614 /* LocalStorageSpec.swift */,
 				6D1082C127A6DD4A00725B45 /* BluetoothManagerSpec.swift */,
+				6DC2C2AD27A890A900384701 /* AppViewModelSpec.swift */,
 			);
 			path = iNavTelemetryTests;
 			sourceTree = "<group>";
@@ -433,6 +436,7 @@
 				6D458C63279836EB00B05E4A /* MSPv1Spec.swift in Sources */,
 				6D458C592798312D00B05E4A /* TelemetryDataSpec.swift in Sources */,
 				6D80B9DD27A0ACDA005A3614 /* LocalStorageSpec.swift in Sources */,
+				6DC2C2AE27A890A900384701 /* AppViewModelSpec.swift in Sources */,
 				6D3FEF49279F504C0034EEBC /* CloudStorageSpec.swift in Sources */,
 				6D1082C227A6DD4A00725B45 /* BluetoothManagerSpec.swift in Sources */,
 				6D458C6527983A3800B05E4A /* MSPv2Spec.swift in Sources */,

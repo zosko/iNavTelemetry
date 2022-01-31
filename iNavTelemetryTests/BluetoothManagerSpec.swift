@@ -43,8 +43,17 @@ final class BluetoothCommunicatorMock: BluetoothProtocol {
 }
 
 class BluetoothManagerSpec: XCTestCase {
+    private var cancellables: Set<AnyCancellable>!
+    
+    override func setUp() {
+        super.setUp()
+        cancellables = []
+    }
 
+    
     func testBluetoothManager() throws {
+        var arrDevices: [CBPeripheral] = []
+        
         let testData = "test_data".data(using: .utf8)
         
         let communicator = BluetoothCommunicatorMock()
@@ -53,11 +62,20 @@ class BluetoothManagerSpec: XCTestCase {
         communicator._dataReceived = testData
         
         XCTAssertEqual(manager.dataReceived, testData)
-        XCTAssertEqual(manager.peripherals, [])
+        
         XCTAssertFalse(manager.isScanning)
         XCTAssertFalse(manager.connected)
         
-        manager.search()
+        let expectation = self.expectation(description: "Search devices")
+        manager.search().sink { devices in
+            expectation.fulfill()
+            arrDevices = devices
+        }
+        .store(in: &cancellables)
+        waitForExpectations(timeout: 10)
+        
+        XCTAssertEqual(arrDevices, [])
+        
         XCTAssertTrue(manager.isScanning)
         XCTAssertFalse(manager.connected)
     }

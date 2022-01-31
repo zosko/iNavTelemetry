@@ -8,10 +8,8 @@
 import Foundation
 import Combine
 
-final class CloudStorage: ObservableObject {
+final class CloudStorage {
     
-    @Published private(set) var logs: [URL] = []
-
     private let cloudProtocol: FileManagerProtocol
 
     // MARK: - Initialization
@@ -26,7 +24,7 @@ final class CloudStorage: ObservableObject {
         cloudProtocol.save(file: file)
     }
 
-    func fetch() {
+    func fetch() -> AnyPublisher<[URL], Never>{
         cloudProtocol.fetch()
             .map({ urls in
                 urls.filter { url in
@@ -34,7 +32,7 @@ final class CloudStorage: ObservableObject {
                 }
                 .sortFiles()
             })
-            .assign(to: &$logs)
+            .eraseToAnyPublisher()
     }
 
     func clear() {

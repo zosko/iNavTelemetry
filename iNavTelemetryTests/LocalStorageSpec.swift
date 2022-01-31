@@ -30,8 +30,18 @@ class DataLoggerManagerMock: DataLoggerProtocol {
 }
 
 class LocalStorageSpec: XCTestCase {
+    
+    private var cancellables: Set<AnyCancellable>!
+    
+    override func setUp() {
+        super.setUp()
+        cancellables = []
+    }
+    
     func testLocalStorage() throws {
 
+        var arrLogs: [URL] = []
+        
         let log1 = LogTelemetry(id: "1", lat: 10.0, lng: 10.0)
         let log2 = LogTelemetry(id: "1", lat: 20.0, lng: 20.0)
         let log3 = LogTelemetry(id: "1", lat: 30.0, lng: 30.0)
@@ -39,9 +49,15 @@ class LocalStorageSpec: XCTestCase {
         let loggerManager = DataLoggerManagerMock()
         let storage = LocalStorage(loggerManager: loggerManager)
 
-        storage.fetch()
+        let expectation = self.expectation(description: "Fetch logs")
+        storage.fetch().sink { logs in
+            expectation.fulfill()
+            arrLogs = logs
+        }
+        .store(in: &cancellables)
+        waitForExpectations(timeout: 10)
         
-        XCTAssertEqual(storage.logs, [])
+        XCTAssertEqual(arrLogs, [])
         
         storage.start()
         
@@ -54,14 +70,27 @@ class LocalStorageSpec: XCTestCase {
                 
         XCTAssertNotNil(storage.stop())
         
-        storage.fetch()
+        let expectation1 = self.expectation(description: "Fetch logs")
+        storage.fetch().sink { logs in
+            expectation1.fulfill()
+            arrLogs = logs
+        }
+        .store(in: &cancellables)
+        waitForExpectations(timeout: 10)
         
-        XCTAssertEqual(storage.logs, [URL(string: "111")!])
+        XCTAssertEqual(arrLogs, [URL(string: "111")!])
         
         storage.clear()
-        storage.fetch()
         
-        XCTAssertEqual(storage.logs, [])
+        let expectation2 = self.expectation(description: "Fetch logs")
+        storage.fetch().sink { logs in
+            expectation2.fulfill()
+            arrLogs = logs
+        }
+        .store(in: &cancellables)
+        waitForExpectations(timeout: 10)
+        
+        XCTAssertEqual(arrLogs, [])
         
         XCTAssertTrue(LocalStorage.toName(timestamp: 0).contains("1970 Jan 1 "))
         

@@ -9,9 +9,7 @@
 import SwiftUI
 import Combine
 
-final class LocalStorage: ObservableObject {
-    
-    @Published private(set) var logs: [URL] = []
+final class LocalStorage {
     
     private var jsonDatabase: [LogTelemetry] = []
     private var nameFile: String = "\(Int(NSDate.now.timeIntervalSince1970))"
@@ -59,7 +57,7 @@ final class LocalStorage: ObservableObject {
         jsonDatabase = []
         return loggerManager.save(data: jsonString, name:nameFile)
     }
-    func fetch() {
+    func fetch() -> AnyPublisher<[URL], Never> {
         loggerManager.fetch()
             .map({ urls in
                 urls.filter { url in
@@ -67,7 +65,7 @@ final class LocalStorage: ObservableObject {
                 }
                 .sortFiles()
             })
-            .assign(to: &$logs)
+            .eraseToAnyPublisher()
     }
     static func toName(timestamp: Double) -> String {
         let dateFormatter = DateFormatter()

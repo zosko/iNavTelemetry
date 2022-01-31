@@ -12,7 +12,6 @@ import Combine
 final class BluetoothManager: ObservableObject {
 
     @Published private(set) var dataReceived: Data?
-    @Published private(set) var peripherals: [CBPeripheral] = []
     @Published var isScanning: Bool = false
     @Published var connected: Bool = false
     
@@ -38,9 +37,9 @@ final class BluetoothManager: ObservableObject {
     }
     
     // MARK: - Internal methods
-    func search() {
+    func search() -> AnyPublisher<[CBPeripheral], Never> {
         bluetoothCommunicator.search()
-            .assign(to: &$peripherals)
+            .eraseToAnyPublisher()
     }
     func connect(_ peripheral: CBPeripheral) {
         bluetoothCommunicator.connect(peripheral)

@@ -22,9 +22,17 @@ class CloudManagerMock: FileManagerProtocol {
 }
 
 class CloudStorageSpec: XCTestCase {
+    
+    private var cancellables: Set<AnyCancellable>!
+    
+    override func setUp() {
+        super.setUp()
+        cancellables = []
+    }
 
     func testCloudStorage() throws {
-
+        var arrLogs: [URL] = []
+        
         let fileA = URL(string: "111")!
         let fileB = URL(string: "222")!
         let fileC = URL(string: "333")!
@@ -34,17 +42,41 @@ class CloudStorageSpec: XCTestCase {
 
         let storage = CloudStorage(cloudProtocol: cloudManagerMock)
 
-        XCTAssertEqual(storage.logs,[])
+        let expectation = self.expectation(description: "Fetch logs")
+        storage.fetch().sink { logs in
+            expectation.fulfill()
+            arrLogs = logs
+        }
+        .store(in: &cancellables)
+        waitForExpectations(timeout: 10)
+        
+        XCTAssertEqual(arrLogs,[])
+        
         storage.save(file: fileA)
         storage.save(file: fileD)
         storage.save(file: fileB)
         storage.save(file: fileC)
         
-        storage.fetch()
-        XCTAssertEqual(storage.logs,[fileD,fileC,fileB,fileA])
+        let expectation1 = self.expectation(description: "Fetch logs")
+        storage.fetch().sink { logs in
+            expectation1.fulfill()
+            arrLogs = logs
+        }
+        .store(in: &cancellables)
+        waitForExpectations(timeout: 10)
+        
+        XCTAssertEqual(arrLogs,[fileD,fileC,fileB,fileA])
         storage.clear()
-        storage.fetch()
-        XCTAssertEqual(storage.logs,[])
+        
+        let expectation2 = self.expectation(description: "Fetch logs")
+        storage.fetch().sink { logs in
+            expectation2.fulfill()
+            arrLogs = logs
+        }
+        .store(in: &cancellables)
+        waitForExpectations(timeout: 10)
+        
+        XCTAssertEqual(arrLogs, [])
     }
     
     func testFilterFile() throws {
