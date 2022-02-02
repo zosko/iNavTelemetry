@@ -42,6 +42,8 @@
 		6D46055B27958B510017EC5A /* TelemetryTypesSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D46055A27958B510017EC5A /* TelemetryTypesSpec.swift */; };
 		6D49B7A326E80515006833A9 /* AppViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D49B7A226E80515006833A9 /* AppViewModel.swift */; };
 		6D5B151F2701EC9F001C40BF /* CloudStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D5B151E2701EC9F001C40BF /* CloudStorage.swift */; };
+		6D7B1C6027AAB0A400A1790D /* CRCMavLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D7B1C5F27AAB0A400A1790D /* CRCMavLink.swift */; };
+		6D7B1C6327AAB0ED00A1790D /* CRCMavLinkSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D7B1C6227AAB0ED00A1790D /* CRCMavLinkSpec.swift */; };
 		6D80B9DB27A0AC50005A3614 /* DataLoggerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D80B9DA27A0AC50005A3614 /* DataLoggerManager.swift */; };
 		6D80B9DD27A0ACDA005A3614 /* LocalStorageSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D80B9DC27A0ACDA005A3614 /* LocalStorageSpec.swift */; };
 		6DAF1E5426EDEAD700DBE06A /* LocalStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DAF1E5326EDEAD700DBE06A /* LocalStorage.swift */; };
@@ -103,6 +105,8 @@
 		6D4E9AEA2794E81D00EBF7B5 /* iNavTelemetryTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = iNavTelemetryTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		6D5B151C2701EB82001C40BF /* iNavTelemetry.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = iNavTelemetry.entitlements; sourceTree = "<group>"; };
 		6D5B151E2701EC9F001C40BF /* CloudStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudStorage.swift; sourceTree = "<group>"; };
+		6D7B1C5F27AAB0A400A1790D /* CRCMavLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CRCMavLink.swift; sourceTree = "<group>"; };
+		6D7B1C6227AAB0ED00A1790D /* CRCMavLinkSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CRCMavLinkSpec.swift; sourceTree = "<group>"; };
 		6D80B9DA27A0AC50005A3614 /* DataLoggerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataLoggerManager.swift; sourceTree = "<group>"; };
 		6D80B9DC27A0ACDA005A3614 /* LocalStorageSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalStorageSpec.swift; sourceTree = "<group>"; };
 		6DAF1E5326EDEAD700DBE06A /* LocalStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalStorage.swift; sourceTree = "<group>"; };
@@ -202,6 +206,7 @@
 		6D3F821426ED47FF009B408D /* TelemetryManager */ = {
 			isa = PBXGroup;
 			children = (
+				6D7B1C6127AAB0C700A1790D /* Utils */,
 				6DAF1E5726EDF57400DBE06A /* Protocols */,
 				6D3F821826ED47FF009B408D /* TelemetryManager.swift */,
 				6D02C82627941C2A009D7047 /* TelemetryTypes.swift */,
@@ -244,8 +249,17 @@
 				6D80B9DC27A0ACDA005A3614 /* LocalStorageSpec.swift */,
 				6D1082C127A6DD4A00725B45 /* BluetoothManagerSpec.swift */,
 				6DC2C2AD27A890A900384701 /* AppViewModelSpec.swift */,
+				6D7B1C6227AAB0ED00A1790D /* CRCMavLinkSpec.swift */,
 			);
 			path = iNavTelemetryTests;
+			sourceTree = "<group>";
+		};
+		6D7B1C6127AAB0C700A1790D /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				6D7B1C5F27AAB0A400A1790D /* CRCMavLink.swift */,
+			);
+			path = Utils;
 			sourceTree = "<group>";
 		};
 		6D80B9D927A0AC17005A3614 /* LocalStorage */ = {
@@ -396,6 +410,7 @@
 				6D04DC0826E4EADA003783F2 /* CompassView.swift in Sources */,
 				6D3F821E26ED47FF009B408D /* Custom.swift in Sources */,
 				6DF6723A27012558007CBD63 /* MapViewLines.swift in Sources */,
+				6D7B1C6027AAB0A400A1790D /* CRCMavLink.swift in Sources */,
 				6D34745726E4CD39001F1E59 /* Dashboard.swift in Sources */,
 				6D06263126EE8C1000FCAC40 /* BluetoothManager.swift in Sources */,
 				6D3FEF4C279F6BD80034EEBC /* CloudManager.swift in Sources */,
@@ -441,6 +456,7 @@
 				6D1082C227A6DD4A00725B45 /* BluetoothManagerSpec.swift in Sources */,
 				6D458C6527983A3800B05E4A /* MSPv2Spec.swift in Sources */,
 				6D458C5F2798365B00B05E4A /* MavLinkv2Spec.swift in Sources */,
+				6D7B1C6327AAB0ED00A1790D /* CRCMavLinkSpec.swift in Sources */,
 				6D46055B27958B510017EC5A /* TelemetryTypesSpec.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

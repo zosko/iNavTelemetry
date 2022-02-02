@@ -14,7 +14,7 @@ class MavLinkv2Spec: XCTestCase {
 
     func testMavLinkV2() throws {
         let mavLink = MavLink_v2()
-        XCTAssertFalse(mavLink.process_incoming_bytes(incomingData: Data()))
+        XCTAssertFalse(mavLink.process(Data()))
     }
 
 }

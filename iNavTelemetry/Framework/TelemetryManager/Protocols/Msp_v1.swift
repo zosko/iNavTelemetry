@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-final class MSP_V1 {
+final class MSP_V1: TelemetryProtocol {
     
     enum MSP_Request_Replies: UInt8 {
         case MSP_STATUS                 = 101
@@ -70,7 +70,7 @@ final class MSP_V1 {
         
         return Data(bytes: buffer, count: buffer.count)
     }
-    func process_incoming_bytes(incomingData: Data) -> Bool {
+    func process(_ incomingData: Data) -> Bool {
         let bytes: [UInt8] = incomingData.map{ $0 }
         
         guard bytes.count > 4 else { return false }
@@ -102,27 +102,27 @@ final class MSP_V1 {
             
             switch MSP_Request_Replies(rawValue: messageID) {
             case .MSP_ATTITUDE:
-                packet.roll = Int(buffer_get_int16(buffer: payload, index: 1)) / 10
-                packet.pitch = -Int(buffer_get_int16(buffer: payload, index: 3)) / 10
-                packet.heading = Int(buffer_get_int16(buffer: payload, index: 5))
+                packet.roll = Int(littleEndian_get_int16(buffer: payload, index: 1)) / 10
+                packet.pitch = -Int(littleEndian_get_int16(buffer: payload, index: 3)) / 10
+                packet.heading = Int(littleEndian_get_int16(buffer: payload, index: 5))
                 break
             case .MSP_RAW_GPS:
                 packet.gps_sats = Int(payload[1])
-                packet.lat = Double(buffer_get_int32(buffer: payload, index: 5)) / 10000000
-                packet.lng = Double(buffer_get_int32(buffer: payload, index: 9)) / 10000000
-                packet.alt = Int(buffer_get_int16(buffer: payload, index: 11))
-                packet.speed = Int(Double(buffer_get_int16(buffer: payload, index: 13)) * 0.036)
+                packet.lat = Double(littleEndian_get_int32(buffer: payload, index: 5)) / 10000000
+                packet.lng = Double(littleEndian_get_int32(buffer: payload, index: 9)) / 10000000
+                packet.alt = Int(littleEndian_get_int16(buffer: payload, index: 11))
+                packet.speed = Int(Double(littleEndian_get_int16(buffer: payload, index: 13)) * 0.036)
                 break
             case .MSP_ANALOG:
                 packet.voltage = Double(payload[0]) / 10
-                packet.rssi = Int(buffer_get_int16(buffer: payload, index: 4)) / 10
-                packet.current = Int(buffer_get_int16(buffer: payload, index: 6)) / 100
+                packet.rssi = Int(littleEndian_get_int16(buffer: payload, index: 4)) / 10
+                packet.current = Int(littleEndian_get_int16(buffer: payload, index: 6)) / 100
                 break
             case .MSP_COMP_GPS:
-                packet.distance = Int(buffer_get_int16(buffer: payload, index: 1))
+                packet.distance = Int(littleEndian_get_int16(buffer: payload, index: 1))
                 break
             case .MSP_STATUS:
-                packet.flight_mode = Int(buffer_get_int32(buffer: payload, index: 9))
+                packet.flight_mode = Int(littleEndian_get_int32(buffer: payload, index: 9))
                 break
             default:
                 print("messageID: [\(messageID)] payload: \(payload)")
@@ -146,11 +146,5 @@ final class MSP_V1 {
         let dataPayload = Data(bytes: buffer, count: buffer.count)
         let converted:T = dataPayload.withUnsafeBytes { $0.load(as: structType.self) }
         return converted
-    }
-    private func buffer_get_int16(buffer: [UInt8], index : Int) -> Int16 {
-        return Int16(buffer[index]) << 8 | Int16(buffer[index - 1])
-    }
-    private func buffer_get_int32(buffer: [UInt8], index : Int) -> Int32 {
-        return Int32(buffer[index]) << 24 | Int32(buffer[index - 1]) << 16 | Int32(buffer[index - 2]) << 8 | Int32(buffer[index - 3])
     }
 }

@@ -52,31 +52,31 @@ final class TelemetryManager: ObservableObject {
             }
             return false
         case .custom:
-            if custom.process_incoming_bytes(incomingData: incomingData) {
+            if custom.process(incomingData) {
                 packet = custom.packet
                 return true
             }
             return false
         case .smartPort:
-            if smartPort.process_incoming_bytes(incomingData: incomingData) {
+            if smartPort.process(incomingData) {
                 packet = smartPort.packet
                 return true
             }
             return false
         case .msp:
-            if msp.process_incoming_bytes(incomingData: incomingData) {
+            if msp.process(incomingData) {
                 packet = msp.packet
                 return true
             }
             return false
         case .mavLink_v1:
-            if mavLink_v1.process_incoming_bytes(incomingData: incomingData) {
+            if mavLink_v1.process(incomingData) {
                 packet = mavLink_v1.packet
                 return true
             }
             return false
         case .mavLink_v2:
-            if mavLink_v2.process_incoming_bytes(incomingData: incomingData) {
+            if mavLink_v2.process(incomingData) {
                 packet = mavLink_v2.packet
                 return true
             }
@@ -89,23 +89,23 @@ final class TelemetryManager: ObservableObject {
         var receivedUnknown = true
         requestMSPTelemetry()
         
-        if custom.process_incoming_bytes(incomingData: incomingData) {
+        if custom.process(incomingData) {
             if custom.packet.rssi != 0 { protocolDetector.append(.custom) }
             receivedUnknown = false
         }
-        if smartPort.process_incoming_bytes(incomingData: incomingData) {
+        if smartPort.process(incomingData) {
             if smartPort.packet.rssi != 0 { protocolDetector.append(.smartPort) }
             receivedUnknown = false
         }
-        if msp.process_incoming_bytes(incomingData: incomingData) {
+        if msp.process(incomingData) {
             if msp.packet.flight_mode != 0 { protocolDetector.append(.msp) }
             receivedUnknown = false
         }
-        if mavLink_v1.process_incoming_bytes(incomingData: incomingData) {
+        if mavLink_v1.process(incomingData) {
             if mavLink_v1.packet.rssi != 0 { protocolDetector.append(.mavLink_v1) }
             receivedUnknown = false
         }
-        if mavLink_v2.process_incoming_bytes(incomingData: incomingData) {
+        if mavLink_v2.process(incomingData) {
             if mavLink_v2.packet.rssi != 0 { protocolDetector.append(.mavLink_v2) }
             receivedUnknown = false
         }

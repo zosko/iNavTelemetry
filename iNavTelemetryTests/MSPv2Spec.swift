@@ -14,7 +14,7 @@ class MSPv2Spec: XCTestCase {
         let msp = MSP_V2()
         let bytes: [UInt8] = [36,88,60,0,101,0,101,0,231]
         XCTAssertEqual(msp.request(messageID: .MSP_STATUS), Data(bytes: bytes, count: 9))
-        XCTAssertFalse(msp.process_incoming_bytes(incomingData: Data()))
+        XCTAssertFalse(msp.process(Data()))
     }
 
 }

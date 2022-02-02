@@ -8,7 +8,53 @@
 
 import SwiftUI
 
-final class SmartPort {
+protocol TelemetryProtocol {
+    var packet: Packet { get }
+    
+    func process(_ incomingData: Data) -> Bool
+    func littleEndian_get_int16(buffer: [UInt8], index : Int) -> UInt16
+    func littleEndian_get_int32(buffer: [UInt8], index : Int) -> Int32
+    func bigEndian_get_int16(buffer: [UInt8], index : Int) -> UInt16
+    func bigEndian_get_int32(buffer: [UInt8], index : Int) -> UInt32
+    func bigEndian_get_float16(buffer: [UInt8], scale : Double, index : Int) -> Double
+    func bigEndian_get_float32(buffer: [UInt8], scale : Double, index : Int) -> Double
+    
+    func linearInterpolation(inVal:Double, inMin:Double, inMax:Double, outMin:Double, outMax:Double) -> Double
+    func rad2deg(_ number: Double) -> Double
+}
+
+extension TelemetryProtocol {
+    func littleEndian_get_int16(buffer: [UInt8], index : Int) -> UInt16 {
+        return UInt16(buffer[index]) << 8 | UInt16(buffer[index - 1])
+    }
+    func littleEndian_get_int32(buffer: [UInt8], index : Int) -> Int32 {
+        return Int32(buffer[index]) << 24 | Int32(buffer[index - 1]) << 16 | Int32(buffer[index - 2]) << 8 | Int32(buffer[index - 3])
+    }
+    func rad2deg(_ number: Double) -> Double {
+        return number * 180 / .pi
+    }
+    
+    func bigEndian_get_int16(buffer: [UInt8], index : Int) -> UInt16 {
+        return UInt16(buffer[index]) << 8 | UInt16(buffer[index + 1])
+    }
+    func bigEndian_get_int32(buffer: [UInt8], index : Int) -> UInt32 {
+        return UInt32(buffer[index]) << 24 | UInt32(buffer[index + 1]) << 16 | UInt32(buffer[index + 2]) << 8 | UInt32(buffer[index + 3])
+    }
+    func bigEndian_get_float16(buffer: [UInt8], scale : Double, index : Int) -> Double {
+        return Double(bigEndian_get_int16(buffer: buffer, index: index)) / scale
+    }
+    func bigEndian_get_float32(buffer: [UInt8], scale : Double, index : Int) -> Double {
+        return (Double)(bigEndian_get_int32(buffer: buffer, index: index)) / scale
+    }
+    func linearInterpolation(inVal:Double, inMin:Double, inMax:Double, outMin:Double, outMax:Double) -> Double {
+        if (inMin == 0 && inMax == 0) {
+            return 0.0;
+        }
+        return (inVal - inMin) / (inMax - inMin) * (outMax - outMin) + outMin;
+    }
+}
+
+final class SmartPort: TelemetryProtocol {
     
     enum State : Int {
         case IDLE = 0
@@ -16,79 +62,71 @@ final class SmartPort {
         case XOR = 2
     }
     
-    private let PACKET_SIZE : UInt8 = 0x09
-    private let START_BYTE : UInt8 = 0x7E
-    private let DATA_START : UInt8 = 0x10
-    private let DATA_STUFF : UInt8 = 0x7D
-    private let STUFF_MASK : UInt8 = 0x20
+    private let PACKET_SIZE: UInt8 = 0x09
+    private let START_BYTE: UInt8 = 0x7E
+    private let DATA_START: UInt8 = 0x10
+    private let DATA_STUFF: UInt8 = 0x7D
+    private let STUFF_MASK: UInt8 = 0x20
     
-    private let VFAS_SENSOR : UInt16 = 0x0210
-    private let CELL_SENSOR : UInt16 = 0x0910
-    private let VSPEED_SENSOR : UInt16 = 0x0110
-    private let GSPEED_SENSOR : UInt16 = 0x0830
-    private let ALT_SENSOR : UInt16 = 0x0100
-    private let GALT_SENSOR : UInt16 = 0x0820
-    private let DISTANCE_SENSOR : UInt16 = 0x0420
-    private let FUEL_SENSOR : UInt16 = 0x0600
-    private let GPS_SENSOR : UInt16 = 0x0800
-    private let CURRENT_SENSOR : UInt16 = 0x200
-    private let HEADING_SENSOR : UInt16 = 0x0840
-    private let RSSI_SENSOR : UInt16 = 0xF101
-    private let FLYMODE_SENSOR : UInt16 = 0x0400
-    private let GPS_STATE_SENSOR : UInt16 = 0x0410
-    private let PITCH_SENSOR : UInt16 = 0x0430
-    private let ROLL_SENSOR : UInt16 = 0x0440
-    private let AIRSPEED_SENSOR : UInt16 = 0x0A00
-    private let FLIGHT_PATH_VECTOR : UInt16 = 0x0450
-    private let RX_BAT : UInt16 = 0xF104
-    private let FSSP_DATAID_ADC2 : UInt16 = 0xF103
+    private let VFAS_SENSOR: UInt16 = 0x0210
+    private let CELL_SENSOR: UInt16 = 0x0910
+    private let VSPEED_SENSOR: UInt16 = 0x0110
+    private let GSPEED_SENSOR: UInt16 = 0x0830
+    private let ALT_SENSOR: UInt16 = 0x0100
+    private let GALT_SENSOR: UInt16 = 0x0820
+    private let DISTANCE_SENSOR: UInt16 = 0x0420
+    private let FUEL_SENSOR: UInt16 = 0x0600
+    private let GPS_SENSOR: UInt16 = 0x0800
+    private let CURRENT_SENSOR: UInt16 = 0x200
+    private let HEADING_SENSOR: UInt16 = 0x0840
+    private let RSSI_SENSOR: UInt16 = 0xF101
+    private let FLYMODE_SENSOR: UInt16 = 0x0400
+    private let GPS_STATE_SENSOR: UInt16 = 0x0410
+    private let PITCH_SENSOR: UInt16 = 0x0430
+    private let ROLL_SENSOR: UInt16 = 0x0440
+    private let AIRSPEED_SENSOR: UInt16 = 0x0A00
+    private let FLIGHT_PATH_VECTOR: UInt16 = 0x0450
+    private let RX_BAT: UInt16 = 0xF104
+    private let FSSP_DATAID_ADC2: UInt16 = 0xF103
     private let PGR_PGN_VERSION_MASK: UInt16 = 0xF000
-    private let UNKNOWN_PACKET_1 : UInt16 = 0xF105
+    private let UNKNOWN_PACKET_1: UInt16 = 0xF105
     
     // QCZEK LRS
-    private let APID_GPS_COURSE : UInt16 = 0x0840
-    private let APID_RSSI : UInt16 = 0xF101
-    private let APID_VFAS : UInt16 = 0x0210
-    private let APID_CURRENT : UInt16 = 0x0200
-    private let APID_CELLS : UInt16 = 0x0300
-    private let APID_ALTITUDE : UInt16 = 0x0100
-    private let APID_VARIO : UInt16 = 0x0110
-    private let APID_GPS_SPEED : UInt16 = 0x0830
-    private let APID_LATLONG : UInt16 = 0x0800
-    private let APID_GPS_ALTITUDE : UInt16 = 0x0820
-    private let APID_AIR_SPEED : UInt16 = 0x0a00
-    private let APID_FUEL : UInt16 = 0x0600
-    private let APID_T1 : UInt16 = 0x0400
-    private let APID_T2 : UInt16 = 0x0410
-    private let APID_PITCH : UInt16 = 0x0430
-    private let APID_ROLL : UInt16 = 0x0440
-    private let APID_MAV_BASE_MODE : UInt16 = 0x04A0
-    private let APID_MAV_SYS_STATUS : UInt16 = 0x04A1
-    private let APID_MAV_CUSTOM_MODE : UInt16 = 0x04A2
-    private let APID_CUST_RSSI : UInt16 = 0x04B0
-    private let APID_RX_RSSI_REG_VAL : UInt16 = 0x04B1 // with offset 157 for 868MHz and 146 for 433MHz
-    private let APID_RX_SNR_REG_VAL : UInt16 = 0x04B2 // with offset 64.
-    private let APID_RX_PACKET_LOST_VAL : UInt16 = 0x04B3
+    private let APID_GPS_COURSE: UInt16 = 0x0840
+    private let APID_RSSI: UInt16 = 0xF101
+    private let APID_VFAS: UInt16 = 0x0210
+    private let APID_CURRENT: UInt16 = 0x0200
+    private let APID_CELLS: UInt16 = 0x0300
+    private let APID_ALTITUDE: UInt16 = 0x0100
+    private let APID_VARIO: UInt16 = 0x0110
+    private let APID_GPS_SPEED: UInt16 = 0x0830
+    private let APID_LATLONG: UInt16 = 0x0800
+    private let APID_GPS_ALTITUDE: UInt16 = 0x0820
+    private let APID_AIR_SPEED: UInt16 = 0x0a00
+    private let APID_FUEL: UInt16 = 0x0600
+    private let APID_T1: UInt16 = 0x0400
+    private let APID_T2: UInt16 = 0x0410
+    private let APID_PITCH: UInt16 = 0x0430
+    private let APID_ROLL: UInt16 = 0x0440
+    private let APID_MAV_BASE_MODE: UInt16 = 0x04A0
+    private let APID_MAV_SYS_STATUS: UInt16 = 0x04A1
+    private let APID_MAV_CUSTOM_MODE: UInt16 = 0x04A2
+    private let APID_CUST_RSSI: UInt16 = 0x04B0
+    private let APID_RX_RSSI_REG_VAL: UInt16 = 0x04B1 // with offset 157 for 868MHz and 146 for 433MHz
+    private let APID_RX_SNR_REG_VAL: UInt16 = 0x04B2 // with offset 64.
+    private let APID_RX_PACKET_LOST_VAL: UInt16 = 0x04B3
     
-    private var state : State = .IDLE
-    private var bufferIndex : Int = 0
-    private var buffer : [UInt8] = [UInt8](repeating: 0, count: 9)
+    private var state: State = .IDLE
+    private var bufferIndex: Int = 0
+    private var buffer: [UInt8] = [UInt8](repeating: 0, count: 9)
     private var newLatitude = false
     private var newLongitude = false
-    private var latitude : Double = 0.0
-    private var longitude : Double = 0.0
+    private var latitude: Double = 0.0
+    private var longitude: Double = 0.0
     var packet = Packet()
     
-    // MARK: - Private methods
-    private func buffer_get_int16(buffer: [UInt8], index : Int) -> UInt16 {
-        return UInt16(buffer[index]) << 8 | UInt16(buffer[index - 1])
-    }
-    private func buffer_get_int32(buffer: [UInt8], index : Int) -> Int32 {
-        return Int32(buffer[index]) << 24 | Int32(buffer[index - 1]) << 16 | Int32(buffer[index - 2]) << 8 | Int32(buffer[index - 3])
-    }
-    
     // MARK: - Internal methods
-    func process_incoming_bytes(incomingData: Data) -> Bool {
+    func process(_ incomingData: Data) -> Bool {
         let data: [UInt8] = incomingData.map{ $0 }
         var isProcessed = false
         for i in 0 ..< data.count {
@@ -123,8 +161,8 @@ final class SmartPort {
                 if packetType == DATA_START {
                     isProcessed = true
                     
-                    let dataType = buffer_get_int16(buffer: buffer, index:3)
-                    let rawData = buffer_get_int32(buffer: buffer, index:7)
+                    let dataType = littleEndian_get_int16(buffer: buffer, index:3)
+                    let rawData = littleEndian_get_int32(buffer: buffer, index:7)
                     
                     switch dataType {
                     case VFAS_SENSOR, APID_VFAS:

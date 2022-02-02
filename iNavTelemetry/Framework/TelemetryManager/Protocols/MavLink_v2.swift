@@ -8,7 +8,7 @@
 import SwiftUI
 import CoreLocation
 
-final class MavLink_v2 {
+final class MavLink_v2: TelemetryProtocol {
     
     enum State {
         case IDLE
@@ -61,7 +61,7 @@ final class MavLink_v2 {
     var longitude = 0.0
 
     // MARK: - Internal methods
-    func process_incoming_bytes(incomingData: Data) -> Bool{
+    func process(_ incomingData: Data) -> Bool{
         let data: [UInt8] = incomingData.map{ $0 }
         var isProcessed = false
         for i in 0 ..< data.count {
@@ -100,7 +100,7 @@ final class MavLink_v2 {
                 messageIdBuffer[messageIdIndex] = data[i]
                 messageIdIndex += 1
                 if (messageIdIndex >= 3) {
-                    messageId = Int(buffer_get_int32(buffer: messageIdBuffer, index: 3))
+                    messageId = Int(littleEndian_get_int32(buffer: messageIdBuffer, index: 3))
                     state = .PAYLOAD
                     payloadIndex = 0
                     buffer = [UInt8](repeating: 0, count: Int(packetLength))
@@ -132,19 +132,10 @@ final class MavLink_v2 {
     }
 
     // MARK: - Private methods
-    private func rad2deg(_ number: Double) -> Double {
-        return number * 180 / .pi
-    }
-    private func buffer_get_int16(buffer: [UInt8], index : Int) -> UInt16{
-        return UInt16(buffer[index]) << 8 | UInt16(buffer[index - 1])
-    }
-    private func buffer_get_int32(buffer: [UInt8], index : Int) -> Int32 {
-        return Int32(buffer[index]) << 24 | Int32(buffer[index - 1]) << 16 | Int32(buffer[index - 2]) << 8 | Int32(buffer[index - 3])
-    }
     private func processPacket() {
         if (messageId == MAVLINK_MSG_ID_SYS_STATUS) {
-            packet.voltage = Double(buffer_get_int16(buffer: buffer, index: 15)) / 1000.0
-            packet.current = Int(Double(buffer_get_int16(buffer: buffer, index: 17)) / 100.0)
+            packet.voltage = Double(littleEndian_get_int16(buffer: buffer, index: 15)) / 1000.0
+            packet.current = Int(Double(littleEndian_get_int16(buffer: buffer, index: 17)) / 100.0)
             packet.fuel = Int(buffer[30])
         }
         else if (messageId == MAVLINK_MSG_ID_HEARTBEAT) {
@@ -177,14 +168,14 @@ final class MavLink_v2 {
             packet.gps_sats = Int(buffer[29])
         }
         else if (messageId == MAVLINK_MSG_ID_GPS_GLOBAL_ORIGIN) {
-            originLatitude = Double(buffer_get_int32(buffer: buffer, index: 3)) / 10000000
-            originLongitude = Double(buffer_get_int32(buffer: buffer, index: 7)) / 10000000
+            originLatitude = Double(littleEndian_get_int32(buffer: buffer, index: 3)) / 10000000
+            originLongitude = Double(littleEndian_get_int32(buffer: buffer, index: 7)) / 10000000
             self.gpsCoordinate()
         }
         else if (messageId == MAVLINK_MSG_ID_GLOBAL_POSITION_INT) {
-            latitude = Double(buffer_get_int32(buffer: buffer, index: 7)) / 10000000
-            longitude = Double(buffer_get_int32(buffer: buffer, index: 11)) / 10000000
-            packet.heading = Int(buffer_get_int16(buffer: buffer, index: 27)) / 100
+            latitude = Double(littleEndian_get_int32(buffer: buffer, index: 7)) / 10000000
+            longitude = Double(littleEndian_get_int32(buffer: buffer, index: 11)) / 10000000
+            packet.heading = Int(littleEndian_get_int16(buffer: buffer, index: 27)) / 100
             
             newLatitude = true
             newLongitude = true
