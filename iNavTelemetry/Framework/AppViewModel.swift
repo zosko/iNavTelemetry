@@ -127,7 +127,8 @@ class AppViewModel: ObservableObject {
             .combineLatest(cloudStorage.fetch())
             .map({ $0 + $1 })
             .map({ $0.uniqued().sortFiles() })
-            .assign(to: &$logsData)
+            .assign(to: \.logsData, on: self)
+            .store(in: &cancellable)
     }
     func cleanDatabase(){
         localStorage.clear()
@@ -135,17 +136,33 @@ class AppViewModel: ObservableObject {
     }
     func searchDevice() {
         bluetoothManager.search()
-            .assign(to: &$peripherals)
+            .removeDuplicatePeripherals()
+            .assign(to: \.peripherals, on: self)
+            .store(in: &cancellable)
     }
     func connectTo(_ periperal: CBPeripheral) {
         bluetoothManager.connect(periperal)
-        closeBluetoothScreen()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [unowned self] in
+            self.closeBluetoothScreen()
+        }
     }
     func closeBluetoothScreen() {
         peripherals.removeAll()
     }
     func closeLogsDataScreen() {
         logsData.removeAll()
+    }
+}
+
+extension Publisher where Output == [CBPeripheral] {
+    func removeDuplicatePeripherals() -> AnyPublisher<[CBPeripheral], Self.Failure> {
+        self.map { peripherals in
+            var filtered = Set<CBPeripheral>()
+            peripherals.forEach { peripheral in
+                filtered.insert(peripheral)
+            }
+            return Array(filtered)
+        }.eraseToAnyPublisher()
     }
 }
 

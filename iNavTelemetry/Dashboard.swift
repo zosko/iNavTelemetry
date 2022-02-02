@@ -29,7 +29,7 @@ struct Dashboard: View {
                                     .cornerRadius(20))
             }
             
-            if viewModel.showPeripherals && !viewModel.bluetoothScanning {
+            if viewModel.showPeripherals {
                 Color.black
                     .opacity(0.5)
                     .edgesIgnoringSafeArea(.all)

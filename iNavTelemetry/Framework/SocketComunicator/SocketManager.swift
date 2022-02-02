@@ -43,12 +43,14 @@ final class SocketManager: SocketProtocol {
     }
     
     func ping() {
-        webSocket?.sendPing { error in
+        webSocket?.sendPing { [weak self] error in
             if let error = error {
                 print("WebSocket ping error: \(error)")
-            }
-            DispatchQueue.main.asyncAfter(deadline: .now() + 10) { [unowned self] in
-                ping()
+                self?.webSocket?.cancel()
+            } else {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 10) {
+                    self?.ping()
+                }
             }
         }
     }
@@ -58,19 +60,20 @@ final class SocketManager: SocketProtocol {
     }
     
     func receive() {
-        webSocket?.receive { [unowned self] result in
+        webSocket?.receive { [weak self] result in
             switch result {
             case let .success(message):
                 switch message {
                 case let .data(data):
                     print("WebSocket data: \(data)")
                 case let .string(string):
-                    messageReceived.send(string)
+                    self?.messageReceived.send(string)
                 default:
                     break
                 }
-                receive()
+                self?.receive()
             case let .failure(error):
+                self?.webSocket?.cancel()
                 print("WebSocket receive error: \(error)")
             }
         }

@@ -46,8 +46,7 @@ final class BluetoothCommunicator: NSObject, BluetoothProtocol {
     
     func search() -> AnyPublisher<[CBPeripheral], Never> {
         Future { [weak self] promise in
-            
-            guard CBCentralManager.authorization == .denied else {
+            guard CBCentralManager.authorization == .allowedAlways else {
                 promise(.success([]))
                 return
             }
@@ -62,9 +61,11 @@ final class BluetoothCommunicator: NSObject, BluetoothProtocol {
                     return
                 }
                 promise(.success(listDevices))
+                self?.listPeripherals.removeAll()
             }
             
-        }.eraseToAnyPublisher()
+        }
+        .eraseToAnyPublisher()
     }
     func connect(_ peripheral: CBPeripheral) {
         self.centralManager?.connect(peripheral, options: nil)
