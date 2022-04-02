@@ -29,7 +29,7 @@
 		6D3F821E26ED47FF009B408D /* Custom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D3F821926ED47FF009B408D /* Custom.swift */; };
 		6D3FEF49279F504C0034EEBC /* CloudStorageSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D3FEF48279F504C0034EEBC /* CloudStorageSpec.swift */; };
 		6D3FEF4C279F6BD80034EEBC /* CloudManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D3FEF4B279F6BD80034EEBC /* CloudManager.swift */; };
-		6D3FEF4F279F7B440034EEBC /* SocketComunicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D3FEF4E279F7B440034EEBC /* SocketComunicator.swift */; };
+		6D3FEF4F279F7B440034EEBC /* SocketCommunicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D3FEF4E279F7B440034EEBC /* SocketCommunicator.swift */; };
 		6D3FEF51279F7B7B0034EEBC /* SocketCommunicatorSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D3FEF50279F7B7B0034EEBC /* SocketCommunicatorSpec.swift */; };
 		6D458C57279830F500B05E4A /* TelemetryData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D458C56279830F500B05E4A /* TelemetryData.swift */; };
 		6D458C592798312D00B05E4A /* TelemetryDataSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D458C582798312D00B05E4A /* TelemetryDataSpec.swift */; };
@@ -90,7 +90,7 @@
 		6D3F821926ED47FF009B408D /* Custom.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Custom.swift; sourceTree = "<group>"; };
 		6D3FEF48279F504C0034EEBC /* CloudStorageSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudStorageSpec.swift; sourceTree = "<group>"; };
 		6D3FEF4B279F6BD80034EEBC /* CloudManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudManager.swift; sourceTree = "<group>"; };
-		6D3FEF4E279F7B440034EEBC /* SocketComunicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocketComunicator.swift; sourceTree = "<group>"; };
+		6D3FEF4E279F7B440034EEBC /* SocketCommunicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocketCommunicator.swift; sourceTree = "<group>"; };
 		6D3FEF50279F7B7B0034EEBC /* SocketCommunicatorSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocketCommunicatorSpec.swift; sourceTree = "<group>"; };
 		6D458C56279830F500B05E4A /* TelemetryData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TelemetryData.swift; sourceTree = "<group>"; };
 		6D458C582798312D00B05E4A /* TelemetryDataSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TelemetryDataSpec.swift; sourceTree = "<group>"; };
@@ -224,13 +224,13 @@
 			path = CloudStorage;
 			sourceTree = "<group>";
 		};
-		6D3FEF4D279F7B210034EEBC /* SocketComunicator */ = {
+		6D3FEF4D279F7B210034EEBC /* SocketCommunicator */ = {
 			isa = PBXGroup;
 			children = (
 				6DF2432C26F5F5E600DE6FE8 /* SocketManager.swift */,
-				6D3FEF4E279F7B440034EEBC /* SocketComunicator.swift */,
+				6D3FEF4E279F7B440034EEBC /* SocketCommunicator.swift */,
 			);
-			path = SocketComunicator;
+			path = SocketCommunicator;
 			sourceTree = "<group>";
 		};
 		6D4E9AEB2794E81D00EBF7B5 /* iNavTelemetryTests */ = {
@@ -289,7 +289,7 @@
 			children = (
 				6D1082BE27A6CD4F00725B45 /* BluetoothCommunicator */,
 				6D80B9D927A0AC17005A3614 /* LocalStorage */,
-				6D3FEF4D279F7B210034EEBC /* SocketComunicator */,
+				6D3FEF4D279F7B210034EEBC /* SocketCommunicator */,
 				6D3FEF4A279F6BB20034EEBC /* CloudStorage */,
 				6D3F821426ED47FF009B408D /* TelemetryManager */,
 				6D49B7A226E80515006833A9 /* AppViewModel.swift */,
@@ -422,7 +422,7 @@
 				6DAF1E5426EDEAD700DBE06A /* LocalStorage.swift in Sources */,
 				6DBA3DCB27119B9500D79FFB /* MavLink_v2.swift in Sources */,
 				6D3F821D26ED47FF009B408D /* TelemetryManager.swift in Sources */,
-				6D3FEF4F279F7B440034EEBC /* SocketComunicator.swift in Sources */,
+				6D3FEF4F279F7B440034EEBC /* SocketCommunicator.swift in Sources */,
 				6D04DBEE26E4D0AA003783F2 /* DisplayView.swift in Sources */,
 				6D3F821A26ED47FF009B408D /* SmartPort.swift in Sources */,
 				6D1082C027A6CD6C00725B45 /* BluetoothCommunicator.swift in Sources */,
@@ -597,7 +597,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"iNavTelemetry/Preview Content\"";
-				DEVELOPMENT_TEAM = RXDLA8Y5J4;
+				DEVELOPMENT_TEAM = J3GF9MP3U5;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = iNavTelemetry/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
@@ -606,7 +606,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 2.1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = us.g6.iNavTelemetry;
+				PRODUCT_BUNDLE_IDENTIFIER = bosko.inav;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTS_MACCATALYST = YES;
 				SWIFT_VERSION = 5.0;
@@ -623,7 +623,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"iNavTelemetry/Preview Content\"";
-				DEVELOPMENT_TEAM = RXDLA8Y5J4;
+				DEVELOPMENT_TEAM = J3GF9MP3U5;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = iNavTelemetry/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
@@ -632,7 +632,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 2.1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = us.g6.iNavTelemetry;
+				PRODUCT_BUNDLE_IDENTIFIER = bosko.inav;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTS_MACCATALYST = YES;
 				SWIFT_VERSION = 5.0;
@@ -707,7 +707,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"iNavTelemetry/Preview Content\"";
-				DEVELOPMENT_TEAM = RXDLA8Y5J4;
+				DEVELOPMENT_TEAM = J3GF9MP3U5;
 				ENABLE_PREVIEWS = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = "";
 				INFOPLIST_FILE = iNavTelemetry/Info.plist;
@@ -717,7 +717,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 2.1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = us.g6.iNavTelemetry;
+				PRODUCT_BUNDLE_IDENTIFIER = bosko.inav;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTS_MACCATALYST = YES;
 				SWIFT_VERSION = 5.0;
@@ -732,7 +732,7 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = RXDLA8Y5J4;
+				DEVELOPMENT_TEAM = J3GF9MP3U5;
 				GCC_PREPROCESSOR_DEFINITIONS = "";
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
@@ -753,7 +753,7 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = RXDLA8Y5J4;
+				DEVELOPMENT_TEAM = J3GF9MP3U5;
 				GCC_PREPROCESSOR_DEFINITIONS = "";
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
@@ -774,7 +774,7 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = RXDLA8Y5J4;
+				DEVELOPMENT_TEAM = J3GF9MP3U5;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 1.0;

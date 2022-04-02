@@ -1,5 +1,5 @@
 //
-//  SocketComunicator.swift
+//  SocketCommunicator.swift
 //  iNavTelemetry
 //
 //  Created by Bosko Petreski on 25.1.22.
@@ -8,7 +8,7 @@
 import Foundation
 import Combine
 
-final class SocketComunicator: ObservableObject {
+final class SocketCommunicator: ObservableObject {
     @Published private(set) var planes: [Plane] = []
     
     private let socketManager: SocketProtocol

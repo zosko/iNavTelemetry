@@ -36,7 +36,7 @@ class SocketCommunicatorSpec: XCTestCase {
     func testSockets() throws {
         let managerMock = SocketManagerMock()
         
-        let socketCommunicator = SocketComunicator(socketManager: managerMock, uniqUUID: "3")
+        let socketCommunicator = SocketCommunicator(socketManager: managerMock, uniqUUID: "3")
         
         let plane1 = Plane(id: "1", coordinate: .init(latitude: 10.0, longitude: 10.0), mine: false)
         let plane2 = Plane(id: "2", coordinate: .init(latitude: 20.0, longitude: 20.0), mine: false)
