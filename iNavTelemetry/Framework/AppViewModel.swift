@@ -79,18 +79,34 @@ class AppViewModel: ObservableObject {
     
     var region = MKCoordinateRegion(center: .init(), span: .init(latitudeDelta: 100, longitudeDelta: 100))
     
-    @ObservedObject private var bluetoothManager = BluetoothManager()
-    @ObservedObject private var socketCommunicator = SocketComunicator()
+    @ObservedObject private var bluetoothManager: BluetoothManager
+    @ObservedObject private var socketCommunicator: SocketCommunicator
     
-    private var cloudStorage = CloudStorage()
-    private var localStorage = LocalStorage()
+    private let cloudStorage: CloudStorage
+    private let localStorage: LocalStorage
+    private let telemetryManager: TelemetryManager
     private var cancellable: [AnyCancellable] = []
-    private var telemetryManager = TelemetryManager()
     private var timerFlying: Timer?
     
-    init(){
+    init(cloudStorage: CloudStorage = CloudStorage(),
+         localStorage: LocalStorage = LocalStorage(),
+         telemetryManager: TelemetryManager = TelemetryManager(),
+         bluetoothManager: BluetoothManager = BluetoothManager(),
+         socketCommunicator: SocketCommunicator = SocketCommunicator()) {
+        
+        self.cloudStorage = cloudStorage
+        self.localStorage = localStorage
+        self.telemetryManager = telemetryManager
+        self.bluetoothManager = bluetoothManager
+        self.socketCommunicator = socketCommunicator
+        
         telemetryManager.addBluetoothManager(bluetoothManager: bluetoothManager)
         
+        setupBindings()
+    }
+    
+    // MARK: - Private methods
+    private func setupBindings() {
         Publishers.CombineLatest(socketCommunicator.$planes, $mineLocation)
             .map{ $0 + [$1] }
             .assign(to: &$allPlanes)
@@ -110,6 +126,9 @@ class AppViewModel: ObservableObject {
     }
     
     // MARK: - Internal functions
+    func stopDetectingProtocol() {
+        bluetoothManager.disconnect()
+    }
     func showHomePosition(location: CLLocationCoordinate2D) {
         homePositionAdded = true
         self.region = MKCoordinateRegion(center: location,
