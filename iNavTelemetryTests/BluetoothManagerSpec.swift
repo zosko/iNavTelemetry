@@ -33,8 +33,8 @@ final class BluetoothCommunicatorMock: BluetoothProtocol {
         _connected = peripheral == devicesFound.first!
     }
     
-    func disconnect(_ peripheral: CBPeripheral) {
-        _connected = !(peripheral == devicesFound.first!)
+    func disconnect() {
+        _connected = false
     }
     
     func write(data: Data) {

@@ -16,7 +16,7 @@ protocol BluetoothProtocol {
     
     func search() -> AnyPublisher<[CBPeripheral], Never>
     func connect(_ periperal: CBPeripheral)
-    func disconnect(_ peripheral: CBPeripheral)
+    func disconnect()
     func write(data: Data)
 }
 
@@ -70,7 +70,8 @@ final class BluetoothCommunicator: NSObject, BluetoothProtocol {
     func connect(_ peripheral: CBPeripheral) {
         self.centralManager?.connect(peripheral, options: nil)
     }
-    func disconnect(_ peripheral: CBPeripheral) {
+    func disconnect() {
+        guard let peripheral = peripheral else { return }
         self.centralManager?.cancelPeripheralConnection(peripheral)
     }
     func write(data: Data) {

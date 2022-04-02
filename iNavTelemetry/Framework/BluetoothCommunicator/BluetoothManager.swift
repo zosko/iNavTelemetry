@@ -44,8 +44,8 @@ final class BluetoothManager: ObservableObject {
     func connect(_ peripheral: CBPeripheral) {
         bluetoothCommunicator.connect(peripheral)
     }
-    func disconnect(_ peripheral: CBPeripheral) {
-        bluetoothCommunicator.disconnect(peripheral)
+    func disconnect() {
+        bluetoothCommunicator.disconnect()
     }
     func write(_ data: Data){
         bluetoothCommunicator.write(data: data)

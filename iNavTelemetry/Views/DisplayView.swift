@@ -65,7 +65,7 @@ struct DisplayView: View {
                                     .opacity(0.5)
                                     .cornerRadius(20))
                 Button {
-                    print("stop telemetry")
+                    viewModel.stopDetectingProtocol()
                 } label: {
                     Image(systemName: "xmark.circle.fill")
                         .font(.system(size: 30))
