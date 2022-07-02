@@ -54,14 +54,14 @@ struct InstrumentView: View {
         VStack {
             Text(types[currentType].name)
                 .bold()
-                .foregroundColor(warning ? Color.red : Color.black)
+                .foregroundColor(warning ? Color.white : Color.black)
             Text(value)
                 .bold()
-                .foregroundColor(warning ? Color.red : Color.black)
+                .foregroundColor(warning ? Color.white : Color.black)
         }
         .modifier(IndicatorTap(showIndicator: types.count > 1))
         .frame(width: 100, height: 40, alignment: .center)
-        .background(Color.white.opacity(0.5))
+        .background(warning ? Color.red : Color.white.opacity(0.5))
         .cornerRadius(5)
         .onTapGesture {
             guard types.count > 1 else { return }
