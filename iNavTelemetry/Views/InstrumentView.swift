@@ -97,7 +97,6 @@ struct IndicatorTap: ViewModifier {
     }
 }
 
-#if !DO_NOT_UNIT_TEST
 struct InstrumentView_Previews: PreviewProvider {
     static var previews: some View {
         InstrumentView(types: [.armed, .distance],
@@ -105,4 +104,3 @@ struct InstrumentView_Previews: PreviewProvider {
             .previewLayout(.fixed(width: 100, height: 50))
     }
 }
-#endif

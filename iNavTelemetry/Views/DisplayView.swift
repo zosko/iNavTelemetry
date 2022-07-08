@@ -98,7 +98,6 @@ struct DisplayView: View {
     }
 }
 
-#if !DO_NOT_UNIT_TEST
 struct DisplayView_Previews: PreviewProvider {
     static var previews: some View {
         DisplayView(viewModel: .init())
@@ -106,4 +105,3 @@ struct DisplayView_Previews: PreviewProvider {
             .previewLayout(.fixed(width: 812, height: 375))
     }
 }
-#endif
