@@ -28,6 +28,7 @@ struct InstrumentView: View {
         case .flytime: return "missing"//"\(String(format:"%02ld:%02ld:%02ld",seconds/3600,(seconds/60)%60,seconds%60))"
         case .current: return "\(telemetry.packet.current) amp"
         case .voltage: return "\(telemetry.packet.voltage)v"
+        case .direction: return "\(telemetry.direction)"
         }
     }
     
@@ -47,17 +48,25 @@ struct InstrumentView: View {
         case .flytime: return false
         case .current: return telemetry.packet.current > 30
         case .voltage: return telemetry.packet.voltage < 7
+        case .direction: return false
         }
     }
     
     var body: some View {
         VStack {
-            Text(types[currentType].name)
-                .bold()
-                .foregroundColor(warning ? Color.white : Color.black)
-            Text(value)
-                .bold()
-                .foregroundColor(warning ? Color.white : Color.black)
+            if types[currentType] == .direction {
+                Image(systemName: types[currentType].imageName)
+                    .rotationEffect(.degrees(Double(value) ?? 0))
+                    .font(.largeTitle)
+                    .foregroundColor(Color.black)
+            } else {
+                Text(types[currentType].name)
+                    .bold()
+                    .foregroundColor(warning ? Color.white : Color.black)
+                Text(value)
+                    .bold()
+                    .foregroundColor(warning ? Color.white : Color.black)
+            }
         }
         .modifier(IndicatorTap(showIndicator: types.count > 1))
         .frame(width: 100, height: 40, alignment: .center)

@@ -61,6 +61,8 @@ struct InstrumentTelemetry {
     
     private(set) var packet: Packet
     private(set) var telemetryType: TelemetryType
+    private(set) var direction: Double = 0
+    
     var location: CLLocationCoordinate2D { CLLocationCoordinate2D(latitude: packet.lat, longitude: packet.lng) }
     var stabilization: Stabilization {
         switch telemetryType {
@@ -96,5 +98,25 @@ struct InstrumentTelemetry {
         default:
             return .undefined
         }
+    }
+    
+    func degreesToRadians(degrees: Double) -> Double { return degrees * .pi / 180.0 }
+    func radiansToDegrees(radians: Double) -> Double { return radians * 180.0 / .pi }
+    
+    mutating func updateDirectionToPlane(pilotHeading: Double, pilotLocation: CLLocationCoordinate2D) {
+        let lat1 = degreesToRadians(degrees: pilotLocation.latitude)
+        let lon1 = degreesToRadians(degrees: pilotLocation.longitude)
+
+        let lat2 = degreesToRadians(degrees: location.latitude)
+        let lon2 = degreesToRadians(degrees: location.longitude)
+        
+        let dLon = lon2 - lon1
+        
+        let y = sin(dLon) * cos(lat2)
+        let x = cos(lat1) * sin(lat2) - sin(lat1) * cos(lat2) * cos(dLon)
+        let radiansBearing = atan2(y, x)
+        let degree = radiansToDegrees(radians: radiansBearing)
+        
+        self.direction = degree + pilotHeading - 90
     }
 }

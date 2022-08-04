@@ -33,6 +33,10 @@
 	<string>To connect with device</string>
 	<key>NSBluetoothPeripheralUsageDescription</key>
 	<string>To connect with device</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>For direction plane needs</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>For direction plane needs</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
@@ -52,7 +56,6 @@
 	</array>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
-		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>UISupportedInterfaceOrientations~ipad</key>

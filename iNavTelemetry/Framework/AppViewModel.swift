@@ -88,6 +88,8 @@ class AppViewModel: ObservableObject {
     private var cancellable: [AnyCancellable] = []
     private var timerFlying: Timer?
     
+    private let compassHeading = CompassHeading()
+    
     init(cloudStorage: CloudStorage = CloudStorage(),
          localStorage: LocalStorage = LocalStorage(),
          telemetryManager: TelemetryManager = TelemetryManager(),
@@ -122,6 +124,12 @@ class AppViewModel: ObservableObject {
             .sink { [unowned self] data in
                 guard self.telemetryManager.parse(incomingData: data) else { return }
                 self.telemetry = self.telemetryManager.telemetry
+            }.store(in: &cancellable)
+        
+        compassHeading
+            .objectWillChange
+            .sink { [unowned self] _ in
+                self.telemetry.updateDirectionToPlane(pilotHeading: compassHeading.degrees, pilotLocation: compassHeading.currentLocation)
             }.store(in: &cancellable)
     }
     

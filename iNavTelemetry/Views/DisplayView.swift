@@ -28,6 +28,7 @@ struct DisplayView: View {
                         InstrumentView(types: [.satellites], telemetry: viewModel.telemetry)
                         InstrumentView(types: [.longitude], telemetry: viewModel.telemetry)
                     }
+                    InstrumentView(types: [.direction], telemetry: viewModel.telemetry)
                     Spacer()
                 }
                 Spacer()

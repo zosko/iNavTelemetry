@@ -65,6 +65,7 @@ enum InstrumentType {
     case flytime
     case current
     case voltage
+    case direction
     
     var name: String {
         switch self {
@@ -82,6 +83,7 @@ enum InstrumentType {
         case .flytime: return "Fly time"
         case .current: return "Current"
         case .voltage: return "Voltage"
+        case .direction: return ""
         }
     }
     
@@ -101,6 +103,7 @@ enum InstrumentType {
         case .flytime: return "timer"
         case .current: return "directcurrent"
         case .voltage: return "minus.plus.batteryblock"
+        case .direction: return "shift.fill"
         }
     }
 }
