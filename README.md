@@ -9,6 +9,7 @@
 
 **Thanks for supporters:** gdanas87, Jeremy
 
+### Application is not available anymore on AppStore
 # Available on AppStore 
 https://apps.apple.com/us/app/inav-telemetry/id1543244904
 
