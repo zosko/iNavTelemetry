@@ -1,11 +1,4 @@
-<p align="center">
-<img src="https://camo.githubusercontent.com/928436350a228bf7b9bc397b7c6e44fb82af2d4c8725ecb60ad841cde06685f5/68747470733a2f2f717561646d6575702e636f6d2f6173736574732f77696e6765642d696e61762e706e67" /><br /><br />
-<a href="https://www.buymeacoffee.com/bosko" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Beer" style="height: auto !important;width: auto !important;" ></a>
-</p>
-
-[![iOS workflow](https://github.com/zosko/iNavTelemetry/actions/workflows/ios.yml/badge.svg)](https://github.com/zosko/iNavTelemetry/actions/workflows/ios.yml)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/9ce1d346b8e094b8e242/test_coverage)](https://codeclimate.com/github/zosko/iNavTelemetry/test_coverage)
-[![Maintainability](https://api.codeclimate.com/v1/badges/9ce1d346b8e094b8e242/maintainability)](https://codeclimate.com/github/zosko/iNavTelemetry/maintainability)
+### Application is not available anymore on AppStore, please support this project if you want to be on AppStore.
 
 **Thanks for supporters:** gdanas87, Jeremy
 
